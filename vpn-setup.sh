@@ -243,7 +243,7 @@ rm -f /etc/resolv.conf
 systemctl enable unbound
 ufw --force enable
 ufw reload
-#systemctl restart sshd.service
+systemctl restart sshd.service
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 
