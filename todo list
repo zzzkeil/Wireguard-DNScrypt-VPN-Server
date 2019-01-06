@@ -1,0 +1,8 @@
+Generate a blacklist file for ad, maleware, ..... blocking
+Update schedule for blacklist
+Option to set port´s and ip´s 
+Option to set blacklist or not
+Option to reboot automatically
+Option to skip SSH mod.
+Option to change some DNScrypt settings
+...
