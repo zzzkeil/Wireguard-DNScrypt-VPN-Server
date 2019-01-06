@@ -8,4 +8,5 @@ Option to skip SSH mod
 Option to change some DNScrypt settings
 just in case - suggestions for new root password  end of script  ( min. 32 characters )
 Option for fail2ban
+Debian 9 support
 ...
