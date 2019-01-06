@@ -6,6 +6,8 @@ This script installs Wireguard VPN Server and create one client config.
 
 ( Version 0.1 - only for Ubuntu 18.04 )
 
+( Check todo list for next versions )
+
 To get a little more security, 
 it changes the SSH port to 40, with new ""better"" keys and
 
