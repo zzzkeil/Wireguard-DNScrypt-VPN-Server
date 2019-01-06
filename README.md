@@ -17,6 +17,8 @@ DNS is in the tunnel. Unbound will forward querys to DNScrypt-proxy.
 
 
 @ the end you see the QR Code for your wiregaurd app.
+example:
+[![example](https://zeroaim.de/01/qrtest.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 
 Just a test for now.
