@@ -195,6 +195,7 @@ mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blacklist.txt 
 #
 echo "listen_addresses = ['127.0.0.1:5353']
+#server_names = ['trashvpn.de', 'zeroaim.de-ipv6', 'doh-crypto-sx', 'cloudflare-ipv6', 'dnscrypt.eu-dk', 'dnscrypt.uk-ipv6', 'securedns-doh', 'scaleway-fr']
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = true
@@ -233,7 +234,7 @@ cache_neg_ttl = 60
   prefix = ''
 
 [static]
- #server_names = ['trashvpn.de', 'zeroaim.de-ipv6', 'doh-crypto-sx', 'cloudflare-ipv6', 'dnscrypt.eu-dk', 'dnscrypt.uk-ipv6', 'securedns-doh', 'scaleway-fr']" > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+" > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 #90 systemctl
 systemctl stop systemd-resolved
