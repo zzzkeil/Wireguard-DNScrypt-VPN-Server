@@ -1,6 +1,6 @@
 # Wireguard-DNScrypt-VPN-Server
 Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
-
+<br>
 This script installs Wireguard VPN Server and create one client config.
 To get a little more security, 
 it changes the SSH port to 40,
