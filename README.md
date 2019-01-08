@@ -1,4 +1,8 @@
 # Wireguard-DNScrypt-VPN-Server
+
+# Just a test for now.
+
+
 Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
 
 
@@ -23,5 +27,4 @@ example:
 [![example](https://zeroaim.de/01/qrtest.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 
-Just a test for now.
-Script version 0.1 has no Options !
+
