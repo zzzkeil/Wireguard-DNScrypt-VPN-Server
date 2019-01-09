@@ -1,4 +1,4 @@
-Generate a blacklist file for ad, maleware, ..... blocking
+Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
 Update schedule for blacklist
 Option to set port´s and ip´s 
 Option to set blacklist or not
