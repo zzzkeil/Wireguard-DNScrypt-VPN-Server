@@ -2,6 +2,7 @@
 Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
 
 
+-----------------------------------------
 How to install :
 
 curl -o  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_setup.sh
@@ -9,7 +10,7 @@ curl -o  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/W
 chmod +x wireguard_dnscrypt_setup.sh
 
 ./wireguard_dnscrypt_setup.sh
-
+-----------------------------------------
 
 
 -----------------------------------------
