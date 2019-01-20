@@ -1,16 +1,16 @@
 To Do :
-Option to set port´s and ip´s 
-Option to set blacklist or not
-Option to create another client config
-Option to reboot automatically
-Option to skip SSH mod
-Option to change some DNScrypt settings
-just in case - suggestions for new root password  end of script  ( min. 32 characters )
-Option for fail2ban
-Debian 9 support
+- [ ] Option to set port´s and ip´s 
+- [ ] Option to set blacklist or not
+- [ ] Option to create another client config
+- [ ] Option to reboot automatically
+- [ ] Option to skip SSH mod
+- [ ] Option to change some DNScrypt settings
+- [ ] just in case - suggestions for new root password  end of script  ( min. 32 characters )
+- [ ] Option for fail2ban
+- [ ] Debian 9 support
 ...
 
 
 Done :
-Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
-Update schedule for blacklist
+- [x] Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
+- [x] Update schedule for blacklist
