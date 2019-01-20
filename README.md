@@ -1,4 +1,6 @@
 # Wireguard-DNScrypt-VPN-Server
+Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
+
 
 How to install :
 
@@ -8,9 +10,9 @@ chmod +x wireguard_dnscrypt_setup.sh
 
 ./wireguard_dnscrypt_setup.sh
 
-Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
 
 
+-----------------------------------------
 This script installs Wireguard VPN Server and create one client config.
 
 (Check todo list for next versions)
@@ -26,5 +28,4 @@ DNS is in the tunnel. Unbound will forward querys to DNScrypt-proxy.
 example:
 [![example](https://zeroaim.de/01/qrtest.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
-
-
+-----------------------------------------
