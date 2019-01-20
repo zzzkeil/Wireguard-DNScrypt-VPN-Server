@@ -281,7 +281,6 @@ systemctl disable systemd-resolved
 cp /etc/resolv.conf /etc/resolv.conf.orig
 rm -f /etc/resolv.conf
 systemctl enable unbound
-systemctl restart sshd.service
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 ##
@@ -330,5 +329,6 @@ echo "to import the config on your phone"
 echo ""
 echo " Remember to change your ssh client port to 40 "
 echo " Reboot your system now or later " 
+systemctl restart sshd.service
 ufw --force enable
 ufw reload
