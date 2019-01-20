@@ -1,22 +1,26 @@
 #!/bin/bash
 clear
-echo " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo " This is a test script for Ubuntu 18.04.1, handle carefully "
-echo "  - Install only on a fresh, clean, minimal system "
-echo "    -Check my github site for new versions"
-echo "      - https://github.com/zzzkeil?tab=repositories "
-echo "         - Version 0.1  / 	06.Jan.2019"
-echo " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+echo " ####################################################################"
+echo " #  This script is only for Ubuntu 18.04.1                          #"
+echo " #  Script is in beta status, handle carefully                      #"
+echo " #  Only testet, on a fresh, clean, minimal system                  #"
+echo " #  Check my github site for new versions                           #"
+echo " #  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        #"
+echo " #  Version 0.2 / 20.Jan.2019                                       #"
+echo " ####################################################################"
+echo " #                                                                  #"
+echo " #         !!! READ THIS  BEFOR YOU RUN THIS SCRIPT !!!             #"
+echo " #                                                                  #"
+echo " ####################################################################"
+echo " #  zzzkeil´s Wireguard-DNScrypt-VPN-Server setup:                  #"
+echo " #  Setup SSH on port 40 with 'better' keys.                        #"
+echo " #  Setup UFW, ip6tables and sysctl.conf.                           #"
+echo " #  Setup WIREGUARD Server - create a Client config with QR-Code.   #"
+echo " #  Setup Unbound and DNScrypt with a Blocklist (ADs/Maleware/...)  #"
+echo " ####################################################################"
 echo ""
 echo ""
-echo " keil´s VPN - Server setupscript :"
-echo " Setup SSH on port 40 with 'better' keys."
-echo " Setup UFW, ip6tables and sysctl.conf."
-echo " Setup WIREGUARD Server and create one Client config with QR-Code."
-echo " Setup Unbound and DNScrypt."
-echo ""
-echo ""
-echo " To EXIT this script press  [ENTER]"
+echo "To EXIT this script press  [ENTER]"
 echo 
 read -p "To RUN this script press  [Y]" -n 1 -r
 echo
@@ -31,7 +35,7 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit 1
 fi
 
-if [[ -e /etc/wireguard/wg0.conf ]]; then
+if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
      echo
 	 echo
      echo "Looks like this script is already installed"
@@ -44,12 +48,12 @@ if [[ -e /etc/wireguard/wg0.conf ]]; then
 	 exit 1
 fi
 	 
-#00.Systemupdate
-apt update
-apt upgrade -y
-apt autoremove -y
+#Step 01 - Systemupdate 
+apt update && apt upgrade -y && apt autoremove -y
 
-#01.sshd_config Mod
+
+
+#Step 02 - Setup SSH
 ssh-keygen -f /etc/ssh/key1rsa -t rsa -b 4096 -N ""
 ssh-keygen -f /etc/ssh/key2ecdsa -t ecdsa -b 521 -N ""
 ssh-keygen -f /etc/ssh/key3ed25519 -t ed25519 -N ""
@@ -67,13 +71,15 @@ PrintMotd no
 AcceptEnv LANG LC_*
 Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
-#02. UFW Setup
+
+
+#Step 03 - Setup UFW
 apt install ufw
 ufw allow 40/tcp
 ufw allow 14443/udp
 ufw allow out 53
 ufw deny 22
-ufw default deny
+ufw default deny incoming
 cp /etc/default/ufw /etc/default/ufw.orig
 cp /etc/ufw/before.rules /etc/ufw/before.rules.orig
 cp /etc/ufw/before6.rules /etc/ufw/before6.rules.orig
@@ -85,7 +91,9 @@ sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT 
 sed -i '/# End required lines/a -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before6.rules
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/ufw/before6.rules
 
-#03.sysctl.conf Mod
+
+
+#Step 04 - Setup sysctl.conf
 cp /etc/sysctl.conf /etc/sysctl.conf.orig
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 sed -i 's/#net.ipv6.conf.all.forwarding=1/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
@@ -95,14 +103,15 @@ sed -i 's@#net/ipv6/conf/default/forwarding=1@net/ipv6/conf/default/forwarding=1
 sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc/ufw/sysctl.conf
 
 
-#04. apt install 
+
+#Step 05 - Install needed stuff
 add-apt-repository ppa:wireguard/wireguard -y
 apt update
-apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host -y 
+apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python -y 
 
 
 
-#05. setup wireguard keys
+#Step 06 - Setup wireguard keys
 mkdir /etc/wireguard/keys
 chmod 700 /etc/wireguard/keys
 touch /etc/wireguard/keys/server0
@@ -114,15 +123,17 @@ chmod 600 /etc/wireguard/keys/client0
 wg genkey > /etc/wireguard/keys/client0
 wg pubkey < /etc/wireguard/keys/client0 > /etc/wireguard/keys/client0.pub
 
-#06. setup wireguard server config
+
+
+#Step 07 - Setup wireguard server config
 echo "[Interface]
 Address = 10.8.0.1/24
 Address = fd42:42:42:42::1/112
 ListenPort = 14443
 PrivateKey = PK01
 
-PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 [Peer]
 PublicKey = PK02
@@ -132,7 +143,9 @@ sed -i "s@PK02@$(cat /etc/wireguard/keys/client0.pub)@" /etc/wireguard/wg0.conf
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
-#07. setup wireguard client config
+
+
+#Step 08 - Setup wireguard client config
 echo "[Interface]
 Address = 10.8.0.2/32
 Address = fd42:42:42:42::2/128
@@ -150,7 +163,8 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client0.conf
 chmod 600 /etc/wireguard/client0.conf
 
 
-#08. Unbound
+
+#Step 09 - Setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
 echo '
 server:
@@ -186,7 +200,9 @@ do-not-query-localhost: no
 ' >> /etc/unbound/unbound.conf
 chown -R unbound:unbound /var/lib/unbound
 
-#09. DNSCrypt config
+
+
+#Step 10 - Setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
 wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
@@ -223,7 +239,7 @@ cache_max_ttl = 1200
 cache_neg_ttl = 60
 
 [blacklist]
-#blacklist_file = 'blacklist.txt'
+blacklist_file = 'blacklist.txt'
 
 [sources]
   [sources.'public-resolvers']
@@ -236,7 +252,27 @@ cache_neg_ttl = 60
 [static]
 " > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-#90 systemctl
+#Step 11 - Setup Blacklist >
+mkdir /etc/dnscrypt-proxy/utils/
+mkdir /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
+#curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist.conf
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restricted.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-time-restricted.txt
+echo "" > /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt
+#curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-whitelist.txt
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
+chmod +x chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py
+cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
+./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
+cd
+echo "51 23 * * 1,3,5 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+crontab blacklistcron
+rm blacklistcron
+
+
+
+#Step 90 - Setup systemctl
 systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 cp /etc/resolv.conf /etc/resolv.conf.orig
@@ -247,8 +283,9 @@ ufw reload
 systemctl restart sshd.service
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
-
+##
 #solve issuses with unbound after reboot (no dns for wireguard client)
+##
 cp /etc/systemd/system/multi-user.target.wants/unbound.service /etc/unbound/unbound.service.orig
 systemctl disable unbound
 echo "[Unit]
@@ -275,8 +312,14 @@ systemctl restart unbound
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 
+#Step 91 - Set file for install check (see line 34)
+echo "Wireguard-DNScrypt-VPN-Server installed,
+please remove all files/configs carefully,
+before you delete this file and run the script again
+" > /root/Wireguard-DNScrypt-VPN-Server.README
 
-#100 finish
+
+#Step 100 - finish :)
 echo ""
 echo ""
 echo " QR Code from client0.conf / for your mobile client "
@@ -286,6 +329,3 @@ echo "to import the config on your phone"
 echo ""
 echo " Remember to change your ssh client port to 40 "
 echo " Reboot your system now or later " 
-
-
-
