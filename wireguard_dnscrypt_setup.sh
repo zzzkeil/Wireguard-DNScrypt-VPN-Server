@@ -38,11 +38,14 @@ fi
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
      echo
 	 echo
-     echo "Looks like this script is already installed"
+         echo "Looks like this script is already installed"
 	 echo "This script is only for the first install"
-	 echo "Next version have maybe some options like, choose port and create new clients"
+	 echo "Read the instructions in this file: "
+	 echo "/root/Wireguard-DNScrypt-VPN-Server.README"
+	 echo "Next version have maybe some options like, "
+	 echo "choose port, create new clients, remove all"
 	 echo "Check my github site for new versions"
-	 echo " - https://github.com/zzzkeil?tab=repositories"
+	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
 	 echo
 	 echo
 	 exit 1
