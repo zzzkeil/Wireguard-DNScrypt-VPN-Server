@@ -1,22 +1,23 @@
 # Wireguard-DNScrypt-VPN-Server
-Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
-
+### Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
 
 -----------------------------------------
 How to install :
-
+###### For Ubuntu 18.04 only right now
+```
 curl -o  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_setup.sh
 
 chmod +x wireguard_dnscrypt_setup.sh
 
 ./wireguard_dnscrypt_setup.sh
+```
 -----------------------------------------
 
 
 -----------------------------------------
 This script installs Wireguard VPN Server and create one client config.
 
-(Check todo list for next versions)
+> (Check todo list for next versions)
 
 To get a little more security, 
 it changes the SSH port to 40, with new ""better"" keys and
