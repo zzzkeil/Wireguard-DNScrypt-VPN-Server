@@ -10,6 +10,7 @@ To Do :
 - [ ] Option for fail2ban
 - [ ] Debian 9 support
 - [ ] Uninstaller / remove all mods
+- [ ] ufw replace with iptables ??
 ...
 
 
