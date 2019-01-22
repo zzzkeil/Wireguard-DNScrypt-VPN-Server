@@ -84,8 +84,8 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 # Here i´m working now ----  Not finished !!  caution learning by doing !!
 #Step 03 - Setup iptabels
-mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.orig
-mv /etc/iptables/rules.v6 /etc/iptables/rules.v6.orig
+#mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.orig
+#mv /etc/iptables/rules.v6 /etc/iptables/rules.v6.orig
 #ipv4
 iptables -P INPUT DROP
 iptables -A INPUT -i lo -p all -j ACCEPT
@@ -111,7 +111,7 @@ iptables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED 
 iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -j DROP
-
+iptables-save > /etc/iptables/rules.v4
 
 #ipv6
 ip6tables -P INPUT DROP
@@ -138,7 +138,7 @@ ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED
 ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -j DROP
-
+iptables-save > /etc/iptables/rules.v6
 
 
 #Step 04 - Setup sysctl.conf
