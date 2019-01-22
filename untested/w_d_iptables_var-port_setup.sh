@@ -6,11 +6,10 @@ echo " #  Script is in beta status, handle carefully                      #"
 echo " #  Only testet, on a fresh, clean, minimal system                  #"
 echo " #  Check my github site for new versions                           #"
 echo " #  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        #"
-echo " #  UNTESTED VERSION - - JUST FOR TESTING                           #"
+echo " #  IPTABLE VERSION  0.3 - - JUST FOR TESTING                       #"
 echo " ####################################################################"
 echo " #                                                                  #"
 echo " #         !!! READ THIS  BEFOR YOU RUN THIS SCRIPT !!!             #"
-echo " #         !!!  SCRIPT IS NOT FINISHED; DO NOT RUN  !!!             #"
 echo " #                                                                  #"
 echo " ####################################################################"
 echo " #  zzzkeil´s Wireguard-DNScrypt-VPN-Server setup:                  #"
@@ -22,7 +21,6 @@ echo " ####################################################################"
 echo ""
 echo ""
 echo "To EXIT this script press  [ENTER]"
-echo " ###########>> SCRIPT IS NOT FINISHED; DO NOT RUN"
 echo 
 read -p "To RUN this script press  [Y]" -n 1 -r
 echo
@@ -286,11 +284,11 @@ blacklist_file = 'blacklist.txt'
 
 [static]
 " > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
-clear
 
 
 
 #Step 10 - Setup Blacklist >
+clear
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
@@ -305,7 +303,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "37 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "10 22 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
