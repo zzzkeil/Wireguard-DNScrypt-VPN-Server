@@ -82,65 +82,6 @@ AcceptEnv LANG LC_*
 Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 
-# Here i´m working now ----  Not finished !!  caution learning by doing !!
-#Step 03 - Setup iptabels
-#mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.orig
-#mv /etc/iptables/rules.v6 /etc/iptables/rules.v6.orig
-#ipv4
-iptables -A INPUT -i lo -p all -j ACCEPT
-iptables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
-iptables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
-iptables -A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -P INPUT DROP
-#iptables -A INPUT -j DROP
-#
-iptables -A OUTPUT -o lo -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 40 -m state --state NEW -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
-iptables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -P OUTPUT DROP
-#iptables -A OUTPUT -j DROP
-iptables-save > /etc/iptables/rules.v4
-
-#ipv6
-ip6tables -A INPUT -i lo -p all -j ACCEPT
-ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
-ip6tables -A INPUT -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
-ip6tables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
-ip6tables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
-ip6tables -A INPUT -s fd42:42:42:42::/112 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -A INPUT -s fd42:42:42:42::/112 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-ip6tables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE
-ip6tables -P INPUT DROP
-#ip6tables -A INPUT -j DROP
-#
-ip6tables -A OUTPUT -o lo -j ACCEPT
-ip6tables -A OUTPUT -p tcp --dport 40 -m state --state NEW -j ACCEPT
-ip6tables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
-ip6tables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
-ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
-ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-ip6tables -P OUTPUT DROP
-#ip6tables -A OUTPUT -j DROP
-iptables-save > /etc/iptables/rules.v6
 
 
 #Step 04 - Setup sysctl.conf
@@ -302,7 +243,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "00 13 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "20 13 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
@@ -363,7 +304,66 @@ echo ""
 echo " Remember to change your ssh client port to 40 "
 echo " Reboot your system now or later " 
 systemctl restart sshd.service
-systemctl enable netfilter-persistent
+# Here i´m working now ----  Not finished !!  caution learning by doing !!
+#Step 03 - Setup iptabels
+#mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.orig
+#mv /etc/iptables/rules.v6 /etc/iptables/rules.v6.orig
+#ipv4
+iptables -A INPUT -i lo -p all -j ACCEPT
+iptables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --sport 443 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A INPUT -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+iptables -A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -P INPUT DROP
+#iptables -A INPUT -j DROP
+#
+iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 40 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A OUTPUT -p udp -m udp --dport 14443 -m conntrack --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+iptables -P OUTPUT DROP
+#iptables -A OUTPUT -j DROP
+iptables-save > /etc/iptables/rules.v4
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v4
+
+#ipv6
+ip6tables -A INPUT -i lo -p all -j ACCEPT
+ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 443 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A INPUT -p udp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 53 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -s fd42:42:42:42::/112 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A INPUT -s fd42:42:42:42::/112 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+ip6tables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE
+ip6tables -P INPUT DROP
+#ip6tables -A INPUT -j DROP
+#
+ip6tables -A OUTPUT -o lo -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 40 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 80 -m staconntrackte --ctstate NEW -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m ctstate --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+ip6tables -P OUTPUT DROP
+#ip6tables -A OUTPUT -j DROP
+iptables-save > /etc/iptables/rules.v6
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v6
+systemctl enable netfilter-persistent
 netfilter-persistent save
