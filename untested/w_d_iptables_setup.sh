@@ -110,7 +110,7 @@ iptables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
 iptables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -j DROP" > /etc/iptables/rules.v4
+iptables -A OUTPUT -j DROP" >> /etc/iptables/rules.v4
 
 
 #ipv6
@@ -137,7 +137,7 @@ ip6tables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
 ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-ip6tables -A OUTPUT -j DROP" > /etc/iptables/rules.v6
+ip6tables -A OUTPUT -j DROP" >> /etc/iptables/rules.v6
 
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v4
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v6
