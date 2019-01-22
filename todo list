@@ -1,7 +1,8 @@
 To Do :
-- [ ] find the best setup for blacklist sources 
-- [ ] Option to set port´s and ip´s 
+- [ ] find the best setup for blacklist sources
 - [ ] Option to set blacklist or not
+- [ ] smaller QR-Code
+- [ ] Option to set port´s and ip´s 
 - [ ] Option to create another client config
 - [ ] Option to reboot automatically
 - [ ] Option to skip SSH mod
