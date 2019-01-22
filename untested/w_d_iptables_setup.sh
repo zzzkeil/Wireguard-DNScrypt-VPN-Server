@@ -84,6 +84,7 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 
 #Step 03 - Setup iptabels
+inet=$(ip route show default | awk '/default/ {print $5}')
 #ipv4
 iptables -P INPUT DROP
 iptables -A INPUT -i lo -p all -j ACCEPT
@@ -98,7 +99,7 @@ iptables -A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $inet -j MASQUERADE
 iptables -A INPUT -j DROP
 iptables-save > /etc/iptables/rules.v4
 
@@ -117,7 +118,7 @@ ip6tables -A INPUT -s fd42:42:42:42::/112 -p udp -m udp --dport 53 -m conntrack 
 ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE
+ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o $inet -j MASQUERADE
 ip6tables -A INPUT -j DROP
 iptables-save > /etc/iptables/rules.v6
 
@@ -342,8 +343,6 @@ echo "to import the config on your phone"
 echo ""
 echo " Remember to change your ssh client port to 40 "
 echo " Reboot your system now or later " 
-sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v4
-sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v6
 systemctl restart sshd.service
 systemctl enable netfilter-persistent
 netfilter-persistent save
