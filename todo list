@@ -1,7 +1,7 @@
 To Do :
 - [ ] find the best setup for blacklist sources
+- [ ] Update schedule for blacklist not working
 - [ ] Option to set blacklist or not
-- [ ] smaller QR-Code
 - [ ] Option to set port´s and ip´s 
 - [ ] Option to create another client config
 - [ ] Option to reboot automatically
@@ -17,4 +17,4 @@ To Do :
 
 Done :
 - [x] Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
-- [x] Update schedule for blacklist
+- [x] smaller QR-Code --> not possible in terminal ..
