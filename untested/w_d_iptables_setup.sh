@@ -142,7 +142,7 @@ ip6tables -A OUTPUT -j DROP" > /etc/iptables/rules.v6
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v4
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v6
 
-
+netfilter-persistent save
 
 #Step 04 - Setup sysctl.conf
 cp /etc/sysctl.conf /etc/sysctl.conf.orig
@@ -365,4 +365,3 @@ echo " Remember to change your ssh client port to 40 "
 echo " Reboot your system now or later " 
 systemctl restart sshd.service
 systemctl enable netfilter-persistent
-netfilter-persistent save
