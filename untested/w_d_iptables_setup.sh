@@ -80,51 +80,56 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 # Here i´m working not finished !!  caution learning by doing !!
 #Step 03 - Setup iptabels
 #ipv4
+iptables -P INPUT DROP
+iptables -A INPUT -i lo -p all -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
+iptables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPTT
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -P INPUT DROP
+iptables -A INPUT -j DROP
+#
+iptables -P OUTPUT DROP
+iptables -A OUTPUT -o lo -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
+iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -j DROP
+
+
+
+
+
 #ipv6
+ip6tables -P INPUT DROP
+ip6tables -A INPUT -i lo -p all -j ACCEPT
 ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
 ip6tables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
+ip6tables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
 ip6tables -A INPUT -s fd42:42:42:42::/112 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -s fd42:42:42:42::/112 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE
-ip6tables -P INPUT DROP
+ip6tables -A INPUT -j DROP
+#
+ip6tables -P OUTPUT DROP
+ip6tables -A OUTPUT -o lo -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
+ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -j DROP
 
-
-
-apt-get install iptables-persistent
-systemctl enable netfilter-persistent
-netfilter-persistent save
-
-
-#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
-#apt install ufw
-#ufw allow 40/tcp              check
-#ufw allow 14443/udp           check
-#ufw allow out 53
-#ufw deny 22
-#ufw default deny incoming
-#cp /etc/default/ufw /etc/default/ufw.orig
-#cp /etc/ufw/before.rules /etc/ufw/before.rules.orig
-#cp /etc/ufw/before6.rules /etc/ufw/before6.rules.orig
-#sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
-#sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n-A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before.rules
-#sed -i '/# End required lines/a -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before.rules
 #sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/ufw/before.rules
-#sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n\n-A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before6.rules
-#sed -i '/# End required lines/a -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before6.rules
 #sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/ufw/before6.rules
 
 
@@ -143,7 +148,7 @@ sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc
 #Step 05 - Install needed stuff
 add-apt-repository ppa:wireguard/wireguard -y
 apt update
-apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python -y 
+apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python iptables-persistent -y 
 
 
 
@@ -167,9 +172,6 @@ Address = 10.8.0.1/24
 Address = fd42:42:42:42::1/112
 ListenPort = 14443
 PrivateKey = PK01
-
-#PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; ip6tables -A FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-#PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE; ip6tables -D FORWARD -i wg0 -j ACCEPT; ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 [Peer]
 PublicKey = PK02
@@ -363,5 +365,5 @@ echo ""
 echo " Remember to change your ssh client port to 40 "
 echo " Reboot your system now or later " 
 systemctl restart sshd.service
-ufw --force enable
-ufw reload
+systemctl enable netfilter-persistent
+netfilter-persistent save
