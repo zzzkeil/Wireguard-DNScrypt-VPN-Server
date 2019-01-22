@@ -298,7 +298,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "20 20 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "40 20 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
