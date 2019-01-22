@@ -60,12 +60,21 @@ apt update
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python iptables-persistent -y 
-
+echo
+echo
+echo
 
 
 #Step 01 - Your options
+
 read -p "Choose your SSH Port: " -e -i 40 sshport
+echo "------------------------------------------------------------"
+echo
 read -p "Choose your Wiregard Port: " -e -i 14443 wg0port
+echo "------------------------------------------------------------"
+echo
+echo
+echo
 
 
 
@@ -332,6 +341,10 @@ systemctl restart unbound
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 
+systemctl restart sshd.service
+systemctl enable netfilter-persistent
+netfilter-persistent save
+
 #Step 91 - Set file for install check (see line 34)
 echo "Wireguard-DNScrypt-VPN-Server installed,
 please remove all files/configs carefully,
@@ -347,8 +360,5 @@ qrencode -t ansiutf8 < /etc/wireguard/client0.conf
 echo "Scan the QR Code with your Wiregard App,"
 echo "to import the config on your phone"
 echo ""
-echo " Remember to change your ssh client port to $sshport "
-echo " Reboot your system now or later " 
-systemctl restart sshd.service
-systemctl enable netfilter-persistent
-netfilter-persistent save
+echo "Remember to change your ssh client port to $sshport "
+echo "Reboot your system now or later " 
