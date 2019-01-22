@@ -60,16 +60,17 @@ apt update
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python iptables-persistent -y 
-echo
-echo
-echo
+
 
 
 #Step 01 - Your options
-
+clear
+echo
+echo
+echo
+echo "------------------------------------------------------------"
 read -p "Choose your SSH Port: " -e -i 40 sshport
 echo "------------------------------------------------------------"
-echo
 read -p "Choose your Wiregard Port: " -e -i 14443 wg0port
 echo "------------------------------------------------------------"
 echo
@@ -95,7 +96,7 @@ X11Forwarding yes
 PrintMotd no
 AcceptEnv LANG LC_*
 Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
-
+clear
 
 
 #Step 03 - Setup iptabels
@@ -225,6 +226,7 @@ cache-max-ttl: 14400
 prefetch: yes
 prefetch-key: yes
 do-not-query-localhost: no
+logfile: "/var/log/dnsunbound.log"
 
  forward-zone:
   name: "."
@@ -283,6 +285,9 @@ blacklist_file = 'blacklist.txt'
 
 [static]
 " > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+clear
+
+
 
 #Step 10 - Setup Blacklist >
 mkdir /etc/dnscrypt-proxy/utils/
@@ -298,7 +303,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "40 20 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "10 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt"
 crontab blacklistcron
 rm blacklistcron
 
@@ -353,6 +358,7 @@ before you delete this file and run the script again
 
 
 #Step 100 - finish :)
+clear
 echo ""
 echo ""
 echo " QR Code from client0.conf / for your mobile client "
