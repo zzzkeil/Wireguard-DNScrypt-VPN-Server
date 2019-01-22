@@ -329,10 +329,10 @@ iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 40 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A OUTPUT -p udp -m udp --dport 14443 -m conntrack --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-iptables -P OUTPUT DROP
+#iptables -P OUTPUT DROP
 #iptables -A OUTPUT -j DROP
 iptables-save > /etc/iptables/rules.v4
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v4
@@ -356,12 +356,12 @@ ip6tables -P INPUT DROP
 #
 ip6tables -A OUTPUT -o lo -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 40 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-ip6tables -A OUTPUT -p tcp --dport 80 -m staconntrackte --ctstate NEW -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 80 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 443 -m conntrack --ctstate NEW -j ACCEPT
-ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m ctstate --state NEW,ESTABLISHED -j ACCEPT
+ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 53 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
-ip6tables -P OUTPUT DROP
+#ip6tables -P OUTPUT DROP
 #ip6tables -A OUTPUT -j DROP
 iptables-save > /etc/iptables/rules.v6
 sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v6
