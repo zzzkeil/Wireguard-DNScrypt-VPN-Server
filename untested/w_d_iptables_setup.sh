@@ -85,6 +85,7 @@ echo "iptables -P INPUT DROP
 iptables -A INPUT -i lo -p all -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
@@ -99,6 +100,7 @@ iptables -A INPUT -j DROP
 iptables -P OUTPUT DROP
 iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
 iptables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -110,6 +112,7 @@ echo"ip6tables -P INPUT DROP
 ip6tables -A INPUT -i lo -p all -j ACCEPT
 ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p tcp --sport 443 -m state --state ESTABLISHED -j ACCEPT
 ip6tables -A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
 ip6tables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
@@ -124,6 +127,7 @@ ip6tables -A INPUT -j DROP
 ip6tables -P OUTPUT DROP
 ip6tables -A OUTPUT -o lo -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
+ip6tables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
 ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
@@ -138,10 +142,6 @@ sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rul
 cp /etc/sysctl.conf /etc/sysctl.conf.orig
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 sed -i 's/#net.ipv6.conf.all.forwarding=1/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
-cp /etc/ufw/sysctl.conf /etc/ufw/sysctl.conf.orig
-sed -i 's@#net/ipv4/ip_forward=1@net/ipv4/ip_forward=1@g' /etc/ufw/sysctl.conf
-sed -i 's@#net/ipv6/conf/default/forwarding=1@net/ipv6/conf/default/forwarding=1@g' /etc/ufw/sysctl.conf
-sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc/ufw/sysctl.conf
 
 
 
@@ -304,7 +304,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "51 23 * * 1,3,5 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "51 11 * * 1,3,5 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
