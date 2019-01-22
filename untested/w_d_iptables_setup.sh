@@ -87,7 +87,7 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 #mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.orig
 #mv /etc/iptables/rules.v6 /etc/iptables/rules.v6.orig
 #ipv4
-iptables -P INPUT DROP
+#iptables -P INPUT DROP
 iptables -A INPUT -i lo -p all -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
@@ -101,20 +101,20 @@ iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPTT
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -A INPUT -j DROP
+#iptables -A INPUT -j DROP
 #
-iptables -P OUTPUT DROP
+#iptables -P OUTPUT DROP
 iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
 iptables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -j DROP
+#iptables -A OUTPUT -j DROP
 iptables-save > /etc/iptables/rules.v4
 
 #ipv6
-ip6tables -P INPUT DROP
+#ip6tables -P INPUT DROP
 ip6tables -A INPUT -i lo -p all -j ACCEPT
 ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
@@ -128,16 +128,16 @@ ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE
-ip6tables -A INPUT -j DROP
+#ip6tables -A INPUT -j DROP
 #
-ip6tables -P OUTPUT DROP
+#ip6tables -P OUTPUT DROP
 ip6tables -A OUTPUT -o lo -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 443 -m state --state NEW -j ACCEPT
 ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-ip6tables -A OUTPUT -j DROP
+#ip6tables -A OUTPUT -j DROP
 iptables-save > /etc/iptables/rules.v6
 
 
@@ -300,7 +300,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "25 12 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "30 12 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
