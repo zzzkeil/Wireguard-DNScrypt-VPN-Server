@@ -77,7 +77,7 @@ AcceptEnv LANG LC_*
 Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 
-# Here i´m working not finished !!  caution learning by doing !!
+# Here i´m working now ----  Not finished !!  caution learning by doing !!
 #Step 03 - Setup iptabels
 mkdir /etc/iptables/
 #ipv4
