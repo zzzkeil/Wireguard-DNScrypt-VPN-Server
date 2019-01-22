@@ -71,7 +71,7 @@ echo
 echo "------------------------------------------------------------"
 read -p "Choose your SSH Port: " -e -i 40 sshport
 echo "------------------------------------------------------------"
-read -p "Choose your Wiregard Port: " -e -i 14443 wg0port
+read -p "Choose your Wireguard Port: " -e -i 14443 wg0port
 echo "------------------------------------------------------------"
 echo
 echo
@@ -80,6 +80,7 @@ echo
 
 
 #Step 02 - Setup SSH
+clear
 ssh-keygen -f /etc/ssh/key1rsa -t rsa -b 4096 -N ""
 ssh-keygen -f /etc/ssh/key2ecdsa -t ecdsa -b 521 -N ""
 ssh-keygen -f /etc/ssh/key3ed25519 -t ed25519 -N ""
@@ -96,10 +97,11 @@ X11Forwarding yes
 PrintMotd no
 AcceptEnv LANG LC_*
 Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
-clear
+
 
 
 #Step 03 - Setup iptabels
+clear
 inet=$(ip route show default | awk '/default/ {print $5}')
 #ipv4
 iptables -P INPUT DROP
@@ -226,7 +228,6 @@ cache-max-ttl: 14400
 prefetch: yes
 prefetch-key: yes
 do-not-query-localhost: no
-logfile: "/var/log/dnsunbound.log"
 
  forward-zone:
   name: "."
@@ -299,17 +300,19 @@ curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restr
 echo "" > /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt
 #curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-whitelist.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
+clear
 chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "10 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt"
+echo "37 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
 
 
 #Step 90 - Setup systemctl
+clear
 systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 cp /etc/resolv.conf /etc/resolv.conf.orig
@@ -341,10 +344,11 @@ PIDFile=/run/unbound.pid
 [Install]
 WantedBy=multi-user.target" > /lib/systemd/system/unbound.service
 systemctl enable unbound
-systemctl restart unbound
 
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
+
+systemctl restart unbound
 
 systemctl restart sshd.service
 systemctl enable netfilter-persistent
