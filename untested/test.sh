@@ -259,7 +259,7 @@ iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -P INPUT DROP
+#iptables -P INPUT DROP
 #iptables -A INPUT -j DROP
 #
 iptables -A OUTPUT -o lo -j ACCEPT
@@ -288,7 +288,7 @@ ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -t nat -A POSTROUTING -s fd42:42:42:42::/112 -o eth0 -j MASQUERADE
-ip6tables -P INPUT DROP
+#ip6tables -P INPUT DROP
 #ip6tables -A INPUT -j DROP
 #
 ip6tables -A OUTPUT -o lo -j ACCEPT
