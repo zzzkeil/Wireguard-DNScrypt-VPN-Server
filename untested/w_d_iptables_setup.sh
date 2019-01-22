@@ -79,8 +79,9 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 # Here i´m working not finished !!  caution learning by doing !!
 #Step 03 - Setup iptabels
+mkdir /etc/iptables/
 #ipv4
-iptables -P INPUT DROP
+echo "iptables -P INPUT DROP
 iptables -A INPUT -i lo -p all -j ACCEPT
 iptables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
@@ -98,16 +99,14 @@ iptables -A INPUT -j DROP
 iptables -P OUTPUT DROP
 iptables -A OUTPUT -o lo -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
+iptables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -j DROP
-
-
-
+iptables -A OUTPUT -j DROP" > /etc/iptables/rules.v4
 
 
 #ipv6
-ip6tables -P INPUT DROP
+echo"ip6tables -P INPUT DROP
 ip6tables -A INPUT -i lo -p all -j ACCEPT
 ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
@@ -125,12 +124,13 @@ ip6tables -A INPUT -j DROP
 ip6tables -P OUTPUT DROP
 ip6tables -A OUTPUT -o lo -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 80 -m state --state NEW -j ACCEPT
+ip6tables -A OUTPUT -p udp -m udp --dport 14443 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p udp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
 ip6tables -A OUTPUT -p tcp --dport 53 -m state --state NEW,ESTABLISHED -j ACCEPT
-ip6tables -A OUTPUT -j DROP
+ip6tables -A OUTPUT -j DROP" > /etc/iptables/rules.v6
 
-#sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/ufw/before.rules
-#sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/ufw/before6.rules
+sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v4
+sed -i "s/eth0/$(route | grep '^default' | grep -o '[^ ]*$')/" /etc/iptables/rules.v6
 
 
 
