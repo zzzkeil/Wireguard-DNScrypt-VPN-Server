@@ -96,7 +96,7 @@ iptables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --sport 53 -m state --state ESTABLISHED -j ACCEPT
 iptables -A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
 iptables -A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT
-iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPTT
+iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
@@ -302,7 +302,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-echo "47 12 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
+echo "00 13 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ && /usr/bin/python generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt" >> blacklistcron
 crontab blacklistcron
 rm blacklistcron
 
