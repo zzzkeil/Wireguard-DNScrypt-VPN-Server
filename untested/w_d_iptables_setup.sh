@@ -53,8 +53,13 @@ if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
 	 exit 1
 fi
 	 
-#Step 01 - Systemupdate 
+#Step 01 - Systemupdate and install needed stuff
 apt update && apt upgrade -y && apt autoremove -y
+add-apt-repository ppa:wireguard/wireguard -y
+apt update
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python iptables-persistent -y 
 
 
 
@@ -79,7 +84,8 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 # Here i´m working now ----  Not finished !!  caution learning by doing !!
 #Step 03 - Setup iptabels
-mkdir /etc/iptables/
+mv /etc/iptables/rules.v4 /etc/iptables/rules.v4.orig
+mv /etc/iptables/rules.v6 /etc/iptables/rules.v6.orig
 #ipv4
 echo "iptables -P INPUT DROP
 iptables -A INPUT -i lo -p all -j ACCEPT
@@ -108,7 +114,7 @@ iptables -A OUTPUT -j DROP" > /etc/iptables/rules.v4
 
 
 #ipv6
-echo"ip6tables -P INPUT DROP
+echo "ip6tables -P INPUT DROP
 ip6tables -A INPUT -i lo -p all -j ACCEPT
 ip6tables -A INPUT -p tcp -m tcp --dport 40 -m conntrack --ctstate NEW -j ACCEPT
 ip6tables -A INPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
@@ -145,14 +151,7 @@ sed -i 's/#net.ipv6.conf.all.forwarding=1/net.ipv6.conf.all.forwarding=1/g' /etc
 
 
 
-#Step 05 - Install needed stuff
-add-apt-repository ppa:wireguard/wireguard -y
-apt update
-apt install linux-headers-$(uname -r) wireguard qrencode unbound unbound-host python iptables-persistent -y 
-
-
-
-#Step 06 - Setup wireguard keys
+#Step 05 - Setup wireguard keys
 mkdir /etc/wireguard/keys
 chmod 700 /etc/wireguard/keys
 touch /etc/wireguard/keys/server0
@@ -166,7 +165,7 @@ wg pubkey < /etc/wireguard/keys/client0 > /etc/wireguard/keys/client0.pub
 
 
 
-#Step 07 - Setup wireguard server config
+#Step 06 - Setup wireguard server config
 echo "[Interface]
 Address = 10.8.0.1/24
 Address = fd42:42:42:42::1/112
@@ -183,7 +182,7 @@ chmod 600 /etc/wireguard/wg0.conf
 
 
 
-#Step 08 - Setup wireguard client config
+#Step 07 - Setup wireguard client config
 echo "[Interface]
 Address = 10.8.0.2/32
 Address = fd42:42:42:42::2/128
@@ -202,7 +201,7 @@ chmod 600 /etc/wireguard/client0.conf
 
 
 
-#Step 09 - Setup unbound
+#Step 08 - Setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
 echo '
 server:
@@ -240,7 +239,7 @@ chown -R unbound:unbound /var/lib/unbound
 
 
 
-#Step 10 - Setup DNSCrypt
+#Step 09 - Setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
 wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
@@ -290,7 +289,7 @@ blacklist_file = 'blacklist.txt'
 [static]
 " > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
-#Step 11 - Setup Blacklist >
+#Step 10 - Setup Blacklist >
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
