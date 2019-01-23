@@ -5,7 +5,7 @@
 How to install :
 ###### For Ubuntu 18.04 only right now
 ```
-curl -o  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_iptables_setup.sh
+curl -o  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_ufw_setup.sh
 
 chmod +x wireguard_dnscrypt_setup.sh
 
