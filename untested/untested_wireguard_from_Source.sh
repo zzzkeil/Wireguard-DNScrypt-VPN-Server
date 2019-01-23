@@ -71,7 +71,7 @@ echo "Step 02 - Systemupdate and Downloads"
 echo
 apt update && apt upgrade -y && apt autoremove -y
 apt update
-apt install libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) wireguard ufw qrencode unbound unbound-host python -y 
+apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) wireguard ufw qrencode unbound unbound-host python -y 
 mkdir -p /root/wireguard/src
 cd /root/wireguard/src
 wget https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190123.tar.xz
