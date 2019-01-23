@@ -1,8 +1,19 @@
 #!/bin/bash
 
 
-apt install iptables-persistent -y 
-
+apt install wireguard iptables-persistent -y 
+clear
+echo
+echo
+echo
+echo "------------------------------------------------------------"
+read -p "Choose your SSH Port: " -e -i 40 sshport
+echo "------------------------------------------------------------"
+read -p "Choose your Wireguard Port: " -e -i 14443 wg0port
+echo "------------------------------------------------------------"
+echo
+echo
+echo
 clear
 
 #Step 03 - Setup iptabels
