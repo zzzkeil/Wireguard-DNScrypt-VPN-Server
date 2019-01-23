@@ -7,7 +7,7 @@ echo
 echo
 echo
 echo "------------------------------------------------------------"
-read -p "Choose your SSH Port: " -e -i 40 sshport
+read -p "Choose your SSH Port: " -e -i 22 sshport
 echo "------------------------------------------------------------"
 read -p "Choose your Wireguard Port: " -e -i 14443 wg0port
 echo "------------------------------------------------------------"
