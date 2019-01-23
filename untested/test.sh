@@ -1,8 +1,9 @@
 #!/bin/bash
 
-
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 apt install wireguard iptables-persistent -y 
-clear
+
 echo
 echo
 echo
@@ -14,10 +15,10 @@ echo "------------------------------------------------------------"
 echo
 echo
 echo
-clear
+
 
 #Step 03 - Setup iptabels
-clear
+
 inet=$(ip route show default | awk '/default/ {print $5}')
 #ipv4
 iptables -P INPUT DROP
