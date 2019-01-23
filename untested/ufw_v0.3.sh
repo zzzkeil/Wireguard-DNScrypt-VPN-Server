@@ -68,6 +68,7 @@ echo
 ####
 clear	 
 echo "Step 02 - Systemupdate" 
+echo
 apt update && apt upgrade -y && apt autoremove -y
 add-apt-repository ppa:wireguard/wireguard -y
 apt update
@@ -76,6 +77,7 @@ apt install linux-headers-$(uname -r) wireguard ufw qrencode unbound unbound-hos
 ####
 clear
 echo "Step 03 - Setup SSH"
+echo
 ssh-keygen -f /etc/ssh/key1rsa -t rsa -b 4096 -N ""
 ssh-keygen -f /etc/ssh/key2ecdsa -t ecdsa -b 521 -N ""
 ssh-keygen -f /etc/ssh/key3ed25519 -t ed25519 -N ""
@@ -97,6 +99,7 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 ####
 clear
 echo "Step 04 - Setup UFW"
+echo
 inet=$(ip route show default | awk '/default/ {print $5}')
 ufw default deny incoming
 ufw default deny outgoing
@@ -118,6 +121,7 @@ sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTAB
 ####
 clear
 echo "Step 05 - Setup sysctl.conf"
+echo
 cp /etc/sysctl.conf /etc/sysctl.conf.orig
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 sed -i 's/#net.ipv6.conf.all.forwarding=1/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
@@ -131,6 +135,7 @@ sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc
 ####
 clear
 echo "Step 06 - Setup wireguard keys"
+echo
 mkdir /etc/wireguard/keys
 chmod 700 /etc/wireguard/keys
 touch /etc/wireguard/keys/server0
@@ -145,6 +150,7 @@ wg pubkey < /etc/wireguard/keys/client0 > /etc/wireguard/keys/client0.pub
 ####
 clear
 echo "Step 07 - Setup wireguard server config"
+echo
 echo "[Interface]
 Address = 10.8.0.1/24
 Address = fd42:42:42:42::1/112
@@ -162,6 +168,7 @@ chmod 600 /etc/wireguard/wg0.conf
 ####
 clear
 echo "Step 08 - Setup wireguard client config"
+echo
 echo "[Interface]
 Address = 10.8.0.2/32
 Address = fd42:42:42:42::2/128
@@ -182,6 +189,7 @@ chmod 600 /etc/wireguard/client0.conf
 ####
 clear
 echo "Step 09 - Setup unbound"
+echo
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
 echo '
 server:
@@ -221,6 +229,7 @@ chown -R unbound:unbound /var/lib/unbound
 ####
 clear
 echo "Step 10 - Setup DNSCrypt"
+echo
 mkdir /etc/dnscrypt-proxy/
 wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
@@ -273,6 +282,7 @@ blacklist_file = 'blacklist.txt'
 ####
 clear
 echo "Step 11 - Setup Blacklist"
+echo
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
@@ -297,6 +307,7 @@ rm blacklistcron
 ####
 clear
 echo "Step 90 - Setup systemctl"
+echo
 systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 cp /etc/resolv.conf /etc/resolv.conf.orig
@@ -345,13 +356,13 @@ clear
 echo "Step 100 - finish :)"
 echo ""
 echo ""
-echo " QR Code from client0.conf / for your mobile client "
+echo "QR Code for client0.conf "
 qrencode -t ansiutf8 < /etc/wireguard/client0.conf
-echo "Scan the QR Code with your Wiregard App,"
-echo "to import the config on your phone"
+echo "Scan the QR Code with your Wiregard App"
 echo ""
 echo "  --  -- Remember to change your ssh client port to $sshport "
 echo "             --  -- Reboot your system now or later " 
+echo
 ufw --force enable
 ufw reload
 systemctl restart sshd.service
