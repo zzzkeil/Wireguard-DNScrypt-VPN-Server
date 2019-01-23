@@ -53,7 +53,6 @@ fi
 
 ####
 echo "Step 01 - Your options"
-clear
 echo
 echo
 echo "Make your Port settings now:"
@@ -97,7 +96,7 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 ####
 clear
 echo "Step 04 - Setup UFW"
-inet=$(ip route show default | awk '/default/ {print $5}')=$(ip route show default | awk '/default/ {print $5}')
+inet=$(ip route show default | awk '/default/ {print $5}')
 ufw default deny incoming
 ufw default deny outgoing
 ufw allow $sshport/tcp
@@ -282,6 +281,7 @@ echo "" > /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelis
 #curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-whitelist.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
 clear
+echo "Step 11 - Setup Blacklist"
 chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
@@ -351,5 +351,5 @@ qrencode -t ansiutf8 < /etc/wireguard/client0.conf
 echo "Scan the QR Code with your Wiregard App,"
 echo "to import the config on your phone"
 echo ""
-echo " Remember to change your ssh client port to 40 "
-echo " Reboot your system now or later " 
+echo "  --  -- Remember to change your ssh client port to $sshport "
+echo "             --  -- Reboot your system now or later " 
