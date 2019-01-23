@@ -1,7 +1,13 @@
 # Wireguard-DNScrypt-VPN-Server
-### Wireguard VPN server with DNScrypt / DNSSEC  ( ipv4 and ipv6 )
+## In under 3 minutes* with just a few klicks
+### Setup Wireguard VPN Server,
+#### incl. ipv4 and ipv6
+#### incl. DNScrypt / DNSSEC (unbound)
+#### incl. Ad-, Maleware-, ..., Blocking
+#### incl. one ready client config with QR-Code
 
------------------------------------------
+
+----------------------------------------
 How to install :
 ###### For Ubuntu 18.04 only right now
 ```
@@ -18,3 +24,11 @@ example:
 [![example](https://zeroaim.de/01/qrtest.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 -----------------------------------------
+
+
+
+
+
+
+
+( *less then 2 minutes on my v-server ) 
