@@ -244,7 +244,7 @@ mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blacklist.txt 
 #
 echo "listen_addresses = ['127.0.0.1:5353']
-#server_names = ['trashvpn.de', 'zeroaim.de-ipv6', 'doh-crypto-sx', 'cloudflare-ipv6', 'dnscrypt.eu-dk', 'dnscrypt.uk-ipv6', 'securedns-doh', 'scaleway-fr']
+server_names = ['cloudflare-ipv6', 'dnscrypt.eu-dk', 'dnscrypt.uk-ipv6', 'securedns-doh', 'scaleway-fr', 'de.dnsmaschine.net']
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = true
