@@ -11,7 +11,7 @@
 How to install :
 ###### For Debian and Ubuntu 18.04 :
 ```
-curl -o  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard_from_source_setup.sh
+wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard_from_source_setup.sh
 
 chmod +x wireguard_dnscrypt_setup.sh
 
