@@ -65,7 +65,7 @@ echo "Ok let´s go"
 echo
 
 ####
-clear	 
+	 
 echo "Step 02 - Systemupdate and Downloads" 
 echo
 apt update && apt upgrade -y && apt autoremove -y
@@ -81,7 +81,7 @@ make install
 cd
 
 ####
-clear
+
 echo "Step 03 - Setup SSH"
 echo
 ssh-keygen -f /etc/ssh/key1rsa -t rsa -b 4096 -N ""
@@ -103,7 +103,7 @@ AcceptEnv LANG LC_*
 Subsystem	sftp	/usr/lib/openssh/sftp-server" >> /etc/ssh/sshd_config
 
 ####
-clear
+
 echo "Step 04 - Setup UFW"
 echo
 inet=$(ip route show default | awk '/default/ {print $5}')
@@ -125,7 +125,7 @@ sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT 
 sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before6.rules
 
 ####
-clear
+
 echo "Step 05 - Setup sysctl.conf"
 echo
 cp /etc/sysctl.conf /etc/sysctl.conf.orig
@@ -139,7 +139,7 @@ sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc
 
 
 ####
-clear
+
 echo "Step 06 - Setup wireguard keys"
 echo
 mkdir /etc/wireguard/keys
@@ -154,7 +154,7 @@ wg genkey > /etc/wireguard/keys/client0
 wg pubkey < /etc/wireguard/keys/client0 > /etc/wireguard/keys/client0.pub
 
 ####
-clear
+
 echo "Step 07 - Setup wireguard server config"
 echo
 echo "[Interface]
@@ -172,7 +172,7 @@ chmod 600 /etc/wireguard/wg0.conf
 
 
 ####
-clear
+
 echo "Step 08 - Setup wireguard client config"
 echo
 echo "[Interface]
@@ -193,7 +193,7 @@ chmod 600 /etc/wireguard/client0.conf
 
 
 ####
-clear
+
 echo "Step 09 - Setup unbound"
 echo
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
@@ -233,7 +233,7 @@ chown -R unbound:unbound /var/lib/unbound
 
 
 ####
-clear
+
 echo "Step 10 - Setup DNSCrypt"
 echo
 mkdir /etc/dnscrypt-proxy/
@@ -286,7 +286,7 @@ blacklist_file = 'blacklist.txt'
 " > /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 ####
-clear
+
 echo "Step 11 - Setup Blacklist"
 echo
 mkdir /etc/dnscrypt-proxy/utils/
@@ -298,7 +298,7 @@ curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restr
 echo "" > /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt
 #curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-whitelist.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
-clear
+
 echo "Step 11 - Setup Blacklist"
 echo
 chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py
@@ -311,7 +311,7 @@ rm blacklistcron
 
 
 ####
-clear
+
 echo "Step 90 - Setup systemctl"
 echo
 systemctl stop systemd-resolved
@@ -358,7 +358,7 @@ before you delete this file and run the script again
 " > /root/Wireguard-DNScrypt-VPN-Server.README
 
 ####
-clear
+
 echo "Step 100 - finish :)"
 echo ""
 echo ""
