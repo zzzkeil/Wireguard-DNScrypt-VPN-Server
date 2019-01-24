@@ -70,10 +70,10 @@ echo "Step 02 - Systemupdate and Downloads"
 echo
 apt update && apt upgrade -y && apt autoremove -y
 apt update
-apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) ufw qrencode unbound unbound-host python -y 
+apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) ufw qrencode unbound unbound-host python curl -y 
 mkdir -p /root/wireguard/src
 cd /root/wireguard/src
-wget https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190123.tar.xz
+curl https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190123.tar.xz
 tar -xvf WireGuard-0.0.20190123.tar.xz
 cd /root/wireguard/src/WireGuard-0.0.20190123/src
 make
@@ -196,7 +196,7 @@ chmod 600 /etc/wireguard/client0.conf
 
 echo "Step 09 - Setup unbound"
 echo
-wget -O /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
+curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
 echo '
 server:
 num-threads: 1
@@ -237,7 +237,7 @@ chown -R unbound:unbound /var/lib/unbound
 echo "Step 10 - Setup DNSCrypt"
 echo
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
+curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 #
@@ -291,13 +291,13 @@ echo "Step 11 - Setup Blacklist"
 echo
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
-wget -O /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
-#wget -O /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist.conf
-wget -O /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt
-wget -O /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restricted.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-time-restricted.txt
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
+#curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist.conf
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restricted.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-time-restricted.txt
 echo "" > /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt
-#wget -O /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-whitelist.txt
-wget -O /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
+#curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-whitelist.txt
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
 
 echo "Step 11 - Setup Blacklist"
 echo
@@ -318,7 +318,6 @@ systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 cp /etc/resolv.conf /etc/resolv.conf.orig
 rm -f /etc/resolv.conf
-systemctl enable unbound
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 ##
@@ -348,10 +347,11 @@ systemctl enable unbound
 
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
-
 systemctl restart unbound
 
-#Step 91 - Set file for install check (see line 34)
+####
+
+echo "Step 91 - Set file for install check (see line 34)"
 echo "Wireguard-DNScrypt-VPN-Server installed,
 please remove all files/configs carefully,
 before you delete this file and run the script again
@@ -368,6 +368,7 @@ echo "Scan the QR Code with your Wiregard App"
 echo ""
 echo "  --  -- Remember to change your ssh client port to $sshport "
 echo "             --  -- Reboot your system now or later " 
+echo
 echo
 ufw --force enable
 ufw reload
