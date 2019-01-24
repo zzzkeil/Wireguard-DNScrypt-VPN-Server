@@ -9,7 +9,8 @@ To Do :
 - [ ] Option to change some DNScrypt settings
 - [ ] just in case - suggestions for new root password  end of script  ( min. 32 characters )
 - [ ] Option for fail2ban
-- [ ] Debian 9 support
+- [ ] CentOS / Fedora  support
+- [ ] arch  support
 - [ ] Uninstaller / remove all mods
 - [ ] ufw replace with iptables ??
 ...
@@ -18,3 +19,4 @@ To Do :
 Done :
 - [x] Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
 - [x] smaller QR-Code --> not possible in terminal ..
+- [x] Debian 9 support 
