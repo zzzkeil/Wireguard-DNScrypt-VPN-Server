@@ -318,6 +318,7 @@ systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 cp /etc/resolv.conf /etc/resolv.conf.orig
 rm -f /etc/resolv.conf
+systemctl enable unbound
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 ##
