@@ -73,9 +73,9 @@ apt update
 apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) ufw qrencode unbound unbound-host python curl -y 
 mkdir -p /root/wireguard/src
 cd /root/wireguard/src
-curl -o WireGuard-0.0.20190123.tar.xz https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190123.tar.xz
-tar -xvf WireGuard-0.0.20190123.tar.xz
-cd /root/wireguard/src/WireGuard-0.0.20190123/src
+curl -o WireGuard-0.0.20190601.tar.xz https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190601.tar.xz
+tar -xvf WireGuard-0.0.20190601.tar.xz
+cd /root/wireguard/src/WireGuard-0.0.20190601/src
 make
 make install
 cd
@@ -237,7 +237,7 @@ chown -R unbound:unbound /var/lib/unbound
 echo "Step 10 - Setup DNSCrypt"
 echo
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.19/dnscrypt-proxy-linux_x86_64-2.0.19.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.23/dnscrypt-proxy-linux_x86_64-2.0.23.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 #
