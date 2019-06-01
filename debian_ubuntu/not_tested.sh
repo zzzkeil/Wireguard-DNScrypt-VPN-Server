@@ -226,7 +226,7 @@ DNS = 10.8.0.1, fd42:42:42:42::1
 Endpoint = IP01:$wg0port
 PublicKey = SK01
 AllowedIPs = 0.0.0.0/0, ::/0
-" > /etc/wireguard/client1.conf
+" > /etc/wireguard/client2.conf
 sed -i "s@CK02@$(cat /etc/wireguard/keys/client2)@" /etc/wireguard/client2.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client2.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client2.conf
@@ -242,7 +242,7 @@ DNS = 10.8.0.1, fd42:42:42:42::1
 Endpoint = IP01:$wg0port
 PublicKey = SK01
 AllowedIPs = 0.0.0.0/0, ::/0
-" > /etc/wireguard/client1.conf
+" > /etc/wireguard/client3.conf
 sed -i "s@CK03@$(cat /etc/wireguard/keys/client3)@" /etc/wireguard/client3.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client3.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client3.conf
