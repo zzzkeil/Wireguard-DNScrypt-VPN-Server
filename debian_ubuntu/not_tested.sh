@@ -202,7 +202,7 @@ echo "Step 08 - Setup wireguard client config"
 echo
 echo "[Interface]
 Address = 10.8.0.11/32
-Address = fd42:42:42:42:11/128
+Address = fd42:42:42:42::11/128
 PrivateKey = CK01
 DNS = 10.8.0.1, fd42:42:42:42::1
 
@@ -218,7 +218,7 @@ chmod 600 /etc/wireguard/client1.conf
 
 echo "[Interface]
 Address = 10.8.0.12/32
-Address = fd42:42:42:42:12/128
+Address = fd42:42:42:42::12/128
 PrivateKey = CK02
 DNS = 10.8.0.1, fd42:42:42:42::1
 
@@ -234,7 +234,7 @@ chmod 600 /etc/wireguard/client2.conf
 
 echo "[Interface]
 Address = 10.8.0.13/32
-Address = fd42:42:42:42:13/128
+Address = fd42:42:42:42::13/128
 PrivateKey = CK03
 DNS = 10.8.0.1, fd42:42:42:42::1
 
