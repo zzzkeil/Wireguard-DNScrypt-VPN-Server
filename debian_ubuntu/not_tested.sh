@@ -230,7 +230,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
 sed -i "s@CK02@$(cat /etc/wireguard/keys/client2)@" /etc/wireguard/client2.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client2.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client2.conf
-chmod 600 /etc/wireguard/client1.conf
+chmod 600 /etc/wireguard/client2.conf
 
 echo "[Interface]
 Address = 10.8.0.13/32
@@ -246,7 +246,7 @@ AllowedIPs = 0.0.0.0/0, ::/0
 sed -i "s@CK03@$(cat /etc/wireguard/keys/client3)@" /etc/wireguard/client3.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client3.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client3.conf
-chmod 600 /etc/wireguard/client1.conf
+chmod 600 /etc/wireguard/client3.conf
 
 
 
