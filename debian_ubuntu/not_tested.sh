@@ -117,6 +117,7 @@ ufw allow $wg0port/udp
 ufw allow out 80
 ufw allow out 443
 ufw allow out 53
+#ufw allow out 123
 #ufw allow in on wg0 from 10.8.0.0/24 to any port 53 proto udp
 #ufw allow in on wg0 from fd42:42:42:42::0/112 to any port 53 proto udp
 cp /etc/default/ufw /etc/default/ufw.orig
