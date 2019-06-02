@@ -5,8 +5,9 @@ echo " #  This script is only for Ubuntu and Debian                       #"
 echo " #  Only testet, on a fresh, clean, minimal system                  #"
 echo " #  Check my github site for new versions                           #"
 echo " #  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        #"
-echo " #  Version 0.5 / 1.June.2019                                       #"
+echo " #  Version 0.6  / 1.June.2019                                      #"
 echo " #   - Update src links for Wireguard and DNScrypt                  #"
+echo " #   - Create 2 more configfiles                                    #"
 echo " ####################################################################"
 echo " #                                                                  #"
 echo " #         !!! READ THIS  BEFOR YOU RUN THIS SCRIPT !!!             #"
@@ -149,10 +150,21 @@ touch /etc/wireguard/keys/server0
 chmod 600 /etc/wireguard/keys/server0
 wg genkey > /etc/wireguard/keys/server0
 wg pubkey < /etc/wireguard/keys/server0 > /etc/wireguard/keys/server0.pub
-touch /etc/wireguard/keys/client0
-chmod 600 /etc/wireguard/keys/client0
-wg genkey > /etc/wireguard/keys/client0
-wg pubkey < /etc/wireguard/keys/client0 > /etc/wireguard/keys/client0.pub
+
+touch /etc/wireguard/keys/client1
+chmod 600 /etc/wireguard/keys/client1
+wg genkey > /etc/wireguard/keys/client1
+wg pubkey < /etc/wireguard/keys/client1 > /etc/wireguard/keys/client1.pub
+
+touch /etc/wireguard/keys/client2
+chmod 600 /etc/wireguard/keys/client2
+wg genkey > /etc/wireguard/keys/client2
+wg pubkey < /etc/wireguard/keys/client2 > /etc/wireguard/keys/client2.pub
+
+touch /etc/wireguard/keys/client3
+chmod 600 /etc/wireguard/keys/client3
+wg genkey > /etc/wireguard/keys/client3
+wg pubkey < /etc/wireguard/keys/client3 > /etc/wireguard/keys/client3.pub
 
 ####
 
@@ -162,13 +174,24 @@ echo "[Interface]
 Address = 10.8.0.1/24
 Address = fd42:42:42:42::1/112
 ListenPort = $wg0port
-PrivateKey = PK01
+PrivateKey = SK01
+
+[Peer]
+PublicKey = PK01
+AllowedIPs = 10.8.0.11/32, fd42:42:42:42::11/128
 
 [Peer]
 PublicKey = PK02
-AllowedIPs = 10.8.0.2/32, fd42:42:42:42::2/128" > /etc/wireguard/wg0.conf
-sed -i "s@PK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
-sed -i "s@PK02@$(cat /etc/wireguard/keys/client0.pub)@" /etc/wireguard/wg0.conf
+AllowedIPs = 10.8.0.12/32, fd42:42:42:42::12/128
+
+[Peer]
+PublicKey = PK03
+AllowedIPs = 10.8.0.13/32, fd42:42:42:42::13/128
+" > /etc/wireguard/wg0.conf
+sed -i "s@SK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
+sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
+sed -i "s@PK02@$(cat /etc/wireguard/keys/client2.pub)@" /etc/wireguard/wg0.conf
+sed -i "s@PK03@$(cat /etc/wireguard/keys/client3.pub)@" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
 
@@ -177,20 +200,54 @@ chmod 600 /etc/wireguard/wg0.conf
 echo "Step 08 - Setup wireguard client config"
 echo
 echo "[Interface]
-Address = 10.8.0.2/32
-Address = fd42:42:42:42::2/128
-PrivateKey = PK03
+Address = 10.8.0.11/32
+Address = fd42:42:42:42::11/128
+PrivateKey = CK01
 DNS = 10.8.0.1, fd42:42:42:42::1
 
 [Peer]
 Endpoint = IP01:$wg0port
-PublicKey = PK04
+PublicKey = SK01
 AllowedIPs = 0.0.0.0/0, ::/0
-" > /etc/wireguard/client0.conf
-sed -i "s@PK03@$(cat /etc/wireguard/keys/client0)@" /etc/wireguard/client0.conf
-sed -i "s@PK04@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client0.conf
-sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client0.conf
-chmod 600 /etc/wireguard/client0.conf
+" > /etc/wireguard/client1.conf
+sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/client1.conf
+sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client1.conf
+sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
+chmod 600 /etc/wireguard/client1.conf
+
+echo "[Interface]
+Address = 10.8.0.12/32
+Address = fd42:42:42:42::12/128
+PrivateKey = CK02
+DNS = 10.8.0.1, fd42:42:42:42::1
+
+[Peer]
+Endpoint = IP01:$wg0port
+PublicKey = SK01
+AllowedIPs = 0.0.0.0/0, ::/0
+" > /etc/wireguard/client2.conf
+sed -i "s@CK02@$(cat /etc/wireguard/keys/client2)@" /etc/wireguard/client2.conf
+sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client2.conf
+sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client2.conf
+chmod 600 /etc/wireguard/client2.conf
+
+echo "[Interface]
+Address = 10.8.0.13/32
+Address = fd42:42:42:42::13/128
+PrivateKey = CK03
+DNS = 10.8.0.1, fd42:42:42:42::1
+
+[Peer]
+Endpoint = IP01:$wg0port
+PublicKey = SK01
+AllowedIPs = 0.0.0.0/0, ::/0
+" > /etc/wireguard/client3.conf
+sed -i "s@CK03@$(cat /etc/wireguard/keys/client3)@" /etc/wireguard/client3.conf
+sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client3.conf
+sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client3.conf
+chmod 600 /etc/wireguard/client3.conf
+
+
 
 
 ####
@@ -364,9 +421,10 @@ before you delete this file and run the script again
 echo "Step 100 - finish :)"
 echo ""
 echo ""
-echo "QR Code for client0.conf "
-qrencode -t ansiutf8 < /etc/wireguard/client0.conf
+echo "QR Code for client1.conf "
+qrencode -t ansiutf8 < /etc/wireguard/client1.conf
 echo "Scan the QR Code with your Wiregard App"
+echo "2 extra client.conf files in folder : /etc/wireguard/ "
 echo ""
 echo "  --  -- Remember to change your ssh client port to $sshport "
 echo "             --  -- Reboot your system now or later " 
