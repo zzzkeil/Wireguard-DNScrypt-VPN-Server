@@ -73,7 +73,7 @@ echo "Step 02 - Systemupdate and Downloads"
 echo
 apt update && apt upgrade -y && apt autoremove -y
 apt update
-apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) ufw qrencode unbound unbound-host python curl -y 
+apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) ufw qrencode unbound unbound-host python curl fail2ban -y 
 mkdir -p /root/wireguard/src
 cd /root/wireguard/src
 curl -o WireGuard-0.0.20190601.tar.xz https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190601.tar.xz
@@ -368,6 +368,23 @@ echo "00 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  
 crontab blacklistcron
 rm blacklistcron
 
+####
+
+echo "Step 12 - fail2ban with ufw - ssh"
+echo
+echo "
+[sshd]
+enabled = true
+port = $sshport
+filter = sshd
+logpath = /var/log/auth.log
+backend = %(sshd_backend)s
+maxretry = 3
+banaction = ufw
+findtime = 3600
+bantime = 2678400
+" >> /etc/fail2ban/jail.d/ssh.conf
+
 
 ####
 
@@ -434,3 +451,5 @@ echo
 ufw --force enable
 ufw reload
 systemctl restart sshd.service
+systemctl enable fail2ban.service
+systemctl start fail2ban.service
