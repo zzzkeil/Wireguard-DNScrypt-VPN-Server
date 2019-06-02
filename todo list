@@ -1,4 +1,8 @@
 To Do :
+prio 1 :
+- [ ] Option for fail2ban
+
+prio 2 :
 - [ ] find the best setup for blacklist sources
 - [ ] Update schedule for blacklist not working
 - [ ] Option to set blacklist or not
@@ -8,7 +12,6 @@ To Do :
 - [ ] Option to skip SSH mod
 - [ ] Option to change some DNScrypt settings
 - [ ] just in case - suggestions for new root password  end of script  ( min. 32 characters )
-- [ ] Option for fail2ban
 - [ ] CentOS / Fedora  support
 - [ ] arch  support
 - [ ] Uninstaller / remove all mods
