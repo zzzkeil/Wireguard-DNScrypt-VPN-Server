@@ -383,7 +383,7 @@ findtime = 3600
 bantime = 2678400
 " >> /etc/fail2ban/jail.d/ssh.conf
 
-
+sed -i "/blocktype = reject/c\blocktype = deny" /etc/fail2ban/action.d/ufw.conf
 ####
 
 echo "Step 90 - Setup systemctl"
