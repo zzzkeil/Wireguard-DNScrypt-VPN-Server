@@ -4,7 +4,7 @@
 #### incl. ipv4 and ipv6
 #### incl. DNScrypt / DNSSEC (unbound)
 #### incl. Ad-, Maleware-, ..., Blocking
-#### incl. one ready client config with QR-Code
+#### incl. 3 ready client config files  ( one with QR-Code in terminal )
 
 
 ----------------------------------------
