@@ -15,11 +15,17 @@ prio 2 :
 - [ ] CentOS / Fedora  support
 - [ ] arch  support
 - [ ] Uninstaller / remove all mods
-- [ ] ufw replace with iptables ??
-...
+
+------------------------------------------------------------------------------------------------
+exposed for now :
+
+- [-] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
 
 
+------------------------------------------------------------------------------------------------
 Done :
 - [x] Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
 - [x] smaller QR-Code --> not possible in terminal ..
-- [x] Debian 9 support 
+- [x] Debian 9 support
+
+- [-] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
