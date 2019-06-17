@@ -5,10 +5,10 @@ echo " #  This script is only for Ubuntu and Debian                       #"
 echo " #  Only testet, on a fresh, clean, minimal system                  #"
 echo " #  Check my github site for new versions                           #"
 echo " #  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        #"
-echo " #  Version 0.6  / 1.June.2019                                      #"
-echo " #   - Update src links for Wireguard and DNScrypt                  #"
-echo " #   - Create 2 more configfiles                                    #"
-echo " #   - + fail2ban                                                   #"
+echo " #  Version 0.7  / 17.June.2019                                     #"
+echo " #   - unattended-upgrades - with autoreboot if needed ( @ 02:22)   #"
+echo " #   - small folder changes   (testing)                             #"
+echo " #   - DNScrypt Proxy 2.0.25                                        #"
 echo " ####################################################################"
 echo " #                                                                  #"
 echo " #         !!! READ THIS  BEFOR YOU RUN THIS SCRIPT !!!             #"
@@ -54,6 +54,7 @@ if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
 fi
 
 ####
+mkdir /root/script_backupfiles/
 echo "Step 01 - Your options"
 echo
 echo
@@ -90,7 +91,7 @@ echo
 ssh-keygen -f /etc/ssh/key1rsa -t rsa -b 4096 -N ""
 ssh-keygen -f /etc/ssh/key2ecdsa -t ecdsa -b 521 -N ""
 ssh-keygen -f /etc/ssh/key3ed25519 -t ed25519 -N ""
-mv /etc/ssh/sshd_config /etc/ssh/sshd_config.orig
+mv /etc/ssh/sshd_config /root/script_backupfiles/sshd_config.orig
 echo "Port $sshport
 HostKey /etc/ssh/key1rsa
 HostKey /etc/ssh/key2ecdsa
@@ -120,9 +121,9 @@ ufw allow out 53
 #ufw allow out 123
 #ufw allow in on wg0 from 10.8.0.0/24 to any port 53 proto udp
 #ufw allow in on wg0 from fd42:42:42:42::0/112 to any port 53 proto udp
-cp /etc/default/ufw /etc/default/ufw.orig
-cp /etc/ufw/before.rules /etc/ufw/before.rules.orig
-cp /etc/ufw/before6.rules /etc/ufw/before6.rules.orig
+cp /etc/default/ufw /root/script_backupfiles/ufw.orig
+cp /etc/ufw/before.rules /root/script_backupfiles/before.rules.orig
+cp /etc/ufw/before6.rules /root/script_backupfiles/before6.rules.orig
 sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
 sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n-A POSTROUTING -s 10.8.0.0/24 -o $inet -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before.rules
 sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before.rules
@@ -134,10 +135,10 @@ sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTAB
 
 echo "Step 05 - Setup sysctl.conf"
 echo
-cp /etc/sysctl.conf /etc/sysctl.conf.orig
+cp /etc/sysctl.conf /root/script_backupfiles/sysctl.conf.orig
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 sed -i 's/#net.ipv6.conf.all.forwarding=1/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
-cp /etc/ufw/sysctl.conf /etc/ufw/sysctl.conf.orig
+cp /etc/ufw/sysctl.conf /root/script_backupfiles/sysctl.conf.ufw.orig
 sed -i 's@#net/ipv4/ip_forward=1@net/ipv4/ip_forward=1@g' /etc/ufw/sysctl.conf
 sed -i 's@#net/ipv6/conf/default/forwarding=1@net/ipv6/conf/default/forwarding=1@g' /etc/ufw/sysctl.conf
 sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc/ufw/sysctl.conf
@@ -299,7 +300,7 @@ chown -R unbound:unbound /var/lib/unbound
 echo "Step 10 - Setup DNSCrypt"
 echo
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.23/dnscrypt-proxy-linux_x86_64-2.0.23.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.25/dnscrypt-proxy-linux_x86_64-2.0.25.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 #
@@ -389,6 +390,25 @@ bantime = 2678400
 sed -i "/blocktype = reject/c\blocktype = deny" /etc/fail2ban/action.d/ufw.conf
 ####
 
+echo "Step 13 - unattended-upgrades"
+echo "unattended-upgrades"
+mv /etc/apt/apt.conf.d/50unattended-upgrades /root/script_backupfiles/50unattended-upgrades.orig
+echo "Unattended-Upgrade::Allowed-Origins {
+        "${distro_id}:${distro_codename}";
+	"${distro_id}:${distro_codename}-security";
+	"${distro_id}ESM:${distro_codename}";
+//	"${distro_id}:${distro_codename}-updates";
+//	"${distro_id}:${distro_codename}-proposed";
+//	"${distro_id}:${distro_codename}-backports";
+};
+Unattended-Upgrade::Package-Blacklist {
+};
+Unattended-Upgrade::DevRelease "false";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-Time "02:22";
+" >> /etc/apt/apt.conf.d/50unattended-upgrades
+
 echo "Step 90 - Setup systemctl"
 echo
 systemctl stop systemd-resolved
@@ -401,7 +421,7 @@ systemctl start wg-quick@wg0.service
 ##
 #solve issuses with unbound after reboot (no dns for wireguard client)
 ##
-cp /etc/systemd/system/multi-user.target.wants/unbound.service /etc/unbound/unbound.service.orig
+cp /etc/systemd/system/multi-user.target.wants/unbound.service /root/script_backupfiles/unbound.service.orig
 systemctl disable unbound
 echo "[Unit]
 Description=Unbound DNS server
@@ -449,6 +469,7 @@ echo "  --  -- Remember to change your ssh client port to $sshport "
 echo "             --  -- Reboot your system now or later " 
 echo
 echo
+ln -s /etc/wireguard/ /root/wireguard_folder
 ufw --force enable
 ufw reload
 systemctl restart sshd.service
