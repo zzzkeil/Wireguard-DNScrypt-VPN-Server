@@ -1,7 +1,7 @@
 #!/bin/bash
 clear
+echo " Befor you run this script "
 echo " Run https://github.com/zzzkeil/misc/blob/master/base_server_setup.sh "
-echo " befor you run this script "
 echo ""
 echo "To EXIT this script press  [ENTER]"
 echo 
@@ -40,7 +40,7 @@ echo "Step 01 - Your options"
 echo
 echo "Make your Port settings now:"
 echo "------------------------------------------------------------"
-read -p "Choose your Wireguard Port: " -e -i 54321 wg0port
+read -p "Choose your Wireguard Port: " -e -i 51820 wg0port
 echo "------------------------------------------------------------"
 echo
 echo "Ok let´s go"
@@ -68,9 +68,6 @@ echo "Step 04 - Setup UFW"
 echo
 inet=$(ip route show default | awk '/default/ {print $5}')
 ufw allow $wg0port/udp
-#ufw allow out 123
-#ufw allow in on wg0 from 10.8.0.0/24 to any port 53 proto udp
-#ufw allow in on wg0 from fd42:42:42:42::0/112 to any port 53 proto udp
 cp /etc/default/ufw /root/script_backupfiles/ufw.orig
 cp /etc/ufw/before.rules /root/script_backupfiles/before.rules.orig
 cp /etc/ufw/before6.rules /root/script_backupfiles/before6.rules.orig
