@@ -110,12 +110,8 @@ echo "Step 04 - Setup UFW"
 echo
 inet=$(ip route show default | awk '/default/ {print $5}')
 ufw default deny incoming
-ufw default deny outgoing
 ufw allow $sshport/tcp
 ufw allow $wg0port/udp
-ufw allow out 80
-ufw allow out 443
-ufw allow out 53
 cp /etc/default/ufw /etc/default/ufw.orig
 cp /etc/ufw/before.rules /etc/ufw/before.rules.orig
 cp /etc/ufw/before6.rules /etc/ufw/before6.rules.orig
