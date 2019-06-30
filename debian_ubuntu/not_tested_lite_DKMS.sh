@@ -52,7 +52,7 @@ echo "Step 02 - Systemupdate and Downloads"
 echo
 apt update && apt upgrade -y && apt autoremove -y
 apt update
-apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) qrencode unbound unbound-host python curl -y 
+apt install make libmnl-dev libelf-dev build-essential pkg-config linux-headers-$(uname -r) qrencode unbound unbound-host python curl dkms -y 
 mkdir -p /root/wireguard/src
 cd /root/wireguard/src
 curl -o WireGuard-0.0.20190601.tar.xz https://git.zx2c4.com/WireGuard/snapshot/WireGuard-0.0.20190601.tar.xz
@@ -69,8 +69,8 @@ BUILT_MODULE_LOCATION=src/
 PACKAGE_NAME=wireguard
 PACKAGE_VERSION=0.1
 REMAKE_INITRD=yes
-' >> /root/wireguard/src/dkms.conf
-cp -R . /root/wireguard/src/WireGuard-0.0.20190601
+' >> /root/wireguard/src/WireGuard-0.0.20190601/dkms.conf
+cp -R /root/wireguard/src/WireGuard-0.0.20190601 /usr/src/wireguard-0.1
 dkms add -m wireguard -v 0.1
 
 dkms build -m wireguard -v 0.1
