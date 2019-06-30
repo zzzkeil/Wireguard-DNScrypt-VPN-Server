@@ -61,15 +61,15 @@ tar -xvf WireGuard-0.0.20190601.tar.xz
 
 ####################################TEST DKMS####################################
 cd /root/wireguard/src
-touch dkms.conf
-echo 'MAKE="make -C src/ KERNELDIR=/lib/modules/${kernelver}/build"
+echo '
+MAKE="make -C src/ KERNELDIR=/lib/modules/${kernelver}/build"
 CLEAN="make -C src/ clean"
 BUILT_MODULE_NAME=wireguard
 BUILT_MODULE_LOCATION=src/
 PACKAGE_NAME=wireguard
 PACKAGE_VERSION=0.1
-REMAKE_INITRD=yes' 
->> /root/wireguard/src/dkms.conf
+REMAKE_INITRD=yes
+' >> /root/wireguard/src/dkms.conf
 cp -R . /root/wireguard/src/WireGuard-0.0.20190601
 dkms add -m wireguard -v 0.1
 
