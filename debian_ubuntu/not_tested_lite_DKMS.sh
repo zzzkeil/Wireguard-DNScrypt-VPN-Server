@@ -50,8 +50,15 @@ echo
 	 
 echo "Step 02 - Systemupdate and Downloads" 
 echo
-echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list
-printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable
+if [[ -e /etc/debian_version ]]; then
+    OS="debian"
+    VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
+    if [[ "$VERSION_ID" != 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="10.2"' ]]; then
+	echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list
+        printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable
+	fi
+fi
+
 apt update && apt upgrade -y && apt autoremove -y
 apt update
 apt install qrencode unbound unbound-host python curl -y 
