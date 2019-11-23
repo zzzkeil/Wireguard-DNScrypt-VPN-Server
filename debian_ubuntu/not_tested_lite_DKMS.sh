@@ -59,13 +59,18 @@ if [[ -e /etc/debian_version ]]; then
 	fi
 fi
 
+if [[ -e /etc/debian_version ]]; then
+    OS="debian"
+    VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
+    if [[ "$VERSION_ID" != 'VERSION_ID="18.04"' ]]; then
+    add-apt-repository ppa:wireguard/wireguard
+    fi
+fi
+
 apt update && apt upgrade -y && apt autoremove -y
 apt update
 apt install qrencode unbound unbound-host python curl -y 
-
-add-apt-repository ppa:wireguard/wireguard
-apt update
-apt install wireguard-dkms wireguard-tools 
+apt install wireguard-dkms wireguard-tools -y
 
 ####
 
