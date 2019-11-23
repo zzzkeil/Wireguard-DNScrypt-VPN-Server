@@ -22,7 +22,9 @@ if [[ -e /etc/debian_version ]]; then
     OS="debian"
     VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
     if [[ "$VERSION_ID" != 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="10.2"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="18.04"' ]]; then
-	echo "Sorry, your OS ist not supported. Only Debian 9 - 10.2 or Ubuntu 18.04"
+	echo "OS supported"
+	else
+	echo "Sorry, your OS is not supported. Only Debian 9 - 10.2 or Ubuntu 18.04"
 	exit 1
 	fi
 fi
