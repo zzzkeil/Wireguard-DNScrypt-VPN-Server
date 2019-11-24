@@ -20,12 +20,12 @@ fi
 
 if [[ -e /etc/debian_version ]]; then
     VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
-    if [[ "$VERSION_ID" != 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="10"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="18.04"' ]]; then
-	echo "Sorry, your OS is not supported. Only Debian 9 - 10 or Ubuntu 18.04"
-	exit 1
-	else
-        echo "OS supported"
-	fi
+    if [[ "$VERSION_ID" = 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" = 'VERSION_ID="10"' ]] && [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
+	echo "OS supported"
+      fi
+      else
+      echo "Sorry, your OS is not supported. Only Debian 9 - 10 or Ubuntu 18.04"
+      exit 1
 fi
 
 
@@ -62,16 +62,15 @@ echo
 	 
 echo "Step 02 - Systemupdate and Downloads" 
 echo
-if [[ -e /etc/debian_version ]]; then
-    VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
-    if [[ "$VERSION_ID" != 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" != 'VERSION_ID="10"' ]]; then
+if [[ "$VERSION_ID" = 'VERSION_ID="9"' ]] && [[ "$VERSION_ID" = 'VERSION_ID="10"' ]]; then
 	echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list
         printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable
-    fi
-    if [[ "$VERSION_ID" != 'VERSION_ID="18.04"' ]]; then
-    add-apt-repository ppa:wireguard/wireguard
-    fi
 fi
+
+if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
+    add-apt-repository ppa:wireguard/wireguard
+fi
+
 
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode unbound unbound-host python curl -y 
