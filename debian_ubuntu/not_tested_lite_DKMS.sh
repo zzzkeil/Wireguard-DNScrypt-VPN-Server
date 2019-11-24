@@ -74,7 +74,6 @@ if [[ -e /etc/debian_version ]]; then
 fi
 
 apt update && apt upgrade -y && apt autoremove -y
-apt update
 apt install qrencode unbound unbound-host python curl -y 
 apt install wireguard-dkms wireguard-tools -y
 
