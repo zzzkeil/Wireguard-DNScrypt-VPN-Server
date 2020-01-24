@@ -1,4 +1,6 @@
-# Wireguard-DNScrypt-VPN-Server
+# be ware not up2date :
+
+## Wireguard-DNScrypt-VPN-Server
 ## In under 3 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
 #### incl. ipv4 and ipv6
