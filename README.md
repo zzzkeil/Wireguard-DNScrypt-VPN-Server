@@ -8,7 +8,8 @@
 
 ## How to install :
 #### the server has to be prepared with my script base_setup.sh
-##### if not the script below will download this one for you.
+##### if the base is not installed,
+##### the script below will download this one for you.
 ----------------------------------------
 ###### For Debian and Ubuntu 18.04 :
 ```
