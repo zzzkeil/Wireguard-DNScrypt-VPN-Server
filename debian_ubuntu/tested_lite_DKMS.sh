@@ -109,7 +109,7 @@ sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc
 echo "Step 06 - Setup wireguard keys"
 echo
 mkdir /etc/wireguard/keys
-chmod 700 /etc/wireguard/keys
+700 /etc/wireguard/keys
 touch /etc/wireguard/keys/server0
 chmod 600 /etc/wireguard/keys/server0
 wg genkey > /etc/wireguard/keys/server0
@@ -318,6 +318,17 @@ cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
 (crontab -l ; echo "00 20 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt") | sort - | uniq - | crontab -
+
+## check if generate blacklist failed - file is empty
+echo "#!/bin/bash
+if [[ -s /etc/dnscrypt-proxy/blacklist.txt ]]; then
+exit 0
+fi
+cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
+exit 0
+" > /etc/dnscrypt-proxy/checkblacklist.sh
+chmod +x /etc/dnscrypt-proxy/checkblacklist.sh
+(crontab -l ; echo "15 * * * * cd /etc/dnscrypt-proxy/ &&  ./etc/dnscrypt-proxy/checkblacklist.sh") | sort - | uniq - | crontab -
 
 ####
 
