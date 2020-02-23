@@ -1,4 +1,4 @@
-# be ware not up2date :
+# 23.Feb.2020 - be ware not up2date  in testing :
 
 ## Wireguard-DNScrypt-VPN-Server
 ## In under 3 minutes* with just a few klicks
@@ -13,11 +13,11 @@
 How to install :
 ###### For Debian and Ubuntu 18.04 :
 ```
-wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard_from_source_setup.sh
+wget -O  wireguard-dkms_dnscrypt_blacklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blacklist.sh
 
-chmod +x wireguard_dnscrypt_setup.sh
+chmod +x wireguard-dkms_dnscrypt_blacklist.sh
 
-./wireguard_dnscrypt_setup.sh
+./wireguard-dkms_dnscrypt_blacklist.sh
 ```
 -----------------------------------------
 
