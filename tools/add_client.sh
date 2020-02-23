@@ -9,7 +9,7 @@ echo "."
 echo "."
 ###
 echo "Client Name"
-echo "don´use a clientname like client1 till client11 !"
+echo "don´use a clientname from client1 to client11 !"
 echo "these clientnames exsist/reserved by the setupscript!"
 read -p "client name: " -e -i newclient clientname
 echo "------"
@@ -36,10 +36,10 @@ wg genkey > /etc/wireguard/keys/$clientname
 wg pubkey < /etc/wireguard/keys/$clientname > /etc/wireguard/keys/$clientname.pub
 
 echo "
+# $clientname
 [Peer]
 PublicKey = NEWPK
 AllowedIPs = $clientipv4/32, $clientipv6/128
-
 " >> /etc/wireguard/wg0.conf
 sed -i "s@NEWPK@$(cat /etc/wireguard/keys/$clientname.pub)@" /etc/wireguard/wg0.conf
 
