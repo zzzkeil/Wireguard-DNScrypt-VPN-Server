@@ -5,7 +5,7 @@
 #### incl. DNScrypt / DNSSEC (unbound)
 #### incl. Ad-, Maleware-, ..., Blocking
 #### incl. 10 ready client config files  ( one with QR-Code in terminal )
-##### add_client.sh under development in tools
+##### add_client.sh / remove_client.sh under development in tools
 
 ## How to install :
 #### the server has to be prepared with my script base_setup.sh
