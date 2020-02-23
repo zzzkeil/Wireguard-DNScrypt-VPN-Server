@@ -252,7 +252,7 @@ chown -R unbound:unbound /var/lib/unbound
 echo "Step 10 - Setup DNSCrypt"
 echo
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.33/dnscrypt-proxy-linux_x86_64-2.0.33.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.39/dnscrypt-proxy-linux_x86_64-2.0.33.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 #
