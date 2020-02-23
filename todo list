@@ -1,13 +1,10 @@
 To Do :
 prio 1 :
-
+- [O] Option to create client config
+- [O] Option to remove client config
 
 prio 2 :
-- [ ] find the best setup for blacklist sources
 - [ ] Option to set blacklist or not
-- [ ] Option to set port´s and ip´s 
-- [ ] Option to create another client config
-- [ ] Option to reboot automatically
 - [ ] Option to change some DNScrypt settings
 - [ ] CentOS / Fedora  support
 - [ ] arch  support
@@ -15,7 +12,7 @@ prio 2 :
 
 ------------------------------------------------------------------------------------------------
 exposed for now :
-
+- [ ] Option to set port´s and ip´s
 
 ------------------------------------------------------------------------------------------------
 Done :
@@ -23,7 +20,9 @@ Done :
 - [x] smaller QR-Code --> not possible in terminal ..
 - [x] Debian 9 support
 - [x] Option for fail2ban --> in base_setup.sh
-- [-] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
+- [x] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
 - [x] Update schedule for blacklist not working
 - [x] just in case - suggestions for new root password  end of script  ( min. 32 characters ) --> in base_setup.sh
 - [x] Option to skip SSH mod --> in base_setup.sh
+- [x] Option to reboot automatically (on apt upgrade ) --> in base_setup.sh
+- [x] find the best setup for blacklist sources --> my list worked for me 
