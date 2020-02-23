@@ -203,39 +203,51 @@ Address = 10.8.0.1/24
 Address = fd42:42:42:42::1/112
 ListenPort = $wg0port
 PrivateKey = SK01
+# client1
 [Peer]
 PublicKey = PK01
 AllowedIPs = 10.8.0.11/32, fd42:42:42:42::11/128
+# client2
 [Peer]
 PublicKey = PK02
 AllowedIPs = 10.8.0.12/32, fd42:42:42:42::12/128
+# client3
 [Peer]
 PublicKey = PK03
 AllowedIPs = 10.8.0.13/32, fd42:42:42:42::13/128
+# client4
 [Peer]
 PublicKey = PK04
 AllowedIPs = 10.8.0.14/32, fd42:42:42:42::14/128
+# client5
 [Peer]
 PublicKey = PK05
 AllowedIPs = 10.8.0.15/32, fd42:42:42:42::15/128
+# client6
 [Peer]
 PublicKey = PK06
 AllowedIPs = 10.8.0.16/32, fd42:42:42:42::16/128
+# client7
 [Peer]
 PublicKey = PK07
 AllowedIPs = 10.8.0.17/32, fd42:42:42:42::17/128
+# client8
 [Peer]
 PublicKey = PK08
 AllowedIPs = 10.8.0.18/32, fd42:42:42:42::18/128
+# client9
 [Peer]
 PublicKey = PK09
 AllowedIPs = 10.8.0.19/32, fd42:42:42:42::19/128
+# client10
 [Peer]
 PublicKey = PK10
 AllowedIPs = 10.8.0.20/32, fd42:42:42:42::20/128
+# client11
 [Peer]
 PublicKey = PK11
 AllowedIPs = 10.8.0.21/32, fd42:42:42:42::21/128
+# -end of default clients
 " > /etc/wireguard/wg0.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
 sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
