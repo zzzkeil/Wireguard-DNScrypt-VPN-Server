@@ -21,7 +21,7 @@ if [[ -e /root/base_setup.README ]]; then
      chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-     echo " Now you have to run ./base_setup.sh , after that you can run this script again."
+     echo " Now you have to run ./base_setup.sh and reboot, after that you can run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
