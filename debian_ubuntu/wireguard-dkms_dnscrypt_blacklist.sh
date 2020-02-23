@@ -232,10 +232,10 @@ PublicKey = PK09
 AllowedIPs = 10.8.0.19/32, fd42:42:42:42::19/128
 [Peer]
 PublicKey = PK10
-AllowedIPs = 10.8.0.110/32, fd42:42:42:42::110/128
+AllowedIPs = 10.8.0.20/32, fd42:42:42:42::20/128
 [Peer]
 PublicKey = PK11
-AllowedIPs = 10.8.0.111/32, fd42:42:42:42::111/128
+AllowedIPs = 10.8.0.21/32, fd42:42:42:42::21/128
 " > /etc/wireguard/wg0.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
 sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
@@ -392,8 +392,8 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client9.conf
 chmod 600 /etc/wireguard/client9.conf
 
 echo "[Interface]
-Address = 10.8.0.110/32
-Address = fd42:42:42:42::110/128
+Address = 10.8.0.20/32
+Address = fd42:42:42:42::20/128
 PrivateKey = CK10
 DNS = 10.8.0.1, fd42:42:42:42::1
 [Peer]
@@ -407,8 +407,8 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client10.conf
 chmod 600 /etc/wireguard/client10.conf
 
 echo "[Interface]
-Address = 10.8.0.111/32
-Address = fd42:42:42:42::111/128
+Address = 10.8.0.21/32
+Address = fd42:42:42:42::21/128
 PrivateKey = CK11
 DNS = 10.8.0.1, fd42:42:42:42::1
 [Peer]
