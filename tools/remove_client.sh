@@ -10,6 +10,7 @@ echo "."
 ###
 echo "Client Name to remove"
 echo "Choose the # clientname above the line [Peer] in wg0.conf"
+echo "for example: to remove one of the default clients type: client11"
 read -p "client name: " -e -i removeclient clientname
 echo "------"
 
