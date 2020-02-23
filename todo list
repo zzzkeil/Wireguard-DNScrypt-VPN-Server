@@ -1,17 +1,14 @@
 To Do :
 prio 1 :
-- [ ] Option for fail2ban
+
 
 prio 2 :
 - [ ] find the best setup for blacklist sources
-- [ ] Update schedule for blacklist not working
 - [ ] Option to set blacklist or not
 - [ ] Option to set port´s and ip´s 
 - [ ] Option to create another client config
 - [ ] Option to reboot automatically
-- [ ] Option to skip SSH mod
 - [ ] Option to change some DNScrypt settings
-- [ ] just in case - suggestions for new root password  end of script  ( min. 32 characters )
 - [ ] CentOS / Fedora  support
 - [ ] arch  support
 - [ ] Uninstaller / remove all mods
@@ -19,13 +16,14 @@ prio 2 :
 ------------------------------------------------------------------------------------------------
 exposed for now :
 
-- [-] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
-
 
 ------------------------------------------------------------------------------------------------
 Done :
 - [x] Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
 - [x] smaller QR-Code --> not possible in terminal ..
 - [x] Debian 9 support
-
+- [x] Option for fail2ban --> in base_setup.sh
 - [-] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
+- [x] Update schedule for blacklist not working
+- [x] just in case - suggestions for new root password  end of script  ( min. 32 characters ) --> in base_setup.sh
+- [x] Option to skip SSH mod --> in base_setup.sh
