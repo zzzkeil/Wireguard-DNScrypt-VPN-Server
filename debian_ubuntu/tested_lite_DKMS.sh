@@ -109,7 +109,7 @@ sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc
 echo "Step 06 - Setup wireguard keys"
 echo
 mkdir /etc/wireguard/keys
-700 /etc/wireguard/keys
+chmod 700 /etc/wireguard/keys
 touch /etc/wireguard/keys/server0
 chmod 600 /etc/wireguard/keys/server0
 wg genkey > /etc/wireguard/keys/server0
