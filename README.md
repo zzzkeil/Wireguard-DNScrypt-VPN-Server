@@ -24,7 +24,7 @@ chmod +x wireguard-dkms_dnscrypt_blacklist.sh
 
 @ the end you see the QR Code for your wiregaurd app.
 example:
-[![example](https://zeroaim.de/01/qrtest.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
+[![example](https://zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 -----------------------------------------
 
