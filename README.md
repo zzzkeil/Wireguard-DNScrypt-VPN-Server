@@ -10,7 +10,7 @@
 
 
 ----------------------------------------
-How to install :
+How to install 23.Feb.2020 testing :
 ###### For Debian and Ubuntu 18.04 :
 ```
 wget -O  wireguard-dkms_dnscrypt_blacklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blacklist.sh
