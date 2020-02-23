@@ -2,6 +2,9 @@ To Do :
 prio 1 :
 - [O] Option to create client config
 - [O] Option to remove client config
+- [ ] Option to update DNScrypt manual and maybe cron job
+
+
 
 prio 2 :
 - [ ] Option to set blacklist or not
