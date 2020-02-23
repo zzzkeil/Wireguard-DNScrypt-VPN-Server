@@ -1,16 +1,15 @@
-# 23.Feb.2020 - be ware not up2date  in testing :
-
-## Wireguard-DNScrypt-VPN-Server
-## In under 3 minutes* with just a few klicks
+# Wireguard-DNScrypt-VPN-Server
+## In under 5 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
 #### incl. ipv4 and ipv6
 #### incl. DNScrypt / DNSSEC (unbound)
 #### incl. Ad-, Maleware-, ..., Blocking
-#### incl. 3 ready client config files  ( one with QR-Code in terminal )
+#### incl. 10 ready client config files  ( one with QR-Code in terminal )
 
-
+## How to install :
+#### the server has to be prepared with my script base_setup.sh
+##### if not the script below will download this one for you.
 ----------------------------------------
-How to install 23.Feb.2020 testing :
 ###### For Debian and Ubuntu 18.04 :
 ```
 wget -O  wireguard-dkms_dnscrypt_blacklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blacklist.sh
@@ -33,4 +32,4 @@ example:
 
 
 
-( *less then 2 minutes on my v-server ) 
+( *less then 5 minutes on my v-server together with base_setup.sh ) 
