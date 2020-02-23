@@ -2,7 +2,7 @@
 clear
 echo " Just 4 testing now "
 echo " maybe dont work "
-echo " be carefull"
+echo " be careful"
 echo "."
 echo "."
 echo "."
