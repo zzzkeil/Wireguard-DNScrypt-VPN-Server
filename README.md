@@ -12,7 +12,7 @@
 ##### if the base is not installed, the script below will download this one for you.
 ----------------------------------------
 
-###### For Debian and Ubuntu 18.04 :
+###### For Ubuntu 18.04 :
 ```
 wget -O  wireguard-dkms_dnscrypt_blacklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blacklist.sh
 
