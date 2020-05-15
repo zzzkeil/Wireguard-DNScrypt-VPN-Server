@@ -486,7 +486,8 @@ mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blacklist.txt 
 #
 echo "listen_addresses = ['127.0.0.1:5353']
-server_names = ['ffmuc.net-v6', 'doh.ffmuc.net', 'dns.digitale-gesellschaft.ch', 'doh-crypto-sx', 'dnscrypt.eu-dk', 'de.dnsmaschine.net', 'securedns-doh', 'securedns-ipv6-doh', 'dnscrypt.me-ipv6']
+server_names = ['cloudflare-ipv6', 'cloudflare', 'dns.digitale-gesellschaft.ch', 'doh.ffmuc.net', 'ffmuc.net-v6', 'dns.digitale-gesellschaft.ch-ipv6']
+#server_names = ['ffmuc.net-v6', 'doh.ffmuc.net', 'dns.digitale-gesellschaft.ch', 'doh-crypto-sx', 'dnscrypt.eu-dk', 'de.dnsmaschine.net', 'securedns-doh', 'securedns-ipv6-doh', 'dnscrypt.me-ipv6']
 max_clients = 250
 ipv4_servers = true
 ipv6_servers = true
@@ -510,7 +511,7 @@ block_ipv6 = false
 cache = true
 cache_size = 512
 cache_min_ttl = 600
-cache_max_ttl = 1200
+cache_max_ttl = 900
 cache_neg_ttl = 60
 [blacklist]
 blacklist_file = 'blacklist.txt'
@@ -530,8 +531,8 @@ echo "Step 11 - Setup Blacklist"
 echo
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
-curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
-#curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist.conf
+#curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/domains-blacklist-ultimate.conf
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist.conf
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restricted.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-time-restricted.txt
 echo "" > /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt
@@ -544,7 +545,7 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-(crontab -l ; echo "00 20 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt") | sort - | uniq - | crontab -
+(crontab -l ; echo "00 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt") | sort - | uniq - | crontab -
 
 ## check if generate blacklist failed - file is empty
 echo "#!/bin/bash
