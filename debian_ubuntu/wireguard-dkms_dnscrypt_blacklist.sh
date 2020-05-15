@@ -627,5 +627,7 @@ echo ""
 echo
 echo
 ln -s /etc/wireguard/ /root/wireguard_folder
+ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
+ln -s /var/log /root/system-log_folder
 ufw --force enable
 ufw reload
