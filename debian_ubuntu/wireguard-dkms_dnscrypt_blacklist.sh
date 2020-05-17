@@ -515,6 +515,7 @@ cache_max_ttl = 900
 cache_neg_ttl = 60
 [blacklist]
 blacklist_file = 'blacklist.txt'
+log_file = '/var/log/dnscrypt-proxy-blocked.log'
 [sources]
   [sources.'public-resolvers']
   urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v2/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v2/public-resolvers.md']
