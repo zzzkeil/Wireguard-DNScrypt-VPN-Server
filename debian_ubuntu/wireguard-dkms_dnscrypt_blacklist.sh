@@ -544,9 +544,9 @@ chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
 cd
-(crontab -l ; echo "00 21 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt") | sort - | uniq - | crontab -
-(crontab -l ; echo "00 15 * * * curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt") | sort - | uniq - | crontab -
-(crontab -l ; echo "00 10 * * * curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/blocklist/domains-blacklist-default.conf") | sort - | uniq - | crontab -
+(crontab -l ; echo "50 23 * * * cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/ &&  ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt") | sort - | uniq - | crontab -
+(crontab -l ; echo "40 23 * * * curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt") | sort - | uniq - | crontab -
+(crontab -l ; echo "30 23 * * * curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/blocklist/domains-blacklist-default.conf") | sort - | uniq - | crontab -
 ## check if generate blacklist failed - file is empty
 echo "#!/bin/bash
 if [[ -s /etc/dnscrypt-proxy/blacklist.txt ]]; then
