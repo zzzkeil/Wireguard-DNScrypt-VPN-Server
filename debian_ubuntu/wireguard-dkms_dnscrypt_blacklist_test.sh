@@ -528,7 +528,7 @@ log_file = '/var/log/dnscrypt-proxy-blocked.log'
 echo '
 #! /bin/sh
 
-INSTALL_DIR="/etc/dnscrypt-proxy/"
+INSTALL_DIR="/etc/dnscrypt-proxy"
 LATEST_URL="https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest"
 DNSCRYPT_PUBLIC_KEY="RWTk1xXqcTODeYttYMCMLo0YJHaFEHn7a3akqHlb/7QvIQXHVPxKbjB5"
 PLATFORM="linux"
