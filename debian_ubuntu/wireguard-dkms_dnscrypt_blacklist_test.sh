@@ -95,7 +95,7 @@ if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
 fi
 
 apt update && apt upgrade -y && apt autoremove -y
-apt install qrencode unbound unbound-host python curl -y 
+apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
 apt install wireguard-dkms wireguard-tools -y
 #
 ### setup ufw and sysctl
