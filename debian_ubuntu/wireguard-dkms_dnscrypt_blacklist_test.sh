@@ -32,14 +32,13 @@ fi
 if [[ -e /root/base_setup.README ]]; then
      echo "base_setup script installed - OK"
 	 else
-	 echo "base_setup script not installed >>> start download"
-	 echo ""
-	 echo ""
 	 wget -O  base_setup.sh https://raw.githubusercontent.com/zzzkeil/base_setups/master/base_setup.sh
-     chmod +x base_setup.sh
+         chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-     echo " Now you have to run ./base_setup.sh manualy and reboot, after that you can run this script again."
+	 echo " Attention !!! "
+	 echo " My base_setup script not installed,"
+         echo " you have to run ./base_setup.sh manualy now and reboot, after that you can run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
@@ -57,12 +56,12 @@ fi
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
      echo
 	 echo
-     echo "Looks like this script is already installed"
+         echo "Looks like this script is already installed"
 	 echo "This script is only for the first install"
 	 echo ""
 	 echo "To add or remove clients run"
-     echo " ./add_client.sh to add clients"
-     echo " ./remove_client.sh	to remove clients" 
+         echo " ./add_client.sh to add clients"
+         echo " ./remove_client.sh	to remove clients" 
 	 echo ""
 	 echo "More instructions in this file: "
 	 echo "/root/Wireguard-DNScrypt-VPN-Server.README"
