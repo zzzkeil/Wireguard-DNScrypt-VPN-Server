@@ -7,7 +7,7 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo " # Version 2020.05.24                                                         #"
+echo " # Version 2020.05.27 - test without wireguard pps for ubunut 20.04           #"
 echo " ##############################################################################"
 echo ""
 echo ""
