@@ -26,6 +26,11 @@ chmod +x wireguard-dkms_dnscrypt_blocklist.sh
 ```
 -----------------------------------------
 
+## How to add or remove clients :
+```
+run ./add_client.sh or remove_client.sh
+```
+
 @ the end you see the QR Code for your wiregaurd app.
 example:
 [![example](https://zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
