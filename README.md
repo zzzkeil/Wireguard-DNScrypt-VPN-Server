@@ -1,6 +1,8 @@
-# New Version 2020.12.28 in testing
-
 # Wireguard-DNScrypt-VPN-Server
+
+### New Version 2020.12.28 running / testing
+### major changes : words like black* to block* and white* to allwo* , and some small other changes.
+
 ## In under 5 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
 #### incl. ipv4 and ipv6
@@ -29,8 +31,6 @@ example:
 [![example](https://zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 -----------------------------------------
-
-
 
 
 
