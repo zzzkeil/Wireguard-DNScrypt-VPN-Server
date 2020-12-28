@@ -7,7 +7,7 @@ prio 1 :
 
 
 prio 2 :
-- [ ] Option to set blacklist or not
+- [ ] Option to set blocklist or not
 - [ ] Option to change some DNScrypt settings
 - [ ] CentOS / Fedora  support
 - [ ] arch  support
@@ -19,13 +19,13 @@ exposed for now :
 
 ------------------------------------------------------------------------------------------------
 Done :
-- [x] Generate a blacklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blacklists/
+- [x] Generate a blocklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blocklists/
 - [x] smaller QR-Code --> not possible in terminal ..
 - [x] Debian 9 support
 - [x] Option for fail2ban --> in base_setup.sh
 - [x] ufw replace with iptables --> focus on ufw with fail2ban and debian based distributions
-- [x] Update schedule for blacklist not working
+- [x] Update schedule for blocklist not working
 - [x] just in case - suggestions for new root password  end of script  ( min. 32 characters ) --> in base_setup.sh
 - [x] Option to skip SSH mod --> in base_setup.sh
 - [x] Option to reboot automatically (on apt upgrade ) --> in base_setup.sh
-- [x] find the best setup for blacklist sources --> my list worked for me 
+- [x] find the best setup for blocklist sources --> my list worked for me 
