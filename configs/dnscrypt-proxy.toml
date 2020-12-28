@@ -27,7 +27,7 @@ cache_min_ttl = 600
 cache_max_ttl = 900
 cache_neg_ttl = 60
 [blacklist]
-blacklist_file = 'blacklist.txt'
+blocklist_file = 'blocklist.txt'
 log_file = '/var/log/dnscrypt-proxy-blocked.log'
 [sources]
   [sources.'public-resolvers']
