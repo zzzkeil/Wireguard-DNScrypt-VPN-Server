@@ -8,7 +8,7 @@
 #### incl. ipv4 and ipv6
 #### incl. DNScrypt / DNSSEC (unbound)
 #### incl. Ad-, Maleware-, ..., Blocking
-#### incl. 10 ready client config files  ( one with QR-Code in terminal )
+#### incl. 5 ready client config files  ( one with QR-Code in terminal )
 ##### add_client.sh / remove_client.sh under development in tools
 
 ## How to install :
