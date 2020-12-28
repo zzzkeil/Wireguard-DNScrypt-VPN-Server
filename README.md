@@ -1,7 +1,7 @@
 # Wireguard-DNScrypt-VPN-Server
 
 ### New Version 2020.12.28 running / testing
-### major changes : words change from black* to block* and from white* to allwo* , and some small other changes.
+### major changes : words change from black* to block* and from white* to allwo* , and some other small changes.
 
 ## In under 5 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
