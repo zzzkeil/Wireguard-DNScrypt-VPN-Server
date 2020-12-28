@@ -281,6 +281,7 @@ mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blocklist.txt 
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy.toml
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy-update.sh
+chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 #
 ### setup blocklist and a allowlist from (anudeepND)"
 mkdir /etc/dnscrypt-proxy/utils/
