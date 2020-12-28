@@ -1,5 +1,5 @@
-# NOT upTOdate --- use this until i update this one
-## https://github.com/zzzkeil/wireguard_unbound_dot_adblock
+# New Version 2020.12.28 in testing
+
 # Wireguard-DNScrypt-VPN-Server
 ## In under 5 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
@@ -14,13 +14,13 @@
 ##### if the base is not installed, the script below will download this one for you.
 ----------------------------------------
 
-###### For Ubuntu 18.04 ( 20.04 in testing ) :
+###### For Ubuntu 20.04 :
 ```
-wget -O  wireguard-dkms_dnscrypt_blacklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blacklist.sh
+wget -O  wireguard-dkms_dnscrypt_blocklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blocklist.sh
 
-chmod +x wireguard-dkms_dnscrypt_blacklist.sh
+chmod +x wireguard-dkms_dnscrypt_blocklist.sh
 
-./wireguard-dkms_dnscrypt_blacklist.sh
+./wireguard-dkms_dnscrypt_blocklist.sh
 ```
 -----------------------------------------
 
