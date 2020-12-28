@@ -7,7 +7,7 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo " # Version 2020.05.27 - test without wireguard pps for ubunut 20.04           #"
+echo " # Version 2020.12.28 -  without wireguard pps for ubunut 20.04               #"
 echo " ##############################################################################"
 echo ""
 echo ""
@@ -95,7 +95,7 @@ if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
 fi
 
 if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
-    echo " functionstest 20.04 "
+    echo " no ppa needed for 20.04 "
 fi
 
 apt update && apt upgrade -y && apt autoremove -y
@@ -275,7 +275,7 @@ chown -R unbound:unbound /var/lib/unbound
 #
 ###setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.42/dnscrypt-proxy-linux_x86_64-2.0.42.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.44/dnscrypt-proxy-linux_x86_64-2.0.44.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blacklist.txt 
@@ -289,7 +289,8 @@ curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist.
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-blacklist-local-additions.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-time-restricted.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/domains-time-restricted.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/domains-whitelist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
-curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
+# old curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blacklists/generate-domains-blacklist.py
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py https://raw.githubusercontent.com/DNSCrypt/dnscrypt-proxy/master/utils/generate-domains-blocklist/generate-domains-blocklist.py
 chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blacklists/generate-domains-blacklist.py
 cd /etc/dnscrypt-proxy/utils/generate-domains-blacklists/
 ./generate-domains-blacklist.py > /etc/dnscrypt-proxy/blacklist.txt
