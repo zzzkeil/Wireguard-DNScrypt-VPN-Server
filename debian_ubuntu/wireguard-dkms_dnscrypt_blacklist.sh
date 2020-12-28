@@ -7,7 +7,7 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo " # Version 2020.12.28 -  change blacklist to blocklist  test                  #"
+echo " # Version 2020.12.28 - status: in testing / change all from black* to block* #"
 echo " ##############################################################################"
 echo ""
 echo ""
@@ -95,7 +95,7 @@ if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
 fi
 
 if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
-    echo " no ppa needed for 20.04 "
+    echo " system is ubuntu 20.04 - no ppa:wireguard needed "
 fi
 
 apt update && apt upgrade -y && apt autoremove -y
@@ -278,7 +278,7 @@ mkdir /etc/dnscrypt-proxy/
 wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.44/dnscrypt-proxy-linux_x86_64-2.0.44.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
-cp /etc/dnscrypt-proxy/example-blocklist.txt /etc/dnscrypt-proxy/blocklist.txt 
+cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blocklist.txt 
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy.toml
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy-update.sh
 #
