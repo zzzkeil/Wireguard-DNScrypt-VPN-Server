@@ -1,7 +1,7 @@
 # Wireguard-DNScrypt-VPN-Server
 
-### New Version 2020.12.28 running / testing
-#### major changes : words change from black* to block* and from white* to allwo* , and some other small changes.
+### New Version 2021.01.04 running / testing
+#### major changes : update to dnscrypt 2.0.45 with blocked_names (see here : https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.0.45 )
 
 ## In under 5 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
