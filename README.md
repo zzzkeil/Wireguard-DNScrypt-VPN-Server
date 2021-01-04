@@ -12,8 +12,10 @@
 * add_client.sh / remove_client.sh under development in tools
 
 ## How to install :  
-##### The server has to be prepared with my script base_setup.sh -> [repository](https://github.com/zzzkeil/base_setups)  
-##### *if the base is not installed, the script below will download this one for you.*   
+* Use a fresh / clean **server** os  ( e.g. Ubuntu 20.04 is tested ) 
+* The server has to be prepared with my script base_setup.sh -> [repository](https://github.com/zzzkeil/base_setups)  
+  * if the base is not installed, the script below will download this one for you, follow the instructions.  
+* Copy the lines for your system below, and run it and follow the instructions.
 ----------------------------------------
 
 ###### Server x86 - Ubuntu 20.04 :
