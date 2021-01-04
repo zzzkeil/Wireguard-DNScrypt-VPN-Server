@@ -19,11 +19,11 @@
 
 ###### For Ubuntu 20.04 (server x86) :
 ```
-wget -O  wireguard-dkms_dnscrypt_blocklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blocklist.sh
+wget -O  wireguard-dkms_dnscrypt_blocklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blocklist_x86.sh
 
-chmod +x wireguard-dkms_dnscrypt_blocklist.sh
+chmod +x wireguard-dkms_dnscrypt_blocklist_x86.sh
 
-./wireguard-dkms_dnscrypt_blocklist.sh
+./wireguard-dkms_dnscrypt_blocklist_x86.sh
 ```
 
 ###### For Ubuntu 20.04 (server arm64) :
