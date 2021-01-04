@@ -1,7 +1,8 @@
 # Wireguard-DNScrypt-VPN-Server
 
 ### New Version 2021.01.04 running / testing
-#### major changes : update to dnscrypt 2.0.45 with blocked_names (see here : https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.0.45 )
+#### major changes : update to dnscrypt 2.0.45 with blocked_names 
+#### ( take a look here : https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.0.45 )
 
 ## In under 5 minutes* with just a few klicks
 ### Setup Wireguard VPN Server,
