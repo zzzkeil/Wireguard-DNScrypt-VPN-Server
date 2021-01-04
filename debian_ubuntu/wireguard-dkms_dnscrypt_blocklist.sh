@@ -7,7 +7,7 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo " # Version 2020.12.28 - status: in testing / change all from black* to block* #"
+echo " # Version 2021.01.04 - status: update dnscrypt 2.0.45 with blocked_names etc #"
 echo " ##############################################################################"
 echo ""
 echo ""
@@ -275,10 +275,10 @@ chown -R unbound:unbound /var/lib/unbound
 #
 ###setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.44/dnscrypt-proxy-linux_x86_64-2.0.44.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/jedisct1/dnscrypt-proxy/releases/download/2.0.45/dnscrypt-proxy-linux_x86_64-2.0.45.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-x86_64/* /etc/dnscrypt-proxy/
-cp /etc/dnscrypt-proxy/example-blacklist.txt /etc/dnscrypt-proxy/blocklist.txt 
+cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt 
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy.toml
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
