@@ -26,7 +26,7 @@ chmod +x wireguard-dkms_dnscrypt_blocklist.sh
 ./wireguard-dkms_dnscrypt_blocklist.sh
 ```
 
-###### For Ubuntu 20.04 (server arm) :
+###### For Ubuntu 20.04 (server arm64) :
 ```
 coming soon.....
 
