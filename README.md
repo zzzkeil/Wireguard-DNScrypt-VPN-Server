@@ -1,4 +1,4 @@
-# Wireguard-DNScrypt-VPN-Server
+# Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
 ### New Version 2021.01.04 running / testing
 ##### major changes : update to dnscrypt 2.0.45 with blocked_names 
