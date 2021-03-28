@@ -333,6 +333,8 @@ https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
 curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
 curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
+chmod +x add_client.sh
+chmod +x remove_client.sh
 #
 ### finish
 clear
