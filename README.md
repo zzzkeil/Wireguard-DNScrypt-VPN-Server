@@ -1,5 +1,4 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
-If this project help you, maybe you can give me a cup of coffee :)  - [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=WGCNYVFKTHC3C) - thanks.
 
 ### Version 2021.01.04 running / testing  
 major changes : update to dnscrypt 2.0.45 with blocked_names  
