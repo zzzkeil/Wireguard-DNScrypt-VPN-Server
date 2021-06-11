@@ -44,7 +44,7 @@ run ./add_client.sh or remove_client.sh
 
 @ the end you see the QR Code for your wiregaurd app.
 example:
-[![example](https://zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
+[![example](https://wp.zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 -----------------------------------------
 
