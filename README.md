@@ -1,8 +1,8 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
 ### Version 2021.01.04 running / testing  
-major changes : update to dnscrypt 2.0.45 with blocked_names  
-take a look here : [dnscrypt changelog](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.0.45)
+major changes : update dnscrypt config for 2.0.46_beta3 *fallback_resolvers was renamed to bootstrap_resolvers
+take a look here : [dnscrypt changelog](https://github.com/DNSCrypt/dnscrypt-proxy/releases/tag/2.0.46-beta3)
 
 ## **Setup Wireguard VPN Server in under 5 minutes** 
 * ipv4 and ipv6
