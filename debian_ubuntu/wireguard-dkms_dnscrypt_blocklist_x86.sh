@@ -98,6 +98,18 @@ if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
     echo " system is ubuntu 20.04 - no ppa:wireguard needed "
 fi
 
+curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
+curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
+curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
+curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
+curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
+chmod +x add_client.sh
+chmod +x remove_client.sh
+chmod +x wg_config_backup.sh
+chmod +x wg_config_restore.sh
+chmod +x uninstaller_back_to_base.sh
+
+
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
 apt install wireguard-dkms wireguard-tools -y
@@ -319,8 +331,8 @@ systemctl enable unbound
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 cp /etc/systemd/system/multi-user.target.wants/unbound.service /root/script_backupfiles/unbound.service.orig
-systemctl disable unbound
 curl -o /lib/systemd/system/unbound.service https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound.service
+systemctl disable unbound
 systemctl enable unbound
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
@@ -333,16 +345,6 @@ Instructions coming soon
 For - News / Updates / Issues - check my github site
 https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
-curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
-curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
-curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
-curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
-curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
-chmod +x add_client.sh
-chmod +x remove_client.sh
-chmod +x wg_config_backup.sh
-chmod +x wg_config_restore.sh
-chmod +x uninstaller_back_to_base.sh
 #
 ### finish
 clear
