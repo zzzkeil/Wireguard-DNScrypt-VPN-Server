@@ -62,7 +62,8 @@ systemctl start systemd-resolved
 
  
 
-
+rm wireguard-dkms_dnscrypt_blocklist_x86.sh
+rm wireguard-dkms_dnscrypt_blocklist_arm64.sh
 rm /root/wireguard_folder
 rm /root/dnscrypt-proxy_folder
 rm /root/system-log_folder
