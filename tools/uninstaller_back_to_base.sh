@@ -33,18 +33,12 @@ systemctl stop wg-quick@wg0.service
 
 #ufw delete --- 
 
-
-rm -rf /etc/wireguard
-rm -rf /etc/dnscrypt-proxy
-
 crontab -l | grep -v 'generate-domains-blocklist.py'  | crontab  -
 crontab -l | grep -v 'domains-allowlist.txt'  | crontab  -
 crontab -l | grep -v 'domains-blocklist.conf'  | crontab  -
 crontab -l | grep -v 'checkblocklist.sh'  | crontab  -
 crontab -l | grep -v 'dnscrypt-proxy.service'  | crontab  -
 crontab -l | grep -v 'dnscrypt-proxy-update.sh'  | crontab  -
-
-
 
 cp /root/script_backupfiles/ufw.orig /etc/default/ufw 
 cp /root/script_backupfiles/before.rules.orig /etc/ufw/before.rules 
@@ -53,15 +47,14 @@ cp /root/script_backupfiles/sysctl.conf.orig /etc/sysctl.conf
 cp /root/script_backupfiles/sysctl.conf.ufw.orig /etc/ufw/sysctl.conf
 cp /etc/resolv.conf.orig /etc/resolv.conf
 
-
 apt remove qrencode unbound unbound-host wireguard-dkms wireguard-tools -y
-
 
 systemctl enable systemd-resolved
 systemctl start systemd-resolved
-
  
-
+rm -rf /etc/wireguard
+rm -rf /etc/dnscrypt-proxy
+rm -rf /etc/unbound
 rm wireguard-dkms_dnscrypt_blocklist_x86.sh
 rm wireguard-dkms_dnscrypt_blocklist_arm64.sh
 rm /root/wireguard_folder
