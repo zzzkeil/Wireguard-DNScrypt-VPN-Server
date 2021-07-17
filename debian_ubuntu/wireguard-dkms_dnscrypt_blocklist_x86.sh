@@ -98,6 +98,14 @@ if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
     echo " system is ubuntu 20.04 - no ppa:wireguard needed "
 fi
 
+
+
+
+apt update && apt upgrade -y && apt autoremove -y
+apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
+apt install wireguard-dkms wireguard-tools -y
+
+
 curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
 curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
 curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
@@ -109,10 +117,6 @@ chmod +x wg_config_backup.sh
 chmod +x wg_config_restore.sh
 chmod +x uninstaller_back_to_base.sh
 
-
-apt update && apt upgrade -y && apt autoremove -y
-apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
-apt install wireguard-dkms wireguard-tools -y
 #
 ### setup ufw and sysctl
 inet=$(ip route show default | awk '/default/ {print $5}')
