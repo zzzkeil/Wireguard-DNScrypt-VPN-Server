@@ -7,3 +7,6 @@ echo " work in progess "
 echo "."
 echo "."
 echo "."
+
+tar -czvf  backup_wg_config.tar.gz /etc/wireguard
+
