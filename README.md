@@ -45,8 +45,15 @@ chmod +x wireguard-dkms_dnscrypt_blocklist_arm64.sh
 
 ## How to add or remove clients :
 ```
-run ./add_client.sh or remove_client.sh
+run ./add_client.sh or ./remove_client.sh
 ```
+
+
+## How to backup or restore settings :
+```
+run ./wg_config_backup.sh or ./wg_config_restore.sh
+```
+
 
 @ the end you see the QR Code for your wiregaurd app.
 example:
