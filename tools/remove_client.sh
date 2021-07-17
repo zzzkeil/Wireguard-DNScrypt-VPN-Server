@@ -1,8 +1,6 @@
 #!/bin/bash
 clear
-echo " Just 4 testing now "
-echo " maybe dont work "
-echo " be carefull"
+echo " To remove a client follow this steps"
 echo "."
 echo "."
 echo "."
@@ -10,7 +8,7 @@ echo "."
 ###
 echo "Client Name to remove"
 echo "Choose the # clientname above the line [Peer] in wg0.conf"
-echo "for example: to remove one of the default clients type: client11"
+echo "for example: to remove one of the default clients type: client5"
 read -p "client name: " -e -i removeclient clientname
 echo "------"
 
