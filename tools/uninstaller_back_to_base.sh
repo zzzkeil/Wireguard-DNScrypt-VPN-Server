@@ -48,6 +48,8 @@ cp /root/script_backupfiles/sysctl.conf.ufw.orig /etc/ufw/sysctl.conf
 cp /etc/resolv.conf.orig /etc/resolv.conf
 
 apt remove qrencode unbound unbound-host wireguard-dkms wireguard-tools -y
+apt autoremove -y
+apt autoclean -y
 
 systemctl enable systemd-resolved
 systemctl start systemd-resolved
