@@ -1,7 +1,7 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
 ### Version 2021.07.17
-major changes : option to edit your blocklist file 
+major changes : option to edit your blocklist file and backup / restore option
 
 
 ## **Setup Wireguard VPN Server in under 5 minutes** 
