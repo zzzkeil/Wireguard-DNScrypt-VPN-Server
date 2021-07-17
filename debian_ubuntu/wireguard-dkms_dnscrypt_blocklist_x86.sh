@@ -7,7 +7,7 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo " # Version 2021.01.04 - status: update dnscrypt 2.0.45 with blocked_names etc #"
+echo " # Version 2021.07.17 - status: option to edit your blocklist file            #"
 echo " ##############################################################################"
 echo ""
 echo ""
