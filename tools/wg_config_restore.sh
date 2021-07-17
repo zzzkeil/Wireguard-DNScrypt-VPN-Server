@@ -2,12 +2,10 @@
 clear
 echo " this script restore yours wireguard server config "
 echo " in case after you reinstalled your server with the same ip´s, ....."
-echo " "
-echo " work in progess "
 echo "."
 echo "."
 echo "."
-echo " place your backupfile here : /root/backup_wg_config.tar.gz "
+echo " make sure your backupfile is here : /root/backup_wg_config.tar.gz "
 echo " ! ! this scrips delete your current files in /etc/wireguard/ ! ! "
 echo " they will be replaced with the backupfiles "
 echo "."
@@ -32,4 +30,3 @@ echo "."
 echo "."
 echo "."
 echo " ok check your connection :) "
-wg
