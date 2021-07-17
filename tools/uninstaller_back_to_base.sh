@@ -63,6 +63,8 @@ rm /root/script_backupfiles/sysctl.conf.orig
 rm /root/script_backupfiles/sysctl.conf.ufw.orig
 rm /root/script_backupfiles/unbound.service.orig
 rm /etc/resolv.conf.orig
+rm /var/log/dnscrypt-proxy.log
+rm /var/log/dnscrypt-proxy-blocked.log
 rm -rf /etc/wireguard
 rm -rf /etc/dnscrypt-proxy
 rm -rf /etc/unbound
