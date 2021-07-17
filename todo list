@@ -1,17 +1,10 @@
 To Do :
-prio 1 :
-- [O] Option to create client config
-- [O] Option to remove client config
-- [ ] Option to update DNScrypt manual and maybe cron job
 
-
-
-prio 2 :
-- [ ] Option to set blocklist or not
+- [O] Option to set blocklist or not
 - [ ] Option to change some DNScrypt settings
 - [ ] Fedora  support
 - [ ] arch  support
-- [ ] Uninstaller / remove all mods
+
 
 ------------------------------------------------------------------------------------------------
 exposed for now :
@@ -30,3 +23,7 @@ Done :
 - [x] Option to reboot automatically (on apt upgrade ) --> in base_setup.sh
 - [x] find the best setup for blocklist sources --> my list worked for me 
 - [x] Backup and restore wireguard configs
+- [x] Uninstaller / remove all mods
+- [x] Option to create client config
+- [x] Option to remove client config
+- [x] Option to update DNScrypt manual and maybe cron job
