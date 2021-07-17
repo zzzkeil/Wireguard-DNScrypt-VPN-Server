@@ -337,10 +337,12 @@ curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScry
 curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
 curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
 curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
+curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
 chmod +x add_client.sh
 chmod +x remove_client.sh
 chmod +x wg_config_backup.sh
 chmod +x wg_config_restore.sh
+chmod +x uninstaller_back_to_base.sh
 #
 ### finish
 clear
