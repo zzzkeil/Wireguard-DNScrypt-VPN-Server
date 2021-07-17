@@ -2,10 +2,12 @@
 
 ### Version 2021.07.17
 major changes : 
+ - activate dnscryps - anonymized_dns
  - option to edit your blocklist file 
  - backup / restore option 
  - uninstaller
  - ufw only ipv4 rule for wireguard incomming 
+
 
 
 ## **Setup Wireguard VPN Server in under 5 minutes** 
