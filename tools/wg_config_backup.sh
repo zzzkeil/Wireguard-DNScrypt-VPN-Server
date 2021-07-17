@@ -7,6 +7,9 @@ echo " work in progess "
 echo "."
 echo "."
 echo "."
-
-tar -czvf  backup_wg_config.tar.gz /etc/wireguard
+tar -czf  /root/backup_wg_config.tar.gz /etc/wireguard
+echo "."
+echo "."
+echo "."
+echo " to restore run ./wg_config_restore.sh "
 
