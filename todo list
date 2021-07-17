@@ -9,7 +9,7 @@ prio 1 :
 prio 2 :
 - [ ] Option to set blocklist or not
 - [ ] Option to change some DNScrypt settings
-- [ ] CentOS / Fedora  support
+- [ ] Fedora  support
 - [ ] arch  support
 - [ ] Uninstaller / remove all mods
 
@@ -29,3 +29,4 @@ Done :
 - [x] Option to skip SSH mod --> in base_setup.sh
 - [x] Option to reboot automatically (on apt upgrade ) --> in base_setup.sh
 - [x] find the best setup for blocklist sources --> my list worked for me 
+- [x] Backup and restore wireguard configs
