@@ -104,7 +104,8 @@ apt install wireguard-dkms wireguard-tools -y
 #
 ### setup ufw and sysctl
 inet=$(ip route show default | awk '/default/ {print $5}')
-ufw allow $wg0port/udp
+#ufw allow $wg0port/udp
+ufw allow proto udp to 0.0.0.0/0 port $wg0port
 cp /etc/default/ufw /root/script_backupfiles/ufw.orig
 cp /etc/ufw/before.rules /root/script_backupfiles/before.rules.orig
 cp /etc/ufw/before6.rules /root/script_backupfiles/before6.rules.orig
