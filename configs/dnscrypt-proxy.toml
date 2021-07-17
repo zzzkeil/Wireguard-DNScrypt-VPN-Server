@@ -1,5 +1,5 @@
 listen_addresses = ['127.0.0.1:5353']
-server_names = ['dns.digitale-gesellschaft.ch', 'doh.ffmuc.net', 'ffmuc.net-v6', 'dns.digitale-gesellschaft.ch-ipv6']
+#server_names = ['dns.digitale-gesellschaft.ch', 'doh.ffmuc.net', 'ffmuc.net-v6', 'dns.digitale-gesellschaft.ch-ipv6']
 #server_names = ['cloudflare-ipv6', 'cloudflare', 'google-ipv6', 'google']
 max_clients = 250
 ipv4_servers = true
@@ -37,3 +37,13 @@ log_file = '/var/log/dnscrypt-proxy-blocked.log'
   refresh_delay = 72
   prefix = ''
 [static]
+
+# Anonymized DNS section.
+# -----------------------
+[anonymized_dns]
+
+routes = [
+   { server_name='*', via=['anon-cs-de2', 'anon-cs-nl', 'anon-cs-fr', 'anon-bcn'] }
+]
+
+skip_incompatible = true
