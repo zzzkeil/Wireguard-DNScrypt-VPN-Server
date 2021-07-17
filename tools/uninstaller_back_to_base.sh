@@ -34,8 +34,8 @@ systemctl stop wg-quick@wg0.service
 #ufw delete --- 
 
 
-rm -f /etc/wireguard
-rm -f /etc/dnscrypt-proxy
+rm -rf /etc/wireguard
+rm -rf /etc/dnscrypt-proxy
 
 crontab -l | grep -v 'generate-domains-blocklist.py'  | crontab  -
 crontab -l | grep -v 'domains-allowlist.txt'  | crontab  -
@@ -57,7 +57,7 @@ cp /etc/resolv.conf.orig /etc/resolv.conf
 apt remove qrencode unbound unbound-host wireguard-dkms wireguard-tools -y
 
 
-systemctl enabel systemd-resolved
+systemctl enable systemd-resolved
 systemctl start systemd-resolved
 
  
@@ -78,3 +78,4 @@ rm wg_config_restore.sh
 echo " for now, remove ufw firewall rule manual plz "
 ufw status numbered
 echo " ufw delete . "
+echo " run   ufw relaod   after deleting rules "
