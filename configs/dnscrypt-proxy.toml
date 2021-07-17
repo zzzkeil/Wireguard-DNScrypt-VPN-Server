@@ -43,7 +43,7 @@ log_file = '/var/log/dnscrypt-proxy-blocked.log'
 [anonymized_dns]
 
 routes = [
-   { server_name='*', via=['anon-cs-de2', 'anon-cs-nl', 'anon-cs-fr', 'anon-bcn'] }
+   { server_name='*', via=['*'] }
 ]
 
 skip_incompatible = true
