@@ -61,6 +61,7 @@ rm /root/script_backupfiles/before.rules.orig
 rm /root/script_backupfiles/before6.rules.orig
 rm /root/script_backupfiles/sysctl.conf.orig
 rm /root/script_backupfiles/sysctl.conf.ufw.orig
+rm /root/script_backupfiles/unbound.service.orig
 rm /etc/resolv.conf.orig
 rm -rf /etc/wireguard
 rm -rf /etc/dnscrypt-proxy
