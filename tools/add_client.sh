@@ -1,8 +1,6 @@
 #!/bin/bash
 clear
-echo " Just 4 testing now "
-echo " maybe dont work "
-echo " be careful"
+echo " To add a new client follow this steps"
 echo "."
 echo "."
 echo "."
@@ -14,13 +12,13 @@ echo "these clientnames exsist/reserved by the setupscript!"
 read -p "client name: " -e -i newclient clientname
 echo "------"
 echo "Client IPv4"
-echo "don´use a ipv4 address under 10.8.0.30 and in this /24 subnet!"
-echo "these ipv4 exsist/reserved by the setupscript!"
+echo "do not use an ipv4 address under 10.8.0.30"
+echo "do not use an address that is already in use"
 read -p "client IPv4: " -e -i 10.8.0.30 clientipv4
 echo "------"
 echo "Client IPv6"
-echo "don´use a ipv4 address under fd42:42:42:42::30 and in this /64 subnet!"
-echo "these ipv4 exsist/reserved by the setupscript!"
+echo "do not use an ipv6 address under fd42:42:42:42::30"
+echo "do not use an address that is already in use"
 read -p "client IPv6: " -e -i fd42:42:42:42::30 clientipv6
 echo "------"
 echo "Your Wireguard port"
