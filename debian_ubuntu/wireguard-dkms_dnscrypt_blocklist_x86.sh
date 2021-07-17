@@ -294,6 +294,7 @@ curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-allowlist.
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/generate-domains-blocklist.py https://raw.githubusercontent.com/DNSCrypt/dnscrypt-proxy/master/utils/generate-domains-blocklist/generate-domains-blocklist.py
 chmod +x /etc/dnscrypt-proxy/utils/generate-domains-blocklists/generate-domains-blocklist.py
 cd /etc/dnscrypt-proxy/utils/generate-domains-blocklists/
+nano /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf
 ./generate-domains-blocklist.py > /etc/dnscrypt-proxy/blocklist.txt
 cd
 ## check if generate blocklist failed - file is empty
@@ -303,7 +304,7 @@ chmod +x /etc/dnscrypt-proxy/checkblocklist.sh
 ### create crontabs
 (crontab -l ; echo "50 23 * * 4 cd /etc/dnscrypt-proxy/utils/generate-domains-blocklists/ &&  ./generate-domains-blocklist.py > /etc/dnscrypt-proxy/blocklists.txt") | sort - | uniq - | crontab -
 (crontab -l ; echo "40 23 * * 4 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-allowlist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt") | sort - | uniq - | crontab -
-(crontab -l ; echo "30 23 * * 4 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/blocklist/domains-blocklist-default.conf") | sort - | uniq - | crontab -
+#(crontab -l ; echo "30 23 * * 4 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/blocklist/domains-blocklist-default.conf") | sort - | uniq - | crontab -
 (crontab -l ; echo "15 * * * 5 cd /etc/dnscrypt-proxy/ &&  ./etc/dnscrypt-proxy/checkblocklist.sh") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 4,5 /bin/systemctl restart dnscrypt-proxy.service") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
