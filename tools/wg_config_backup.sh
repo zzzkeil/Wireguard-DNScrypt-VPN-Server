@@ -11,5 +11,6 @@ tar -czf  /root/backup_wg_config.tar.gz /etc/wireguard
 echo "."
 echo "."
 echo "."
+echo " download / copy / save the file to your needs "
 echo " to restore run ./wg_config_restore.sh "
 
