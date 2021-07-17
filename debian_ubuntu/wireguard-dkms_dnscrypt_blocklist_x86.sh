@@ -7,14 +7,14 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo " # Version 2021.07.17 - status: option to edit your blocklist file            #"
+echo "                   Version 2021.07.17 - changelog on github                   #"
 echo " ##############################################################################"
 echo ""
 echo ""
 echo ""
-echo "To EXIT this script press  [ENTER]"
+echo "                     To EXIT this script press  [ENTER]"
 echo 
-read -p "To RUN this script press  [Y]" -n 1 -r
+read -p "                  To RUN this script press  [Y]" -n 1 -r
 echo
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
