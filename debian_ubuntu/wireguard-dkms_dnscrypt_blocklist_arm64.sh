@@ -334,8 +334,12 @@ https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
 curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
 curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
+curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
+curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
 chmod +x add_client.sh
 chmod +x remove_client.sh
+chmod +x wg_config_backup.sh
+chmod +x wg_config_restore.sh
 #
 ### finish
 clear
@@ -348,9 +352,12 @@ qrencode -o /etc/wireguard/client2.png < /etc/wireguard/client2.conf
 qrencode -o /etc/wireguard/client3.png < /etc/wireguard/client3.conf
 qrencode -o /etc/wireguard/client4.png < /etc/wireguard/client4.conf
 qrencode -o /etc/wireguard/client5.png < /etc/wireguard/client5.conf
+echo ""
 echo "4 extra client.conf and QR Codes files in folder : /etc/wireguard/"
 echo ""
 echo " to add or remove clients run ./add_client.sh or remove_client.sh"
+echo ""
+echo " for backup and restore options  run wg_config_backup.sh or wg_config_restore.sh"
 echo ""
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
