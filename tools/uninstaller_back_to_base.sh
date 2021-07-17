@@ -51,7 +51,17 @@ apt remove qrencode unbound unbound-host wireguard-dkms wireguard-tools -y
 
 systemctl enable systemd-resolved
 systemctl start systemd-resolved
- 
+
+
+
+
+
+rm /root/script_backupfiles/ufw.orig
+rm /root/script_backupfiles/before.rules.orig
+rm /root/script_backupfiles/before6.rules.orig
+rm /root/script_backupfiles/sysctl.conf.orig
+rm /root/script_backupfiles/sysctl.conf.ufw.orig
+rm /etc/resolv.conf.orig
 rm -rf /etc/wireguard
 rm -rf /etc/dnscrypt-proxy
 rm -rf /etc/unbound
