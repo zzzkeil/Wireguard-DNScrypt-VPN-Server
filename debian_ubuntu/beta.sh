@@ -317,10 +317,10 @@ chmod 600 /etc/wireguard/client5.conf
 #
 ### setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
-curl -o /etc/unbound/unbound.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound.conf
+curl -o /etc/unbound/unbound.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound_beta.conf
 
-sed -i "s/8.0/$wg0networkv4/g" /etc/unbound/unbound.conf
-sed -i "s/42:42:42/$wg0networkv6/g" /etc/unbound/unbound.conf
+sed -i "s/networkv4/$wg0networkv4/g" /etc/unbound/unbound.conf
+sed -i "s/networkv6/$wg0networkv6/g" /etc/unbound/unbound.conf
 
 chown -R unbound:unbound /var/lib/unbound
 #
