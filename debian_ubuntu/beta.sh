@@ -82,8 +82,9 @@ echo "------------------------------------------------------------"
 read -p "Choose your Wireguard Port: " -e -i 51820 wg0port
 echo "------------------------------------------------------------"
 echo " Make your ip settings now:"
+echo " Format Präfix=10. Suffix=.1 you can set the middle Numbers "
 echo "------------------------------------------------------------"
-read -p "Choose your Wireguard client ips: " -e -i 10. wg0port
+read -p "Choose your Wireguard client ips: " -e -i 66.66 wg0network
 echo "------------------------------------------------------------"
 
 
