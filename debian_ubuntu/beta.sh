@@ -77,16 +77,23 @@ fi
 mkdir /root/script_backupfiles/
 #
 ### wireguard port stettings
-echo " Make your port settings now:"
+echo " Make your port settings now (enter for default settings) :"
 echo "------------------------------------------------------------"
 read -p "Choose your Wireguard Port: " -e -i 51820 wg0port
 echo "------------------------------------------------------------"
-echo " Make your ip settings now:"
-echo " Format Präfix=10. Suffix=.1 you can set the middle Numbers "
 echo "------------------------------------------------------------"
-read -p "Choose your Wireguard client ips: " -e -i 66.66 wg0network
+echo " Make your ipv4 settings now (enter for default settings) :"
+echo " Format Präfix=10. Suffix=.1 you can set the middle Numbers like the following default exsample "
 echo "------------------------------------------------------------"
-
+echo "------------------------------------------------------------"
+read -p "Choose your Wireguard client ipv4 net: " -e -i 66.66 wg0networkv4
+echo "------------------------------------------------------------"
+echo " Make your ipv6 settings now (enter for default settings) :"
+echo " Format Präfix=fd42: Suffix=::1 you can set the middle Numbers like the following default exsample "
+echo "------------------------------------------------------------"
+echo "------------------------------------------------------------"
+read -p "Choose your Wireguard client ipv4 net: " -e -i 66:66:66 wg0networkv6
+echo "------------------------------------------------------------"
 
 #
 ### apt systemupdate and installs	 
@@ -133,11 +140,11 @@ cp /etc/default/ufw /root/script_backupfiles/ufw.orig
 cp /etc/ufw/before.rules /root/script_backupfiles/before.rules.orig
 cp /etc/ufw/before6.rules /root/script_backupfiles/before6.rules.orig
 sed -i 's/DEFAULT_FORWARD_POLICY="DROP"/DEFAULT_FORWARD_POLICY="ACCEPT"/' /etc/default/ufw
-sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n-A POSTROUTING -s 10.8.0.0/24 -o $inet -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before.rules
-sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.8.0.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.8.0.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before.rules
+sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n-A POSTROUTING -s 10.$wg0network.0/24 -o $inet -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before.rules
+sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.$wg0networkv4.0/24 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s 10.$wg0networkv4.0/24 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before.rules
 sed -i '/-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/a \\n# allow outbound icmp\n-A ufw-before-output -p icmp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT\n-A ufw-before-output -p icmp -m state --state ESTABLISHED,RELATED -j ACCEPT\n' /etc/ufw/before.rules
-sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n\n-A POSTROUTING -s fd42:42:42:42::/112 -o $inet -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before6.rules
-sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:42:42:42::1/64 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before6.rules
+sed -i "1i# START WIREGUARD RULES\n# NAT table rules\n*nat\n:POSTROUTING ACCEPT [0:0]\n# Allow traffic from WIREGUARD client \n\n-A POSTROUTING -s fd42:$wg0networkv6::/112 -o $inet -j MASQUERADE\nCOMMIT\n# END WIREGUARD RULES\n" /etc/ufw/before6.rules
+sed -i '/# End required lines/a \\n-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A INPUT -p udp -m udp --dport 14443 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:$wg0networkv6::1/64 -p tcp -m tcp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A INPUT -s fd42:$wg0networkv6::1/64 -p udp -m udp --dport 53 -m conntrack --ctstate NEW -j ACCEPT\n-A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT\n-A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT' /etc/ufw/before6.rules
 cp /etc/sysctl.conf /root/script_backupfiles/sysctl.conf.orig
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 sed -i 's/#net.ipv6.conf.all.forwarding=1/net.ipv6.conf.all.forwarding=1/g' /etc/sysctl.conf
@@ -182,30 +189,30 @@ wg pubkey < /etc/wireguard/keys/client5 > /etc/wireguard/keys/client5.pub
 
 ### -
 echo "[Interface]
-Address = 10.8.0.1/24
-Address = fd42:42:42:42::1/112
+Address = 10.$wg0networkv4.1/24
+Address = fd42:$wg0networkv6::1/112
 ListenPort = $wg0port
 PrivateKey = SK01
 # client1
 [Peer]
 PublicKey = PK01
-AllowedIPs = 10.8.0.11/32, fd42:42:42:42::11/128
+AllowedIPs = 10.$wg0networkv4.11/32, fd42:$wg0networkv6::11/128
 # client2
 [Peer]
 PublicKey = PK02
-AllowedIPs = 10.8.0.12/32, fd42:42:42:42::12/128
+AllowedIPs = 10.$wg0networkv4.12/32, fd42:$wg0networkv6::12/128
 # client3
 [Peer]
 PublicKey = PK03
-AllowedIPs = 10.8.0.13/32, fd42:42:42:42::13/128
+AllowedIPs = 10.$wg0networkv4.13/32, fd42:$wg0networkv6::13/128
 # client4
 [Peer]
 PublicKey = PK04
-AllowedIPs = 10.8.0.14/32, fd42:42:42:42::14/128
+AllowedIPs = 10.$wg0networkv4.14/32, fd42:$wg0networkv6::14/128
 # client5
 [Peer]
 PublicKey = PK05
-AllowedIPs = 10.8.0.15/32, fd42:42:42:42::15/128
+AllowedIPs = 10.$wg0networkv4.15/32, fd42:$wg0networkv6::15/128
 # -end of default clients
 " > /etc/wireguard/wg0.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
@@ -218,10 +225,10 @@ chmod 600 /etc/wireguard/wg0.conf
 
 ### -
 echo "[Interface]
-Address = 10.8.0.11/32
-Address = fd42:42:42:42::11/128
+Address = 10.$wg0networkv4.11/32
+Address = fd42:$wg0networkv6::11/128
 PrivateKey = CK01
-DNS = 10.8.0.1, fd42:42:42:42::1
+DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
@@ -233,10 +240,10 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
 chmod 600 /etc/wireguard/client1.conf
 
 echo "[Interface]
-Address = 10.8.0.12/32
-Address = fd42:42:42:42::12/128
+Address = 10.$wg0networkv4.12/32
+Address = fd42:$wg0networkv6::12/128
 PrivateKey = CK02
-DNS = 10.8.0.1, fd42:42:42:42::1
+DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
@@ -248,10 +255,10 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client2.conf
 chmod 600 /etc/wireguard/client2.conf
 
 echo "[Interface]
-Address = 10.8.0.13/32
-Address = fd42:42:42:42::13/128
+Address = 10.$wg0networkv4.13/32
+Address = fd42:$wg0networkv6::13/128
 PrivateKey = CK03
-DNS = 10.8.0.1, fd42:42:42:42::1
+DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
@@ -263,10 +270,10 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client3.conf
 chmod 600 /etc/wireguard/client3.conf
 
 echo "[Interface]
-Address = 10.8.0.14/32
-Address = fd42:42:42:42::14/128
+Address = 10.$wg0networkv4.14/32
+Address = fd42:$wg0networkv6::14/128
 PrivateKey = CK04
-DNS = 10.8.0.1, fd42:42:42:42::1
+DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
@@ -278,10 +285,10 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client4.conf
 chmod 600 /etc/wireguard/client4.conf
 
 echo "[Interface]
-Address = 10.8.0.15/32
-Address = fd42:42:42:42::15/128
+Address = 10.$wg0networkv4.15/32
+Address = fd42:$wg0networkv6::15/128
 PrivateKey = CK05
-DNS = 10.8.0.1, fd42:42:42:42::1
+DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
