@@ -17,12 +17,12 @@ echo "these clientnames exsist/reserved by the setupscript!"
 read -p "client name: " -e -i newclient clientname
 echo "------"
 echo "Client IPv4"
-echo "do not use an ipv4 address under 10.$ipv4network.20"
+echo "do not use an ipv4 address below 10.$ipv4network.20"
 echo "do not use an address that is already in use"
 read -p "client IPv4: " -e -i 10.$ipv4network.20 clientipv4
 echo "------"
 echo "Client IPv6"
-echo "do not use an ipv6 address under fd42:$ipv6network::20"
+echo "do not use an ipv6 address below fd42:$ipv6network::20"
 echo "do not use an address that is already in use"
 read -p "client IPv6: " -e -i fd42:$ipv6network::20 clientipv6
 echo "------"
