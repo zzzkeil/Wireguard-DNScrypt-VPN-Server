@@ -5,10 +5,10 @@ echo " in case if you need to reinstall your server, but not want to reconfigure
 echo "."
 echo "."
 echo "."
-tar -czf  /root/backup_wg_config.tar.gz /etc/wireguard
-tar --append --file=/root/backup_wg_config.tar.gz /etc/ufw/before.rules
-tar --append --file=/root/backup_wg_config.tar.gz /etc/ufw/before6.rules
-tar --append --file=/root/backup_wg_config.tar.gz /etc/unbound/unbound.conf
+tar -cf  /root/backup_wg_config.tar /etc/wireguard
+tar --append --file=/root/backup_wg_config.tar /etc/ufw/before.rules
+tar --append --file=/root/backup_wg_config.tar /etc/ufw/before6.rules
+tar --append --file=/root/backup_wg_config.tar /etc/unbound/unbound.conf
 echo "."
 echo "."
 echo "."
