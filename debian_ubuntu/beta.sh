@@ -7,14 +7,14 @@ echo " # will automatically download the script, but you need to run this manual
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo "                   Version 2021.07.17 - changelog on github                   #"
+echo "                             Betafile not finished                            #"
 echo " ##############################################################################"
 echo ""
 echo ""
 echo ""
 echo "                     To EXIT this script press  [ENTER]"
 echo 
-read -p "                  To RUN this script press  [Y]" -n 1 -r
+read -p "                  ." -n 1 -r
 echo
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -118,6 +118,22 @@ fi
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
 apt install wireguard-dkms wireguard-tools -y
+
+### set file for install check and tools download"
+echo "
++++ do not delete this file +++
+This file contains configs for later usage
+
+--- ip settings
+ipv4 
+$wg0networkv4
+ipv6 
+$wg0networkv6
+--- 
+
+For - News / Updates / Issues - check my github site
+https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
+" > /root/Wireguard-DNScrypt-VPN-Server.README
 
 
 curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
@@ -302,6 +318,10 @@ chmod 600 /etc/wireguard/client5.conf
 ### setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
 curl -o /etc/unbound/unbound.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound.conf
+
+sed -i 's/#8.0/$wg0networkv4/g' /etc/unbound/unbound.conf
+sed -i 's/#42:42:42/$wg0networkv6/g' /etc/unbound/unbound.conf
+
 chown -R unbound:unbound /var/lib/unbound
 #
 ###setup DNSCrypt
@@ -355,14 +375,6 @@ systemctl enable unbound
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 systemctl restart unbound
-#
-### set file for install check and tools download"
-echo "
-+++ do not delete this file +++
-Instructions coming soon 
-For - News / Updates / Issues - check my github site
-https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
-" > /root/Wireguard-DNScrypt-VPN-Server.README
 #
 ### finish
 clear
