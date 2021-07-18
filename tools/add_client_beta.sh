@@ -6,9 +6,9 @@ echo "."
 echo "."
 echo "."
 
-ipv4network=sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README
-ipv6network=sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README
-wg0port=grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = '
+ipv4network=(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv6network=(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
+wg0port=(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
 
 ###
 echo "Client Name"
