@@ -1,15 +1,14 @@
 To Do :
 
-- [O] Option to set blocklist or not
+- [o] Option to set wireguard network ip´s
 - [ ] Option to change some DNScrypt settings
-- [ ] Fedora  support
-- [ ] arch  support
 
+   o = work in progess
 
 ------------------------------------------------------------------------------------------------
 exposed for now :
-- [ ] Option to set port´s and ip´s
-
+- [ ] Fedora  support
+- [ ] arch  support
 ------------------------------------------------------------------------------------------------
 Done :
 - [x] Generate a blocklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blocklists/
@@ -27,3 +26,4 @@ Done :
 - [x] Option to create client config
 - [x] Option to remove client config
 - [x] Option to update DNScrypt manual and maybe cron job
+- [x] Option to set blocklists
