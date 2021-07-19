@@ -21,13 +21,13 @@ if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
 fi
-#
+
 ### root check
 if [[ "$EUID" -ne 0 ]]; then
 	echo "Sorry, you need to run this as root"
 	exit 1
 fi
-#
+
 ### base_setup check
 if [[ -e /root/base_setup.README ]]; then
      echo "base_setup script installed - OK"
@@ -43,7 +43,10 @@ if [[ -e /root/base_setup.README ]]; then
 	 echo ""
 	 exit 1
 fi
-#
+
+echo ""
+echo ""
+
 ### OS version check
 if [[ -e /etc/debian_version ]]; then
       echo "Debian Distribution"
@@ -51,7 +54,25 @@ if [[ -e /etc/debian_version ]]; then
       echo "This is not a Debian Distribution."
       exit 1
 fi
-#
+
+VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
+if [[ "$VERSION_ID" = 'VERSION_ID="10"' ]]; then
+    echo " system is debian 10 - add sources.list.d/unstable-wireguard.list"
+	echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list
+        printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable
+fi
+
+if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
+    echo " system is ubuntu 18.04 - ppa:wireguard needed "
+    add-apt-repository ppa:wireguard/wireguard
+fi
+
+if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
+    echo " system is ubuntu 20.04 - no ppa:wireguard needed "
+fi
+
+
+
 ### script already installed check
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
      echo
@@ -72,74 +93,69 @@ if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
 	 echo
 	 exit 1
 fi
-#
-### create backupfolder for original files
-mkdir /root/script_backupfiles/
+
+### options
+clear
+echo ""
+echo ""
+echo " Your turn, make a decision "
+echo ""
+echo ""
+PS3='enter 1 or 2 : '
+options=("Use the default ip´s and port settings" "Set your own ip´s and port settings")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Use the default ip´s and port settings")
+           wg0port=51820
+           wg0networkv4=66.66
+           wg0networkv6=66:66:66
+			break 
+            ;;
+        "Set your own ip´s and port settings")
+           echo " Make your port settings :"
+           echo "--------------------------------------------------------------------------------------------------------"
+           read -p "Choose your Wireguard Port: " -e -i 51820 wg0port
+           echo "--------------------------------------------------------------------------------------------------------"
+           echo "--------------------------------------------------------------------------------------------------------"
+           echo " Make your ipv4 settings :"
+           echo " Format Präfix=10. Suffix=.1 you set the middle Numbers like the following default example "
+           echo " If you not familiar with ipv4 address scheme, do not change the defaults."
+           echo "--------------------------------------------------------------------------------------------------------"
+           echo "--------------------------------------------------------------------------------------------------------"
+           read -p "Choose your Wireguard client ipv4 net: " -e -i 66.66 wg0networkv4
+           echo "--------------------------------------------------------------------------------------------------------"
+           echo " Make your ipv6 settings :"
+           echo " Format Präfix=fd42: Suffix=::1 you set the middle Numbers like the following default example "
+           echo " If you not familiar with ipv6 address scheme, do not change the defaults."
+           echo "--------------------------------------------------------------------------------------------------------"
+           echo "--------------------------------------------------------------------------------------------------------"
+           read -p "Choose your Wireguard client ipv4 net: " -e -i 66:66:66 wg0networkv6
+           echo "--------------------------------------------------------------------------------------------------------"
+		   break 
+            ;;
+        *) 
+	       echo ""
+		   echo "ERROR - enter 1 or 2 : " 
+		   echo "Try it again"
+		   echo ""
+		   ;;
+    esac
+done
+
+clear
+echo ""
+echo ""
 
 
-echo 'Select an option
-  1) Make your own ip and port settings
-  2) Use the default ip and port settings
-'
-read OPTION
-
-
-if [ "$OPTION" == "1" ]
-then
-
-### wireguard port stettings
-echo " Make your port settings :"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Choose your Wireguard Port: " -e -i 51820 wg0port
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Make your ipv4 settings :"
-echo " Format Präfix=10. Suffix=.1 you can set the middle Numbers like the following default example "
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Choose your Wireguard client ipv4 net: " -e -i 66.66 wg0networkv4
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Make your ipv6 settings :"
-echo " Format Präfix=fd42: Suffix=::1 you can set the middle Numbers like the following default example "
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Choose your Wireguard client ipv4 net: " -e -i 66:66:66 wg0networkv6
-echo "--------------------------------------------------------------------------------------------------------"
-
-fi
-
-if [ "$OPTION" == "2" ]
-then
-wg0port=51820
-wg0networkv4=66.66
-wg0networkv6=66:66:66
-fi
-
-#
 ### apt systemupdate and installs	 
-echo
-VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
-if [[ "$VERSION_ID" = 'VERSION_ID="10"' ]]; then
-	echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list
-        printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable
-fi
-
-if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
-    add-apt-repository ppa:wireguard/wireguard
-fi
-
-if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
-    echo " system is ubuntu 20.04 - no ppa:wireguard needed "
-fi
-
-
 
 
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
 apt install wireguard-dkms wireguard-tools -y
 
-### set file for install check and tools download"
+### create file for configs / install check "
 echo "
 +++ do not delete or modify this file +++
 This file contains configs line by line for later usage
@@ -172,7 +188,7 @@ chmod +x wg_config_backup.sh
 chmod +x wg_config_restore.sh
 chmod +x uninstaller_back_to_base.sh
 
-#
+
 ### setup ufw and sysctl
 inet=$(ip route show default | awk '/default/ {print $5}')
 #ufw allow $wg0port/udp
@@ -193,7 +209,7 @@ cp /etc/ufw/sysctl.conf /root/script_backupfiles/sysctl.conf.ufw.orig
 sed -i 's@#net/ipv4/ip_forward=1@net/ipv4/ip_forward=1@g' /etc/ufw/sysctl.conf
 sed -i 's@#net/ipv6/conf/default/forwarding=1@net/ipv6/conf/default/forwarding=1@g' /etc/ufw/sysctl.conf
 sed -i 's@#net/ipv6/conf/all/forwarding=1@net/ipv6/conf/all/forwarding=1@g' /etc/ufw/sysctl.conf
-#
+
 ### setup wireguard keys and configs
 mkdir /etc/wireguard/keys
 chmod 700 /etc/wireguard/keys
@@ -228,7 +244,7 @@ chmod 600 /etc/wireguard/keys/client5
 wg genkey > /etc/wireguard/keys/client5
 wg pubkey < /etc/wireguard/keys/client5 > /etc/wireguard/keys/client5.pub
 
-### -
+#
 echo "[Interface]
 Address = 10.$wg0networkv4.1/24
 Address = fd42:$wg0networkv6::1/112
@@ -264,7 +280,7 @@ sed -i "s@PK04@$(cat /etc/wireguard/keys/client4.pub)@" /etc/wireguard/wg0.conf
 sed -i "s@PK05@$(cat /etc/wireguard/keys/client5.pub)@" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
-### -
+#
 echo "[Interface]
 Address = 10.$wg0networkv4.11/32
 Address = fd42:$wg0networkv6::11/128
@@ -339,7 +355,7 @@ sed -i "s@CK05@$(cat /etc/wireguard/keys/client5)@" /etc/wireguard/client5.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client5.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client5.conf
 chmod 600 /etc/wireguard/client5.conf
-#
+
 ### setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
 curl -o /etc/unbound/unbound.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound_beta.conf
@@ -348,7 +364,7 @@ sed -i "s/networkv4/$wg0networkv4/g" /etc/unbound/unbound.conf
 sed -i "s/networkv6/$wg0networkv6/g" /etc/unbound/unbound.conf
 
 chown -R unbound:unbound /var/lib/unbound
-#
+
 ###setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
 wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.0.46-beta3/dnscrypt-proxy-linux_x86_64-2.0.46-beta3.tar.gz
@@ -358,7 +374,7 @@ cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.t
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy.toml
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
-#
+
 ### setup blocklist and a allowlist from (anudeepND)"
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blocklists/
@@ -376,7 +392,7 @@ cd
 ## check if generate blocklist failed - file is empty
 curl -o /etc/dnscrypt-proxy/checkblocklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/checkblocklist.sh
 chmod +x /etc/dnscrypt-proxy/checkblocklist.sh
-#
+
 ### create crontabs
 (crontab -l ; echo "50 23 * * 4 cd /etc/dnscrypt-proxy/utils/generate-domains-blocklists/ &&  ./generate-domains-blocklist.py > /etc/dnscrypt-proxy/blocklists.txt") | sort - | uniq - | crontab -
 (crontab -l ; echo "40 23 * * 4 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-allowlist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt") | sort - | uniq - | crontab -
@@ -384,7 +400,7 @@ chmod +x /etc/dnscrypt-proxy/checkblocklist.sh
 (crontab -l ; echo "15 * * * 5 cd /etc/dnscrypt-proxy/ &&  ./etc/dnscrypt-proxy/checkblocklist.sh") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 4,5 /bin/systemctl restart dnscrypt-proxy.service") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
-#
+
 ### setup systemctl
 systemctl stop systemd-resolved
 systemctl disable systemd-resolved
@@ -400,7 +416,7 @@ systemctl enable unbound
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 systemctl restart unbound
-#
+
 ### finish
 clear
 echo ""
