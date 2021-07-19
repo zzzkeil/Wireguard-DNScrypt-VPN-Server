@@ -6,18 +6,36 @@ echo " # if needed create a backup > ./wg_config_backup.sh befor deleting everyt
 echo " ###############################################################################"
 echo ""
 echo ""
-echo " testing script -  not reday for now "
 echo ""
 echo ""
-echo "To EXIT this script press  [ENTER]"
+echo "                      To EXIT this script press  [ENTER]"
 echo 
-read -p "To RUN this script press  [Y]" -n 1 -r
+read -p "                   To RUN this script press  [Y]" -n 1 -r
 echo
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
 fi
+clear
+echo " ####################################"
+echo " # Last chance  to get out here :)  #"
+echo " ####################################"
+echo ""
+echo ""
+echo ""
+echo ""
+echo "      Press [ENTER] to abort"
+echo 
+read -p "   Press [Y] to delete" -n 1 -r
+echo
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    exit 1
+fi
+
+
 #
 ### root check
 if [[ "$EUID" -ne 0 ]]; then
