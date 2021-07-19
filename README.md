@@ -2,7 +2,7 @@
 
 ### Version 2021.07.17
 major changes : 
- - activate dnscryps - anonymized_dns
+ - activate dnscrypt - anonymized_dns
  - option to edit your blocklist file 
  - backup / restore option 
  - uninstaller
