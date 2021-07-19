@@ -75,7 +75,18 @@ fi
 #
 ### create backupfolder for original files
 mkdir /root/script_backupfiles/
-#
+
+
+echo 'Select an option
+  1) Make your own ip and port settings
+  2) Use the default ip and port settings
+'
+read OPTION
+
+
+if [ "$OPTION" == "1" ]
+then
+
 ### wireguard port stettings
 echo " Make your port settings now (enter for default settings) :"
 echo "------------------------------------------------------------"
@@ -94,6 +105,15 @@ echo "------------------------------------------------------------"
 echo "------------------------------------------------------------"
 read -p "Choose your Wireguard client ipv4 net: " -e -i 66:66:66 wg0networkv6
 echo "------------------------------------------------------------"
+
+fi
+
+if [ "$OPTION" == "2" ]
+then
+wg0port=51820
+wg0networkv4=66.66
+wg0networkv6=66:66:66
+fi
 
 #
 ### apt systemupdate and installs	 
@@ -121,15 +141,20 @@ apt install wireguard-dkms wireguard-tools -y
 
 ### set file for install check and tools download"
 echo "
-+++ do not delete this file +++
-This file contains configs for later usage
++++ do not delete or modify this file +++
+This file contains configs line by line for later usage
 
 --- ip settings
 ipv4 
 $wg0networkv4
 ipv6 
 $wg0networkv6
---- 
+--- port settings
+wg0
+$wg0port
+---
+
+
 
 For - News / Updates / Issues - check my github site
 https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
