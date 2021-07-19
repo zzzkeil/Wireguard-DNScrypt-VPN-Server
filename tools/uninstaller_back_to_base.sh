@@ -1,8 +1,9 @@
 #!/bin/bash
 clear
-echo " ##############################################################################"
-echo " # Wireguard-DNScrypt-VPN-Server uninstaller and back to base_setup           #"
-echo " ##############################################################################"
+echo " ###############################################################################"
+echo " # Wireguard-DNScrypt-VPN-Server uninstaller and back to base_setup            #"
+echo " # if needed create a backup > ./wg_config_backup.sh befor deleting everything #"
+echo " ###############################################################################"
 echo ""
 echo ""
 echo " testing script -  not reday for now "
