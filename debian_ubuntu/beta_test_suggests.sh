@@ -3,7 +3,7 @@ clear
 echo " ##############################################################################"
 echo " # Wireguard-DNScrypt-VPN-Server setup script for Ubuntu 18.04 and above      #"
 echo " # My base_setup script is needed to install, if not installed this script    #"
-echo " # will automatically download the script, but you need to run this manualy   #"
+echo " # will automatically download the script, you need to run this manualy       #"
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
@@ -13,10 +13,10 @@ echo ""
 echo ""
 echo ""
 echo "                     To EXIT this script press  [ENTER]"
-echo 
-read -p "                  ." -n 1 -r
-echo
-echo
+echo ""
+read -p "                  Press [Y] to begin" -n 1 -r
+echo ""
+echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
@@ -36,9 +36,9 @@ if [[ -e /root/base_setup.README ]]; then
          chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-	 echo " Attention !!! "
-	 echo " My base_setup script not installed,"
-         echo " you have to run ./base_setup.sh manualy now and reboot, after that you can run this script again."
+	 echo " ERROR  - - one more thing to do "
+	 echo " base_setup.sh script not installed!"
+         echo " Now run ./base_setup.sh manualy and reboot, after that you can run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
@@ -78,14 +78,15 @@ if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
      echo
 	 echo
          echo "Looks like this script is already installed"
-	 echo "This script is only for the first install"
+	 echo "This script is only need for the first install"
 	 echo ""
 	 echo "To add or remove clients run"
          echo " ./add_client.sh to add clients"
-         echo " ./remove_client.sh	to remove clients" 
+         echo " ./remove_client.sh to remove clients" 
 	 echo ""
-	 echo "More instructions in this file: "
-	 echo "/root/Wireguard-DNScrypt-VPN-Server.README"
+	 echo "To backup or restore your settings run"
+	 echo " ./wg_config_backup.sh "
+	 echo " ./wg_config_restore.sh"
 	 echo ""
 	 echo "For - News / Updates / Issues - check my github site"
 	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
@@ -98,11 +99,12 @@ fi
 clear
 echo ""
 echo ""
-echo " Your turn, make a decision "
+echo " -- Your turn, make a decision -- "
 echo ""
 echo ""
-PS3='enter 1 or 2 : '
-options=("Use the default ip´s and port settings" "Set your own ip´s and port settings")
+echo ""
+PS3='Choose 1 or 2 and press [ENTER] : '
+options=("Use default ip´s and port settings" "Set your own ip´s and port settings")
 select opt in "${options[@]}"
 do
     case $opt in
@@ -113,30 +115,30 @@ do
 			break 
             ;;
         "Set your own ip´s and port settings")
-           echo " Make your port settings :"
+           echo " Wireguard port settings :"
            echo "--------------------------------------------------------------------------------------------------------"
-           read -p "Choose your Wireguard Port: " -e -i 51820 wg0port
+           read -p "Port: " -e -i 51820 wg0port
            echo "--------------------------------------------------------------------------------------------------------"
            echo "--------------------------------------------------------------------------------------------------------"
-           echo " Make your ipv4 settings :"
+           echo " Wireguard ipv4 settings :"
            echo " Format prefix=10. suffix=.1 you set the middle Numbers like the following default example "
            echo " If you not familiar with ipv4 address scheme, do not change the defaults."
            echo "--------------------------------------------------------------------------------------------------------"
            echo "--------------------------------------------------------------------------------------------------------"
-           read -p "Choose your Wireguard client ipv4 net: " -e -i 66.66 wg0networkv4
+           read -p "clients ipv4 network: " -e -i 66.66 wg0networkv4
            echo "--------------------------------------------------------------------------------------------------------"
-           echo " Make your ipv6 settings :"
+           echo " Wireguard ipv6 settings :"
            echo " Format prefix=fd42: suffix=::1 you set the middle Numbers like the following default example "
            echo " If you not familiar with ipv6 address scheme, do not change the defaults."
            echo "--------------------------------------------------------------------------------------------------------"
            echo "--------------------------------------------------------------------------------------------------------"
-           read -p "Choose your Wireguard client ipv4 net: " -e -i 66:66:66 wg0networkv6
+           read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
            echo "--------------------------------------------------------------------------------------------------------"
 		   break 
             ;;
         *) 
 	       echo ""
-		   echo "ERROR - enter 1 or 2 : " 
+		   echo "ERROR - choose 1 or 2 : " 
 		   echo "Try it again"
 		   echo ""
 		   ;;
@@ -149,16 +151,14 @@ echo ""
 
 
 ### apt systemupdate and installs	 
-
-
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
 apt install wireguard-dkms wireguard-tools -y
 
-### create file for configs / install check "
+### create and download files for configs
 echo "
 +++ do not delete or modify this file +++
-This file contains configs line by line for later usage
+++ This file contains settings line by line ++
 
 --- ip settings
 ipv4 
@@ -169,8 +169,6 @@ $wg0networkv6
 wg0
 $wg0port
 ---
-
-
 
 For - News / Updates / Issues - check my github site
 https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
@@ -234,17 +232,7 @@ chmod 600 /etc/wireguard/keys/client3
 wg genkey > /etc/wireguard/keys/client3
 wg pubkey < /etc/wireguard/keys/client3 > /etc/wireguard/keys/client3.pub
 
-touch /etc/wireguard/keys/client4
-chmod 600 /etc/wireguard/keys/client4
-wg genkey > /etc/wireguard/keys/client4
-wg pubkey < /etc/wireguard/keys/client4 > /etc/wireguard/keys/client4.pub
 
-touch /etc/wireguard/keys/client5
-chmod 600 /etc/wireguard/keys/client5
-wg genkey > /etc/wireguard/keys/client5
-wg pubkey < /etc/wireguard/keys/client5 > /etc/wireguard/keys/client5.pub
-
-#
 echo "[Interface]
 Address = 10.$wg0networkv4.1/24
 Address = fd42:$wg0networkv6::1/112
@@ -262,25 +250,16 @@ AllowedIPs = 10.$wg0networkv4.12/32, fd42:$wg0networkv6::12/128
 [Peer]
 PublicKey = PK03
 AllowedIPs = 10.$wg0networkv4.13/32, fd42:$wg0networkv6::13/128
-# client4
-[Peer]
-PublicKey = PK04
-AllowedIPs = 10.$wg0networkv4.14/32, fd42:$wg0networkv6::14/128
-# client5
-[Peer]
-PublicKey = PK05
-AllowedIPs = 10.$wg0networkv4.15/32, fd42:$wg0networkv6::15/128
 # -end of default clients
+
 " > /etc/wireguard/wg0.conf
+
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
 sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
 sed -i "s@PK02@$(cat /etc/wireguard/keys/client2.pub)@" /etc/wireguard/wg0.conf
 sed -i "s@PK03@$(cat /etc/wireguard/keys/client3.pub)@" /etc/wireguard/wg0.conf
-sed -i "s@PK04@$(cat /etc/wireguard/keys/client4.pub)@" /etc/wireguard/wg0.conf
-sed -i "s@PK05@$(cat /etc/wireguard/keys/client5.pub)@" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
-#
 echo "[Interface]
 Address = 10.$wg0networkv4.11/32
 Address = fd42:$wg0networkv6::11/128
@@ -326,35 +305,6 @@ sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client3.c
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client3.conf
 chmod 600 /etc/wireguard/client3.conf
 
-echo "[Interface]
-Address = 10.$wg0networkv4.14/32
-Address = fd42:$wg0networkv6::14/128
-PrivateKey = CK04
-DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
-[Peer]
-Endpoint = IP01:$wg0port
-PublicKey = SK01
-AllowedIPs = 0.0.0.0/0, ::/0
-" > /etc/wireguard/client4.conf
-sed -i "s@CK04@$(cat /etc/wireguard/keys/client4)@" /etc/wireguard/client4.conf
-sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client4.conf
-sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client4.conf
-chmod 600 /etc/wireguard/client4.conf
-
-echo "[Interface]
-Address = 10.$wg0networkv4.15/32
-Address = fd42:$wg0networkv6::15/128
-PrivateKey = CK05
-DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
-[Peer]
-Endpoint = IP01:$wg0port
-PublicKey = SK01
-AllowedIPs = 0.0.0.0/0, ::/0
-" > /etc/wireguard/client5.conf
-sed -i "s@CK05@$(cat /etc/wireguard/keys/client5)@" /etc/wireguard/client5.conf
-sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client5.conf
-sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client5.conf
-chmod 600 /etc/wireguard/client5.conf
 
 ### setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
@@ -396,7 +346,6 @@ chmod +x /etc/dnscrypt-proxy/checkblocklist.sh
 ### create crontabs
 (crontab -l ; echo "50 23 * * 4 cd /etc/dnscrypt-proxy/utils/generate-domains-blocklists/ &&  ./generate-domains-blocklist.py > /etc/dnscrypt-proxy/blocklists.txt") | sort - | uniq - | crontab -
 (crontab -l ; echo "40 23 * * 4 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-allowlist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt") | sort - | uniq - | crontab -
-#(crontab -l ; echo "30 23 * * 4 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/blocklist/domains-blocklist-default.conf") | sort - | uniq - | crontab -
 (crontab -l ; echo "15 * * * 5 cd /etc/dnscrypt-proxy/ &&  ./etc/dnscrypt-proxy/checkblocklist.sh") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 4,5 /bin/systemctl restart dnscrypt-proxy.service") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
@@ -426,14 +375,12 @@ echo "Scan the QR Code with your Wiregard App"
 qrencode -o /etc/wireguard/client1.png < /etc/wireguard/client1.conf
 qrencode -o /etc/wireguard/client2.png < /etc/wireguard/client2.conf
 qrencode -o /etc/wireguard/client3.png < /etc/wireguard/client3.conf
-qrencode -o /etc/wireguard/client4.png < /etc/wireguard/client4.conf
-qrencode -o /etc/wireguard/client5.png < /etc/wireguard/client5.conf
 echo ""
-echo "4 extra client.conf and QR Codes files in folder : /etc/wireguard/"
+echo " 2 extra client configs with QR Codes created in folder : /etc/wireguard/"
 echo ""
-echo " to add or remove clients run ./add_client.sh or remove_client.sh"
+echo " add or remove clients with ./add_client.sh or remove_client.sh"
 echo ""
-echo " for backup and restore options  run wg_config_backup.sh or wg_config_restore.sh"
+echo " backup and restore options with ./wg_config_backup.sh or ./wg_config_restore.sh"
 echo ""
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
