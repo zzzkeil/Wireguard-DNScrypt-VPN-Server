@@ -7,7 +7,7 @@ echo " # will automatically download the script, you need to run this manualy   
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo "                             Betafile not finished                            #"
+echo "                                 beta testing                                 #"
 echo " ##############################################################################"
 echo ""
 echo ""
