@@ -7,7 +7,7 @@ To Do :
 
 ------------------------------------------------------------------------------------------------
 exposed for now :
-- [ ] Fedora  support
+
 - [ ] arch  support
 ------------------------------------------------------------------------------------------------
 Done :
@@ -27,3 +27,4 @@ Done :
 - [x] Option to remove client config
 - [x] Option to update DNScrypt manual and maybe cron job
 - [x] Option to set blocklists
+- [x] Fedora  support >> no support - to many pain to dealing with removing firewalld and systemrules .... 
