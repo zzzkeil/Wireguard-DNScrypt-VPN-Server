@@ -11,6 +11,7 @@ major changes :
 
 
 ## **Setup Wireguard VPN Server in under 5 minutes** 
+#### ( *less then 5 minutes on my v-server together with base_setup.sh ) 
 * ipv4 and ipv6
 * DNScrypt / DNSSEC (unbound)
 * Ad-, Maleware-, ..., Blocking
@@ -32,7 +33,23 @@ chmod +x wireguard-dkms_dnscrypt_blocklist_x86.sh
 ./wireguard-dkms_dnscrypt_blocklist_x86.sh
 ```
 
+
+@ the end you see the QR Code for your wiregaurd app.
+<details>
+  <summary>example: click to expand!</summary>
+
+[![example](https://wp.zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
+</details>
+-----------------------------------------
+
+
+
+
+
 ###### Server arm64 - Ubuntu 20.04 (status: not finished) :
+<details>
+  <summary>Click to expand!</summary>
+  
 ```
 (testing on a pi 4 on my home network)
 
@@ -41,6 +58,7 @@ chmod +x wireguard-dkms_dnscrypt_blocklist_arm64.sh
 ./wireguard-dkms_dnscrypt_blocklist_arm64.sh
 
 ```
+ </details>
 -----------------------------------------
 
 ## How to add or remove clients :
@@ -53,16 +71,4 @@ run ./add_client.sh or ./remove_client.sh
 ```
 run ./wg_config_backup.sh or ./wg_config_restore.sh
 ```
-
-
-@ the end you see the QR Code for your wiregaurd app.
-example:
-[![example](https://wp.zeroaim.de/img/wgexsqr.png)](https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
-
 -----------------------------------------
-
-
-
-
-
-( *less then 5 minutes on my v-server together with base_setup.sh ) 
