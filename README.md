@@ -10,13 +10,11 @@ major changes :
 
 
 
-## **Setup Wireguard VPN Server in under 5 minutes** 
-#### ( *less then 5 minutes on my v-server together with base_setup.sh ) 
-* ipv4 and ipv6
-* DNScrypt / DNSSEC (unbound)
+## **Setup Wireguard VPN Server fast and easy  - with ** 
+* DNScrypt with anonymized_dns / DNSSEC (unbound)
 * Ad-, Maleware-, ..., Blocking
-* 5 config files ready for clients   ( one with QR-Code in terminal )
-* add_client.sh / remove_client.sh under development in tools
+* 3 config files  for your clients
+* add or remove clients with add_client.sh / remove_client.sh 
 
 ## How to install :  
 * Use a fresh / clean **server** os  ( e.g. Ubuntu 20.04 is tested ) 
@@ -26,7 +24,7 @@ major changes :
 
 ----------------------------------------
 
-###### Server x86 - Ubuntu 20.04 :
+###### Server x86 - Ubuntu 20.04 , 18.04 :
 ```
 wget -O  wireguard-dkms_dnscrypt_blocklist_x86.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blocklist_x86.sh
 chmod +x wireguard-dkms_dnscrypt_blocklist_x86.sh
