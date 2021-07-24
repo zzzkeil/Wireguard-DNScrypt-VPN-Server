@@ -40,7 +40,7 @@ if [[ -e /root/base_setup.README ]]; then
          chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-	 echo " ERROR  - - one more thing to do "
+	 echo " INFO  - - one more thing to do "
 	 echo " base_setup.sh script not installed!"
          echo " Now run ./base_setup.sh manualy and reboot, after that you can run this script again."
 	 echo ""
@@ -56,7 +56,7 @@ if [[ -e /etc/os-release ]]; then
       echo "/etc/os-release check = ok"
       else
       echo "/etc/os-release not found! Maybe no Ubuntu OS ?"
-      echo " This script is made for Ubuntu 18.04 / 20.04"
+      echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
       exit 1
 fi
 
@@ -64,14 +64,14 @@ fi
 if [[ "$NAME" = 'Ubuntu' ]]; then
    echo "OS Name check = ok"
    else 
-   echo " This script is made for Ubuntu 18.04 / 20.04"
+   echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
    exit 1
 fi
 
 if [[ "$VERSION_ID" = '18.04' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
    echo "OS Versions check = ok"
    else
-   echo "Ubuntu Versions below 18.04 not supported - upgrade please, its 2021 :) "
+   echo -e "${RED}Ubuntu Versions below 18.04 not supported - upgrade please, its 2021 :) ${ENDCOLOR}"
    exit 1
 fi
 
