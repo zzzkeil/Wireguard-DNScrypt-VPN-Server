@@ -12,9 +12,9 @@ echo " #########################################################################
 echo ""
 echo ""
 echo ""
-echo "                     To EXIT this script press  [ENTER]"
+echo  -e "                \e[91mTo EXIT this script press  [ENTER]"
 echo ""
-read -p "                     Press [Y] to begin" -n 1 -r
+read -p "                     \e[32mPress [Y] to begin" -n 1 -r
 echo ""
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]
