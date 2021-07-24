@@ -115,6 +115,7 @@ wg0port=51820
 wg0networkv4=66.66
 wg0networkv6=66:66:66
 else
+echo ""
 echo " Wireguard port settings :"
 echo "--------------------------------------------------------------------------------------------------------"
 read -p "Port: " -e -i 51820 wg0port
