@@ -152,7 +152,8 @@ echo ""
 ### apt systemupdate and installs	 
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
-apt install wireguard-dkms wireguard-tools -y
+apt install wireguard wireguard-tools -y
+#apt install wireguard-dkms wireguard-tools -y
 
 ### create and download files for configs
 echo "
