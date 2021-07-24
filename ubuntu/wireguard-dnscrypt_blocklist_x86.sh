@@ -129,7 +129,7 @@ echo "--------------------------------------------------------------------------
 read -p "clients ipv4 network: " -e -i 66.66 wg0networkv4
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard ipv6 settings :"
-echo -e " Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}66:66:66${ENDCOLOR}"
+echo -e " Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}66:66:66${ENDCOLOR}::1"
 echo " If you not familiar with ipv6 address scheme, do not change the defaults."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
