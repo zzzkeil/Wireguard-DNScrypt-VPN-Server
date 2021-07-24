@@ -26,6 +26,10 @@ major changes :
 
 ###### Server x86 - Ubuntu 20.04 , 18.04 :
 ```
+
+is currently in maintenance - Date 2021-07-24 - 
+
+
 wget -O  wireguard-dkms_dnscrypt_blocklist_x86.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blocklist_x86.sh
 chmod +x wireguard-dkms_dnscrypt_blocklist_x86.sh
 ./wireguard-dkms_dnscrypt_blocklist_x86.sh
@@ -51,9 +55,7 @@ chmod +x wireguard-dkms_dnscrypt_blocklist_x86.sh
 ```
 (testing on a pi 4 on my home network)
 
-wget -O  wireguard-dkms_dnscrypt_blocklist_arm64.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dkms_dnscrypt_blocklist_arm64.sh
-chmod +x wireguard-dkms_dnscrypt_blocklist_arm64.sh
-./wireguard-dkms_dnscrypt_blocklist_arm64.sh
+is currently in maintenance - Date 2021-07-24 - 
 
 ```
  </details>
