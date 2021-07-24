@@ -18,9 +18,9 @@ major changes :
 
 ## How to install :  
 * Use a fresh / clean **server** os  ( e.g. Ubuntu 20.04 is tested ) 
-* The server has to be prepared with my script base_setup.sh -> [repository](https://github.com/zzzkeil/base_setups)  
-  * if the base is not installed, the script below will download this one for you, follow the instructions.  
 * Copy the lines for your system below, and run it and follow the instructions  
+* My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
+   * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
 
 ----------------------------------------
 
