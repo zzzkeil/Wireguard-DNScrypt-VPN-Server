@@ -95,58 +95,45 @@ if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
 fi
 
 ### options
-clear
 echo ""
 echo ""
 echo " -- Your turn, make a decision -- "
 echo ""
 echo ""
 echo ""
-PS3='Choose 1 or 2 and press [ENTER] : '
-options=("Use default ip´s and port settings" "Set your own ip´s and port settings")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Use the default ip´s and port settings")
-           wg0port=51820
-           wg0networkv4=66.66
-           wg0networkv6=66:66:66
-			break 
-            ;;
-        "Set your own ip´s and port settings")
-           echo " Wireguard port settings :"
-           echo "--------------------------------------------------------------------------------------------------------"
-           read -p "Port: " -e -i 51820 wg0port
-           echo "--------------------------------------------------------------------------------------------------------"
-           echo "--------------------------------------------------------------------------------------------------------"
-           echo " Wireguard ipv4 settings :"
-           echo " Format prefix=10. suffix=.1 you set the middle Numbers like the following default example "
-           echo " If you not familiar with ipv4 address scheme, do not change the defaults."
-           echo "--------------------------------------------------------------------------------------------------------"
-           echo "--------------------------------------------------------------------------------------------------------"
-           read -p "clients ipv4 network: " -e -i 66.66 wg0networkv4
-           echo "--------------------------------------------------------------------------------------------------------"
-           echo " Wireguard ipv6 settings :"
-           echo " Format prefix=fd42: suffix=::1 you set the middle Numbers like the following default example "
-           echo " If you not familiar with ipv6 address scheme, do not change the defaults."
-           echo "--------------------------------------------------------------------------------------------------------"
-           echo "--------------------------------------------------------------------------------------------------------"
-           read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
-           echo "--------------------------------------------------------------------------------------------------------"
-		   break 
-            ;;
-        *) 
-	       echo ""
-		   echo "ERROR - choose 1 or 2 : " 
-		   echo "Try it again"
-		   echo ""
-		   ;;
-    esac
-done
+echo "Press any key for default port and ip´s "
+echo "or"
+read -p "Press [Y] to chnage default port and ip´s " -n 1 -r
 
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+wg0port=51820
+wg0networkv4=66.66
+wg0networkv6=66:66:66
+else
+echo " Wireguard port settings :"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "Port: " -e -i 51820 wg0port
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " Wireguard ipv4 settings :"
+echo " Format prefix=10. suffix=.1 you set the middle Numbers like the following default example "
+echo " If you not familiar with ipv4 address scheme, do not change the defaults."
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "clients ipv4 network: " -e -i 66.66 wg0networkv4
+echo "--------------------------------------------------------------------------------------------------------"
+echo " Wireguard ipv6 settings :"
+echo " Format prefix=fd42: suffix=::1 you set the middle Numbers like the following default example "
+echo " If you not familiar with ipv6 address scheme, do not change the defaults."
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
+echo "--------------------------------------------------------------------------------------------------------"
+fi
 clear
 echo ""
-echo ""
+echo "apt systemupdate and installs"
 
 
 ### apt systemupdate and installs	 
