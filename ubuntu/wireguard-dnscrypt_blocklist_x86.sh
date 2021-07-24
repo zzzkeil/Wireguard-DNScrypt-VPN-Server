@@ -1,10 +1,14 @@
 #!/bin/bash
 clear
+# visual text settings
+RED="\e[31m"
+GREEN="\e[32m"
+ENDCOLOR="\e[0m"
 echo " ##############################################################################"
-echo " # Wireguard-DNScrypt-VPN-Server setup script for Ubuntu 18.04 and above      #"
-echo " # My base_setup script is needed to install, if not installed this script    #"
-echo " # will automatically download the script, you need to run this manualy       #"
-echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
+echo " # ${Green}Wireguard-DNScrypt-VPN-Server setup script for Ubuntu 18.04 and above      ${ENDCOLOR}#"
+echo " # ${Green}My base_setup script is needed to install, if not installed this script    ${ENDCOLOR}#"
+echo " # ${Green}will automatically download the script, you need to run this manualy       ${ENDCOLOR}#"
+echo " # ${Green}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}#"
 echo " ##############################################################################"
 echo " ##############################################################################"
 echo " #                 Version 2021.07.24 - changelog on github                   #"
@@ -12,9 +16,9 @@ echo " #########################################################################
 echo ""
 echo ""
 echo ""
-echo  -e "                \e[91mTo EXIT this script press  [ENTER]"
+echo  -e "                \e[91mTo EXIT this script press  [ENTER]\e[0m"
 echo ""
-read -p "                     \e[32mPress [Y] to begin" -n 1 -r
+read -p "                     Press [Y] to begin" -n 1 -r
 echo ""
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]
