@@ -7,7 +7,7 @@ echo " # will automatically download the script, you need to run this manualy   
 echo " # More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server #"
 echo " ##############################################################################"
 echo " ##############################################################################"
-echo "                                 beta testing                                 #"
+echo " #                 Version 2021.07.24 - changelog on github                   #"
 echo " ##############################################################################"
 echo ""
 echo ""
@@ -47,31 +47,35 @@ fi
 echo ""
 echo ""
 
-### OS version check
-if [[ -e /etc/debian_version ]]; then
-      echo "Debian Distribution"
+### check if Ubuntu OS 18.04 or 20.04
+if [[ -e /etc/os-release ]]; then
       else
-      echo "This is not a Debian Distribution."
+      echo "/etc/os-release not found! Maybe no Ubuntu OS ?"
+      echo " This script is made for Ubuntu 18.04 / 20.04"
       exit 1
 fi
 
-VERSION_ID=$(cat /etc/os-release | grep "VERSION_ID")
-if [[ "$VERSION_ID" = 'VERSION_ID="10"' ]]; then
-    echo " system is debian 10 - add sources.list.d/unstable-wireguard.list"
-	echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list
-        printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable
+. /etc/os-release
+if [[ "$NAME" = 'Ubuntu' ]]; then
+   else 
+   echo " This script is made for Ubuntu 18.04 / 20.04"
+   exit 1
 fi
 
-if [[ "$VERSION_ID" = 'VERSION_ID="18.04"' ]]; then
-    echo " system is ubuntu 18.04 - ppa:wireguard needed "
+if [[ "$VERSION_ID" = '18.04' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
+   else
+   echo "Ubuntu Versions below 18.04 not supported - upgrade please, its 2021 :) "
+   exit 1
+fi
+
+if [[ "$VERSION_ID" = '18.04' ]]; then
+    echo "Ubuntu Version = 18.04 - ppa:wireguard needed "
     add-apt-repository ppa:wireguard/wireguard
 fi
 
-if [[ "$VERSION_ID" = 'VERSION_ID="20.04"' ]]; then
-    echo " system is ubuntu 20.04 - no ppa:wireguard needed "
+if [[ "$VERSION_ID" = '20.04' ]]; then
+    echo "Ubuntu Version = 20.04 - no ppa:wireguard needed "
 fi
-
-
 
 ### script already installed check
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
@@ -175,12 +179,12 @@ https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
 
 
-curl -o add_client_beta.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client_beta.sh
+curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
 curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
 curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
 curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
 curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
-chmod +x add_client_beta.sh
+chmod +x add_client.sh
 chmod +x remove_client.sh
 chmod +x wg_config_backup.sh
 chmod +x wg_config_restore.sh
@@ -308,7 +312,7 @@ chmod 600 /etc/wireguard/client3.conf
 
 ### setup unbound
 curl -o /var/lib/unbound/root.hints https://www.internic.net/domain/named.cache
-curl -o /etc/unbound/unbound.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound_beta.conf
+curl -o /etc/unbound/unbound.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/unbound.conf
 
 sed -i "s/networkv4/$wg0networkv4/g" /etc/unbound/unbound.conf
 sed -i "s/networkv6/$wg0networkv6/g" /etc/unbound/unbound.conf
