@@ -71,14 +71,6 @@ if [[ "$VERSION_ID" = '18.04' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
    exit 1
 fi
 
-if [[ "$VERSION_ID" = '18.04' ]]; then
-    echo "Ubuntu Version = 18.04 - ppa:wireguard needed "
-    add-apt-repository ppa:wireguard/wireguard
-fi
-
-if [[ "$VERSION_ID" = '20.04' ]]; then
-    echo "Ubuntu Version = 20.04 - no ppa:wireguard needed "
-fi
 
 ### script already installed check
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
