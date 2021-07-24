@@ -14,7 +14,7 @@ echo ""
 echo ""
 echo "                     To EXIT this script press  [ENTER]"
 echo ""
-read -p "                  Press [Y] to begin" -n 1 -r
+read -p "                     Press [Y] to begin" -n 1 -r
 echo ""
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]
