@@ -42,7 +42,7 @@ fi
 
 ### base_setup check
 if [[ -e /root/base_setup.README ]]; then
-     echo "base_setup script installed - OK"
+     echo -e "base_setup script installed = ${GREEN}ok${ENDCOLOR}"
 	 else
 	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
 	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
