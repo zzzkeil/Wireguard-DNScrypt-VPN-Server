@@ -1,22 +1,28 @@
 #!/bin/bash
-clear
+
 # visual text settings
 RED="\e[31m"
 GREEN="\e[32m"
+GRAY="\e[37m"
+REDB="\e[41m"
+GREENB="\e[42m"
+GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
-echo " ##############################################################################"
-echo -e " # ${GREEN}Wireguard-DNScrypt-VPN-Server setup script for Ubuntu 18.04 and above      ${ENDCOLOR}#"
-echo -e " # ${GREEN}My base_setup script is needed to install, if not installed this script    ${ENDCOLOR}#"
-echo -e " # ${GREEN}will automatically download the script, you need to run this manualy       ${ENDCOLOR}#"
-echo -e " # ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}#"
-echo " ##############################################################################"
-echo " ##############################################################################"
-echo " #                 Version 2021.07.24 - changelog on github                   #"
-echo " ##############################################################################"
+
+clear
+echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-VPN-Server setup script for Ubuntu 18.04 and above      ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup script is needed to install, if not installed this script    ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}will automatically download the script, you need to run this manualy       ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.07.24 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
-echo  -e "                \e[91mTo EXIT this script press  [ENTER]\e[0m"
+echo  -e "                ${RED}To EXIT this script press any key${ENDCOLOR}"
 echo ""
 read -p "                     Press [Y] to begin" -n 1 -r
 echo ""
