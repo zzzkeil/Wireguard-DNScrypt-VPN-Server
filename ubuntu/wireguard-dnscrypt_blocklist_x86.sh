@@ -59,9 +59,6 @@ if [[ -e /root/base_setup.README ]]; then
 	 exit 1
 fi
 
-echo ""
-echo ""
-
 ### check if Ubuntu OS 18.04 or 20.04
 if [[ -e /etc/os-release ]]; then
       echo -e "/etc/os-release check = ${GREEN}ok${ENDCOLOR}"
