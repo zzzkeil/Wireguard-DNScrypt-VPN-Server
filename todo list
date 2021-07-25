@@ -8,6 +8,7 @@ To Do :
 exposed for now :
 
 - [ ] arch  support
+
 ------------------------------------------------------------------------------------------------
 Done :
 - [x] Generate a blocklist file for ad, maleware, ..... blocking  >> dnscrypt-proxy/utils/generate-domains-blocklists/
