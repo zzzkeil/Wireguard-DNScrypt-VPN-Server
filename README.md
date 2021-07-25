@@ -1,16 +1,18 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Version 2021.07.24
+### Version 2021.07.25
 major changes : 
+ - script text visual things 
  - option to edit your ip and port settings 
  - removed Debian support
- - only Ubuntu 18.04 and 20.04 support 
+ - only Ubuntu 18.04 and 20.04 support for now
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
 * DNScrypt with anonymized_dns / DNSSEC (unbound)
 * Ad-, Maleware-, ..., Blocking
 * 3 config files  for your clients
 * add or remove clients with add_client.sh / remove_client.sh 
+* backup, restore and unistall options
 
 ## How to install :  
 * Use a fresh / clean **server** os  ( e.g. Ubuntu 20.04 is tested ) 
@@ -22,9 +24,6 @@ major changes :
 
 ###### Server x86 - Ubuntu 20.04 , 18.04 :
 ```
-
-is currently in maintenance - Date 2021-07-24 - 
-
 wget -O  wireguard-dnscrypt_blocklist_x86.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/ubuntu/wireguard-dnscrypt_blocklist_x86.sh
 chmod +x wireguard-dnscrypt_blocklist_x86.sh
 ./wireguard-dnscrypt_blocklist_x86.sh
@@ -50,7 +49,7 @@ chmod +x wireguard-dnscrypt_blocklist_x86.sh
 ```
 (testing on a pi 4 on my home network)
 
-is currently in maintenance - Date 2021-07-24 - 
+is currently in maintenance - comming back in a few days - 
 
 ```
  </details>
