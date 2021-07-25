@@ -21,12 +21,12 @@ then
     exit 1
 fi
 
-if [[ -e /root/backup_wg_config.tar.gz ]]; then
+if [[ -e /root/backup_wg_config.tar ]]; then
      echo "backupfile found. ok lets go"
 	 else
 	 echo " !! No backupfile found !!"
 	 echo " Make sure you have placed your backupfile in:"
-     echo " /root/backup_wg_config.tar.gz "
+         echo " /root/backup_wg_config.tar "
 	 echo ""
 	 echo ""
 	 exit 1
