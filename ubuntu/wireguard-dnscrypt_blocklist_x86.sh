@@ -388,7 +388,7 @@ echo " 2 extra client configs with QR Codes created in folder : /etc/wireguard/"
 echo ""
 echo -e " add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}"
 echo ""
-echo " backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}"
+echo -e " backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}"
 echo ""
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
