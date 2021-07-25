@@ -16,15 +16,15 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup script is needed to install
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}will automatically download the script, you need to run this manualy       ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.07.24 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
-echo  -e "                ${RED}To EXIT this script press any key${ENDCOLOR}"
+echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
 echo ""
-read -p "                     Press [Y] to begin" -n 1 -r
+echo  -e "                        ${GREEN}Press [Y] to begin${ENDCOLOR}"
+read -p " " -n 1 -r
 echo ""
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]
