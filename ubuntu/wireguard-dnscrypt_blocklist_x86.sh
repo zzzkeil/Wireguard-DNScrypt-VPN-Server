@@ -53,7 +53,7 @@ if [[ -e /root/base_setup.README ]]; then
          chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-         echo " Now run ${YELLOW}./base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
+         echo -e " Now run ${YELLOW}./base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
