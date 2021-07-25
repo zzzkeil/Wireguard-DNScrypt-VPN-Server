@@ -4,6 +4,8 @@
 RED="\e[31m"
 GREEN="\e[32m"
 GRAY="\e[37m"
+YELLOW="\e[93m"
+
 REDB="\e[41m"
 GREENB="\e[42m"
 GRAYB="\e[47m"
@@ -23,7 +25,7 @@ echo ""
 echo ""
 echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
 echo ""
-echo  -e "                        ${GREEN}Press [Y] to begin${ENDCOLOR}"
+echo  -e "                            ${GREEN}Press [Y] to begin${ENDCOLOR}"
 read -p " " -n 1 -r
 echo ""
 echo ""
@@ -42,13 +44,16 @@ fi
 if [[ -e /root/base_setup.README ]]; then
      echo "base_setup script installed - OK"
 	 else
+	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
+	 echo -e " ${YELLOW}You need to install my base_setup script befor${ENDCOLOR}"
+	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
+	 echo ""
+	 echo ""
 	 wget -O  base_setup.sh https://raw.githubusercontent.com/zzzkeil/base_setups/master/base_setup.sh
          chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-	 echo " INFO  - - one more thing to do "
-	 echo " base_setup.sh script not installed!"
-         echo " Now run ./base_setup.sh manualy and reboot, after that you can run this script again."
+         echo " Now run ${YELLOW}./base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
@@ -59,7 +64,7 @@ echo ""
 
 ### check if Ubuntu OS 18.04 or 20.04
 if [[ -e /etc/os-release ]]; then
-      echo "/etc/os-release check = ok"
+      echo "/etc/os-release check = ${GREEN}ok${ENDCOLOR}"
       else
       echo "/etc/os-release not found! Maybe no Ubuntu OS ?"
       echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
@@ -68,14 +73,14 @@ fi
 
 . /etc/os-release
 if [[ "$NAME" = 'Ubuntu' ]]; then
-   echo "OS Name check = ok"
+   echo "OS Name check = ${GREEN}ok${ENDCOLOR}"
    else 
    echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
    exit 1
 fi
 
 if [[ "$VERSION_ID" = '18.04' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
-   echo "OS Versions check = ok"
+   echo "OS Versions check = ${GREEN}ok${ENDCOLOR}"
    else
    echo -e "${RED}Ubuntu Versions below 18.04 not supported - upgrade please, its 2021 :) ${ENDCOLOR}"
    exit 1
@@ -111,9 +116,11 @@ echo " -- Your turn, make a decision -- "
 echo ""
 echo ""
 echo ""
-echo "Press any key for default port and ip´s "
+echo -e "${GREEN}Press any key for default port and ip´s ${ENDCOLOR}"
 echo "or"
-read -p "Press [Y] to chnage default port and ip´s " -n 1 -r
+echo -e "${RED}Press [Y] to chnage default port and ip´s (advanced user)${ENDCOLOR}"
+echo ""
+read -p " " -n 1 -r
 
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
