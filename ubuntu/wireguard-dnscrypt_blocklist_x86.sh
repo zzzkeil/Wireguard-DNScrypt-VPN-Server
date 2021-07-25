@@ -36,7 +36,7 @@ fi
 
 ### root check
 if [[ "$EUID" -ne 0 ]]; then
-	echo "Sorry, you need to run this as root"
+	echo -e "${RED}Sorry, you need to run this as root${ENDCOLOR}"
 	exit 1
 fi
 
@@ -91,16 +91,19 @@ fi
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
      echo
 	 echo
-         echo "Looks like this script is already installed"
-	 echo "This script is only need for the first install"
+         echo -e "${YELLOW}Looks like this script is already installed${ENDCOLOR}"
+	 echo -e "${YELLOW}This script is only need for the first install${ENDCOLOR}"
 	 echo ""
 	 echo "To add or remove clients run"
-         echo " ./add_client.sh to add clients"
-         echo " ./remove_client.sh to remove clients" 
+         echo -e " ${YELLOW}./add_client.sh${ENDCOLOR} to add clients"
+         echo -e " ${YELLOW}./remove_client.sh${ENDCOLOR} to remove clients" 
 	 echo ""
-	 echo "To backup or restore your settings run"
-	 echo " ./wg_config_backup.sh "
-	 echo " ./wg_config_restore.sh"
+	 echo  "To backup or restore your settings run"
+	 echo -e " ${YELLOW}./wg_config_backup.sh${ENDCOLOR} "
+	 echo -e " ${YELLOW}./wg_config_restore.sh${ENDCOLOR}"
+	 echo ""
+	 echo  "To uninstall run"
+	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
 	 echo ""
 	 echo "For - News / Updates / Issues - check my github site"
 	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
@@ -112,7 +115,7 @@ fi
 ### options
 echo ""
 echo ""
-echo " -- Your turn, make a decision -- "
+echo -e " -- Your turn, make a decision -- "
 echo ""
 echo ""
 echo ""
@@ -151,7 +154,7 @@ echo "--------------------------------------------------------------------------
 fi
 clear
 echo ""
-echo "apt systemupdate and installs"
+echo -e "${YELLOW}apt systemupdate and installs${ENDCOLOR}"
 
 
 ### apt systemupdate and installs	 
@@ -374,21 +377,25 @@ systemctl restart unbound
 ### finish
 clear
 echo ""
-echo "QR Code for client1.conf "
+echo ""
+echo -e "${YELLOW}QR Code for client1.conf${ENDCOLOR}"
+echo ""
 qrencode -t ansiutf8 < /etc/wireguard/client1.conf
-echo "Scan the QR Code with your Wiregard App"
+echo ""
+echo -e "${YELLOW}Scan the QR Code with your Wiregard App${ENDCOLOR}"
 qrencode -o /etc/wireguard/client1.png < /etc/wireguard/client1.conf
 qrencode -o /etc/wireguard/client2.png < /etc/wireguard/client2.conf
 qrencode -o /etc/wireguard/client3.png < /etc/wireguard/client3.conf
 echo ""
 echo " 2 extra client configs with QR Codes created in folder : /etc/wireguard/"
 echo ""
-echo " add or remove clients with ./add_client.sh or remove_client.sh"
+echo -e " add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}"
 echo ""
-echo " backup and restore options with ./wg_config_backup.sh or ./wg_config_restore.sh"
+echo " backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}"
 echo ""
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
 ufw --force enable
 ufw reload
+exit
