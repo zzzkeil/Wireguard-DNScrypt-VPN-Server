@@ -32,11 +32,18 @@ if [[ -e /root/backup_wg_config.tar ]]; then
 	 exit 1
 fi
 
+wg0portold=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
+ufw delete proto udp to 0.0.0.0/0 port $wg0portold
+
 systemctl stop wg-quick@wg0.service
 rm -rv /etc/wireguard/*
  
 tar -xvf /root/backup_wg_config.tar -C /
+
 systemctl start wg-quick@wg0.service
+wg0portnew=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
+ufw allow proto udp to 0.0.0.0/0 port $wg0portnew
+
 echo "."
 echo "."
 echo "."
