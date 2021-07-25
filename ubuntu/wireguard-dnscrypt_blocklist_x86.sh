@@ -64,7 +64,7 @@ echo ""
 
 ### check if Ubuntu OS 18.04 or 20.04
 if [[ -e /etc/os-release ]]; then
-      echo "/etc/os-release check = ${GREEN}ok${ENDCOLOR}"
+      echo -e "/etc/os-release check = ${GREEN}ok${ENDCOLOR}"
       else
       echo "/etc/os-release not found! Maybe no Ubuntu OS ?"
       echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
@@ -73,14 +73,14 @@ fi
 
 . /etc/os-release
 if [[ "$NAME" = 'Ubuntu' ]]; then
-   echo "OS Name check = ${GREEN}ok${ENDCOLOR}"
+   echo -e "OS Name check = ${GREEN}ok${ENDCOLOR}"
    else 
    echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
    exit 1
 fi
 
 if [[ "$VERSION_ID" = '18.04' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
-   echo "OS Versions check = ${GREEN}ok${ENDCOLOR}"
+   echo -e "OS Versions check = ${GREEN}ok${ENDCOLOR}"
    else
    echo -e "${RED}Ubuntu Versions below 18.04 not supported - upgrade please, its 2021 :) ${ENDCOLOR}"
    exit 1
