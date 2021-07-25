@@ -6,6 +6,7 @@ echo "."
 echo "."
 echo "."
 tar -cf  /root/backup_wg_config.tar /etc/wireguard
+tar --append --file=/root/backup_wg_config.tar /root/Wireguard-DNScrypt-VPN-Server.README
 tar --append --file=/root/backup_wg_config.tar /etc/ufw/before.rules
 tar --append --file=/root/backup_wg_config.tar /etc/ufw/before6.rules
 tar --append --file=/root/backup_wg_config.tar /etc/unbound/unbound.conf
