@@ -1,6 +1,5 @@
 To Do :
 
-- [o] Option to set wireguard network ip´s
 - [ ] Option to change some DNScrypt settings
 
    o = work in progess
@@ -28,3 +27,4 @@ Done :
 - [x] Option to update DNScrypt manual and maybe cron job
 - [x] Option to set blocklists
 - [x] Fedora  support >> no support - to many pain to dealing with removing firewalld and systemrules .... 
+- [x] Option to set wireguard network ip´s / port
