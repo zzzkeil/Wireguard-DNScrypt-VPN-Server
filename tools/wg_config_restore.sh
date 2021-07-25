@@ -35,7 +35,7 @@ fi
 systemctl stop wg-quick@wg0.service
 rm -rv /etc/wireguard/*
  
-tar -xvf /root/backup_wg_config.tar.gz -C /
+tar -xvf /root/backup_wg_config.tar -C /
 systemctl start wg-quick@wg0.service
 echo "."
 echo "."
