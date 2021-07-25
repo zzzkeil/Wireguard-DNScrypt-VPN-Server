@@ -5,7 +5,7 @@ echo " in case after you reinstalled your server with the same ip´s, ....."
 echo "."
 echo "."
 echo "."
-echo " make sure your backupfile is here : /root/backup_wg_config.tar.gz "
+echo " make sure your backupfile is here : /root/backup_wg_config.tar "
 echo " ! ! this scrips delete your current files in /etc/wireguard/ ! ! "
 echo " they will be replaced with the backupfiles "
 echo "."
@@ -33,7 +33,7 @@ if [[ -e /root/backup_wg_config.tar ]]; then
 fi
 
 wg0portold=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
-ufw delete proto udp to 0.0.0.0/0 port $wg0portold
+ufw delete allow $wg0portold/udp
 
 systemctl stop wg-quick@wg0.service
 rm -rv /etc/wireguard/*
