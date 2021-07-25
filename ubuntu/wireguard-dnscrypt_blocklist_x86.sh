@@ -26,7 +26,7 @@ echo ""
 echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
 echo ""
 echo  -e "                            ${GREEN}Press [Y] to begin${ENDCOLOR}"
-read -p " " -n 1 -r
+read -p "" -n 1 -r
 echo ""
 echo ""
 if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -45,7 +45,7 @@ if [[ -e /root/base_setup.README ]]; then
      echo "base_setup script installed - OK"
 	 else
 	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
-	 echo -e " ${YELLOW}You need to install my base_setup script befor${ENDCOLOR}"
+	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
 	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
 	 echo ""
 	 echo ""
@@ -120,7 +120,7 @@ echo -e "${GREEN}Press any key for default port and ip´s ${ENDCOLOR}"
 echo "or"
 echo -e "${RED}Press [Y] to chnage default port and ip´s (advanced user)${ENDCOLOR}"
 echo ""
-read -p " " -n 1 -r
+read -p "" -n 1 -r
 
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
