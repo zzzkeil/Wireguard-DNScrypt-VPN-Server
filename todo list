@@ -2,6 +2,8 @@ To Do :
 
 - [ ] Option to change some DNScrypt settings
 - [ ] arch  support
+- [ ] add option to change default MTU
+- [ ] add option to activate keepalive and set value  
 
    o = work in progess
 
