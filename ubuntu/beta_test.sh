@@ -261,7 +261,7 @@ Address = 10.$wg0networkv4.1/24
 Address = fd42:$wg0networkv6::1/112
 ListenPort = $wg0port
 PrivateKey = SK01
-$wg0mtu
+
 
 # client1
 [Peer]
