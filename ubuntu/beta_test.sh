@@ -189,9 +189,11 @@ ipv4
 $wg0networkv4
 ipv6 
 $wg0networkv6
---- port settings
+--- port and misc settings
 wg0
 $wg0port
+$wg0mtu
+$wg0keepalive
 ---
 
 For - News / Updates / Issues - check my github site
