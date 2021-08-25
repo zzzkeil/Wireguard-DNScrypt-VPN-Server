@@ -127,8 +127,8 @@ then
 wg0port=51820
 wg0networkv4=66.66
 wg0networkv6=66:66:66
-wg0mtu=#MTU = 1420
-wg0keepalive=#PersistentKeepalive = 25
+wg0mtu=$(#MTU = 1420)
+wg0keepalive=$(#PersistentKeepalive = 25)
 else
 echo ""
 echo " Wireguard port settings :"
@@ -155,16 +155,17 @@ echo " Wireguard MTU settings :"
 echo " If you not familiar with MTU settings, do not change the defaults and press [ENTER]."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "MTU setting : " -e -i MTU = 1420 wg0mtu
+read -p "MTU =  " -e -i 1420 wg0mtu02
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard keepalive settings :"
 echo " If you not familiar with keepalive settings, do not change the defaults and press [ENTER]."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "keepalive settings : " -e -i PersistentKeepalive = 25 wg0keepalive
+read -p "PersistentKeepalive =  : " -e -i 25 wg0keepalive02
 echo "--------------------------------------------------------------------------------------------------------"
-
+wg0mtu=$(MTU =) wg0mtu02
+wg0keepalive=$(PersistentKeepalive =) wg0keepalive02
 
 fi
 clear
