@@ -152,17 +152,17 @@ read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard MTU settings :"
-echo " If you not familiar with MTU settings, do not change the defaults and press [ENTER]."
+echo -e " If you not familiar with MTU settings, do not change the defaults and press [ENTER] ${GREEN}[default = 1420]${ENDCOLOR}."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 read -p "MTU =  " -e -i 1420 wg0mtu02
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard keepalive settings :"
-echo " If you not familiar with keepalive settings, do not change the defaults and press [ENTER]."
+echo -e " If you not familiar with keepalive settings, do not change the defaults and press [ENTER] ${GREEN}[default = 0]${ENDCOLOR}."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "PersistentKeepalive =  : " -e -i 25 wg0keepalive02
+read -p "PersistentKeepalive =  : " -e -i 0 wg0keepalive02
 echo "--------------------------------------------------------------------------------------------------------"
 wg0mtu="MTU = $wg0mtu02"
 wg0keepalive="PersistentKeepalive = $wg0keepalive02"
