@@ -46,7 +46,7 @@ echo "[Interface]
 Address = $clientipv4/32
 Address = $clientipv6/128
 PrivateKey = NEWCLKEY
-DNS = 10.8.0.1, fd42:42:42:42::1
+DNS = 10.$ipv4network.1, fd42:$ipv6network::1
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
