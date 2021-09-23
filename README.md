@@ -1,11 +1,11 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Version 2021.07.25
+### Version 2021.09.23
 major changes : 
- - script text visual things 
- - option to edit your ip and port settings 
- - removed Debian support
- - only Ubuntu 18.04 and 20.04 support for now
+ - new dnscrypt version / features
+ - add option to change default MTU
+ - add option to activate keepalive and set value
+ - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
 * DNScrypt with anonymized_dns / DNSSEC (unbound)
