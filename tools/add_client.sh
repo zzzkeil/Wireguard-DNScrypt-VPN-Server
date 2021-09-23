@@ -13,6 +13,7 @@ wg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
 ###
 echo "Client Name"
 echo "don´use a clientname from client1 to client5 !"
+echo "only one word - no space in names !"
 echo "these clientnames exsist/reserved by the setupscript!"
 read -p "client name: " -e -i newclient clientname
 echo "------"
