@@ -18,7 +18,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup script is needed to install
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}will automatically download the script, you need to run this manualy       ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.08.25 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.09.23 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
