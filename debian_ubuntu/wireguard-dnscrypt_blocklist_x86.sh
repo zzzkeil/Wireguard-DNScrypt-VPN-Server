@@ -60,7 +60,7 @@ if [[ -e /root/base_setup.README ]]; then
 fi
 
 ### check if Debian or Ubuntu
-echo "${GREEN}OS check ${ENDCOLOR}"
+echo -e "${GREEN}OS check ${ENDCOLOR}"
 . /etc/os-release
 if [[ "$ID" = 'debian' ]] || [[ "$ID" = 'ubuntu' ]]; then
    echo -e "OS ID check = ${GREEN}ok${ENDCOLOR}"
