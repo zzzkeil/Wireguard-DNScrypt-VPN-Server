@@ -20,7 +20,7 @@ major changes :
 
 ----------------------------------------
 
-###### Server x86 - Ubuntu 20.04 , 18.04 :
+###### Server x86 - Debian 11 and Ubuntu 20.04 :
 ```
 wget -O  wireguard-dnscrypt_blocklist_x86.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/wireguard-dnscrypt_blocklist_x86.sh
 chmod +x wireguard-dnscrypt_blocklist_x86.sh
