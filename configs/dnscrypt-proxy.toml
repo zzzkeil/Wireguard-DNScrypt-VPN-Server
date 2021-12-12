@@ -1,4 +1,5 @@
 listen_addresses = ['127.0.0.1:5353']
+#server_names = ['nextdns-ipv6', 'dns.sb', 'dns.sb-ipv6', 'nextdns', 'meganerd-doh-ipv4', 'meganerd-doh-ipv6', 'dns.digitale-gesellschaft.ch-ipv6', 'dns.digitale-gesellschaft.ch-2', 'dns.digitale-gesellschaft.ch-ipv6-2', 'cz.nic', 'bortzmeyer-ipv6', 'doh.appliedprivacy.net', 'bortzmeyer', 'cz.nic-ipv6', 'dns.digitale-gesellschaft.ch', 'odoh-cloudflare', 'cloudflare-ipv6', 'ams-dnscrypt-nl', 'cloudflare', 'dnscrypt.be', 'doh.ffmuc.net-v6', 'dns.ryan-palmer', 'mullvad-doh']
 max_clients = 250
 # user_name = 'nobody'
 ipv4_servers = true
