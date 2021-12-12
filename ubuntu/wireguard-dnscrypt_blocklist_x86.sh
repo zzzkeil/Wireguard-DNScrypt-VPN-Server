@@ -13,12 +13,12 @@ ENDCOLOR="\e[0m"
 
 clear
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-VPN-Server setup script for Ubuntu 18.04 and above      ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup script is needed to install, if not installed this script    ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}will automatically download the script, you need to run this manualy       ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-VPN-Server setup script for Debian 11 and Ubuntu 20.04  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!         ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.09.23 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.12.12 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -59,27 +59,21 @@ if [[ -e /root/base_setup.README ]]; then
 	 exit 1
 fi
 
-### check if Ubuntu OS 18.04 or 20.04
-if [[ -e /etc/os-release ]]; then
-      echo -e "/etc/os-release check = ${GREEN}ok${ENDCOLOR}"
-      else
-      echo "/etc/os-release not found! Maybe no Ubuntu OS ?"
-      echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
-      exit 1
-fi
-
+### check if Debian or Ubuntu
+echo "${GREEN}OS check ${ENDCOLOR}"
 . /etc/os-release
-if [[ "$NAME" = 'Ubuntu' ]]; then
-   echo -e "OS Name check = ${GREEN}ok${ENDCOLOR}"
+if [[ "$ID" = 'debian' ]] || [[ "$ID" = 'ubuntu' ]]; then
+   echo -e "OS ID check = ${GREEN}ok${ENDCOLOR}"
    else 
-   echo -e "${RED}This script is made for Ubuntu 18.04 / 20.04${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian and Ubuntu ${ENDCOLOR}"
    exit 1
 fi
 
-if [[ "$VERSION_ID" = '18.04' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
+if [[ "$VERSION_ID" = '11' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
    echo -e "OS Versions check = ${GREEN}ok${ENDCOLOR}"
    else
-   echo -e "${RED}Ubuntu Versions below 18.04 not supported - upgrade please, its 2021 :) ${ENDCOLOR}"
+   echo -e "${RED}Only Debian 11 and Ubuntu 20.04 supported ${ENDCOLOR}"
+
    exit 1
 fi
 
