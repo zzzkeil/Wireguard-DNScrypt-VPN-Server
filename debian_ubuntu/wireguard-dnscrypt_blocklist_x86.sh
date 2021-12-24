@@ -18,7 +18,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setu
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.12.12 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2021.12.24 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -367,6 +367,9 @@ cd /etc/dnscrypt-proxy/utils/generate-domains-blocklists/
 nano /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf
 ./generate-domains-blocklist.py > /etc/dnscrypt-proxy/blocklist.txt
 cd
+### setup your allowlist
+curl -o /etc/dnscrypt-proxy/allowed-names.txt https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/blocklist/domains-allowed-names.txt
+nano /etc/dnscrypt-proxy/allowed-names.txt
 ## check if generate blocklist failed - file is empty
 curl -o /etc/dnscrypt-proxy/checkblocklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/configs/checkblocklist.sh
 chmod +x /etc/dnscrypt-proxy/checkblocklist.sh
