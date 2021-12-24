@@ -1,8 +1,8 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Version 2021.12.12
+### Version 2021.12.24
 major changes : 
- - Debian 11 support
+ - allowed-names support
  - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
