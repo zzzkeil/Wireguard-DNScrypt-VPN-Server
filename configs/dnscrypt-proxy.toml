@@ -63,9 +63,9 @@ log_file = '/var/log/dnscrypt-ips-blocked.log'
 log_format = 'tsv'
 
 [allowed_names]
-# allowed_names_file = 'allowed-names.txt'
-# log_file = 'allowed-names.log'
-# log_format = 'tsv'
+allowed_names_file = 'allowed-names.txt'
+log_file = '/var/log/dnscrypt-urls-allowed.log'
+log_format = 'tsv'
 
 [allowed_ips]
 # allowed_ips_file = 'allowed-ips.txt'
