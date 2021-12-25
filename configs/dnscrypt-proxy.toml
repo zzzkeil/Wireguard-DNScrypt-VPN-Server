@@ -48,7 +48,7 @@ cache_neg_max_ttl = 600
 
 
 [query_log]
-# file = 'query.log'
+# file = '/var/log/dnscrypt-query.log'
 format = 'tsv'
 # ignored_qtypes = ['DNSKEY', 'NS']
 
