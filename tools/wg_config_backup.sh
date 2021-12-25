@@ -10,7 +10,6 @@ tar --append --file=/root/backup_wg_config.tar /root/Wireguard-DNScrypt-VPN-Serv
 tar --append --file=/root/backup_wg_config.tar /etc/ufw/before.rules
 tar --append --file=/root/backup_wg_config.tar /etc/ufw/before6.rules
 tar --append --file=/root/backup_wg_config.tar /etc/unbound/unbound.conf
-tar --append --file=/root/backup_wg_config.tar /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf
 tar --append --file=/root/backup_wg_config.tar /etc/dnscrypt-proxy/allowed-names.txt
 echo "."
 echo "."
