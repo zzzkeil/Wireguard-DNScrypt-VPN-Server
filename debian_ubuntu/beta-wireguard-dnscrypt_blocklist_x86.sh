@@ -181,7 +181,7 @@ make -C wireguard-linux-compat/src install
 make -C wireguard-tools/src -j$(nproc)
 make -C wireguard-tools/src install
 
-
+cd
 
 #apt install wireguard wireguard-tools -y
 #apt install wireguard-dkms wireguard-tools -y
