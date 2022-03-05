@@ -28,5 +28,5 @@ tracker.debian.org
 #googleadservices.com
 
 # 2021.12.24 domains to get Apple App Store working
-*.iadsdk.apple.com
-*.cstat.apple.com
+#*.iadsdk.apple.com
+#*.cstat.apple.com
