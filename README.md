@@ -64,3 +64,18 @@ run ./add_client.sh or ./remove_client.sh
 run ./wg_config_backup.sh or ./wg_config_restore.sh
 ```
 -----------------------------------------
+
+
+# Other repository : Wireguard-tor-server gateway
+
+https://github.com/zzzkeil/wireguard-dnscrypt-tor-server 
+
+** project target
+
+    encrypted wireguard vpn connection to server
+    all traffic from wireguard clients will go over tor network
+    dns nameresulotion over dnscrypt (Anonymized DNS) with blocklists
+    onion (darknet) nameresulotion over dnscrypt forward to tor
+
+
+
