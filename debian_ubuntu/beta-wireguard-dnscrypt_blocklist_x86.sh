@@ -18,7 +18,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setu
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More information: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                 its a beta test file, maybe don´t work                     ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                 Version 2022.05.06 - changelog on github                   ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -68,10 +68,10 @@ if [[ "$ID" = 'debian' ]] || [[ "$ID" = 'ubuntu' ]]; then
    exit 1
 fi
 
-if [[ "$VERSION_ID" = '11' ]] || [[ "$VERSION_ID" = '20.04' ]]; then
+if [[ "$VERSION_ID" = '11' ]] || [[ "$VERSION_ID" = '20.04' ]] || [[ "$VERSION_ID" = '22.04' ]]; then
    echo -e "OS Versions check = ${GREEN}ok${ENDCOLOR}"
    else
-   echo -e "${RED}Only Debian 11 and Ubuntu 20.04 supported ${ENDCOLOR}"
+   echo -e "${RED}Only Debian 11 and Ubuntu 20.04 and 22.04 supported ${ENDCOLOR}"
 
    exit 1
 fi
@@ -168,22 +168,8 @@ echo -e "${YELLOW}apt systemupdate and installs${ENDCOLOR}"
 
 ### apt systemupdate and installs	 
 apt update && apt upgrade -y && apt autoremove -y
-apt install qrencode unbound unbound-host python curl git libelf-dev linux-headers-$(uname -r) build-essential pkg-config -y
-
-mkdir /root/git-clone-wireguard
-cd /root/git-clone-wireguard
-git clone https://git.zx2c4.com/wireguard-linux-compat
-git clone https://git.zx2c4.com/wireguard-tools
-
-make -C wireguard-linux-compat/src -j$(nproc)
-make -C wireguard-linux-compat/src install
-
-make -C wireguard-tools/src -j$(nproc)
-make -C wireguard-tools/src install
-
-cd
-
-#apt install wireguard wireguard-tools -y
+apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
+apt install wireguard wireguard-tools -y
 #apt install wireguard-dkms wireguard-tools -y
 
 ### create and download files for configs
