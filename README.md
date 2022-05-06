@@ -78,4 +78,9 @@ https://github.com/zzzkeil/wireguard-dnscrypt-tor-server
     onion (darknet) nameresulotion over dnscrypt forward to tor
 
 
-
+###### BETA ----  Server x86 - Debian 11 and Ubuntu 20.04 / 22.04  :
+```
+wget -O  beta-wireguard-dnscrypt_blocklist_x86.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/debian_ubuntu/beta-wireguard-dnscrypt_blocklist_x86.sh
+chmod +x beta-wireguard-dnscrypt_blocklist_x86.sh
+./beta-wireguard-dnscrypt_blocklist_x86.sh
+```
