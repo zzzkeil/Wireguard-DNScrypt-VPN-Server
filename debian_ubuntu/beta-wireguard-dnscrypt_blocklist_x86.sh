@@ -49,7 +49,7 @@ if [[ -e /root/base_setup.README ]]; then
 	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
 	 echo ""
 	 echo ""
-	 wget -O  base_setup.sh https://raw.githubusercontent.com/zzzkeil/base_setups/master/base_setup.sh
+	 wget -O  base_setup.sh https://raw.githubusercontent.com/zzzkeil/base_setups/master/base_setup_beta.sh
          chmod +x base_setup.sh
 	 echo ""
 	 echo ""
