@@ -168,7 +168,7 @@ echo -e "${YELLOW}apt systemupdate and installs${ENDCOLOR}"
 
 ### apt systemupdate and installs	 
 apt update && apt upgrade -y && apt autoremove -y
-apt install qrencode unbound unbound-host python curl linux-headers-$(uname -r) -y 
+apt install qrencode unbound unbound-host python-is-python3 curl linux-headers-$(uname -r) -y 
 apt install wireguard wireguard-tools -y
 #apt install wireguard-dkms wireguard-tools -y
 
