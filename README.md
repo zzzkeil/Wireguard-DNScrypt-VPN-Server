@@ -1,8 +1,8 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Version 2021.12.24
+### Version 2022.05.06
 major changes : 
- - allowed-names support
+ - add support for ubuntu 22.04
  - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
@@ -13,7 +13,7 @@ major changes :
 * backup, restore and unistall options
 
 ## How to install :  
-* Use a fresh / clean **server** os  ( e.g. Ubuntu 20.04 is tested ) 
+* Use a fresh / clean and  up to date  **server** os   debian or ubuntu
 * Copy the lines for your system below, and run it and follow the instructions  
 * My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
    * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
