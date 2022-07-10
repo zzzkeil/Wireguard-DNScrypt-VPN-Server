@@ -1,7 +1,7 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
 ### Project moved to gitlab
-[repository](https://gitlab.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
+[New project home on gitlab](https://gitlab.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 ###### Server x86 - Debian 11 and Ubuntu 20.04 / 22.04 :
 ```
