@@ -1,7 +1,7 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Project moved to gitlab
-[New project home on gitlab](https://gitlab.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
+### Project moved to gitlab or codeberg  ( in testing )
+[project home on gitlab for testing](https://gitlab.com/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
 ###### Server x86 - Debian 11 and Ubuntu 20.04 / 22.04 :
 ```
@@ -11,10 +11,14 @@ chmod +x wireguard-dnscrypt_blocklist_x86.sh
 
 ```
 
-== We're Using GitHub Under Protest ==
+== I´m Using GitHub Under Protest ==
 
-This project is currently hosted on GitHub.  This is not ideal; GitHub is a
-proprietary, trade-secret system that is not Free and Open Souce Software
+This project is no longer hosted on GitHub.
+After reading some articles about Github, i think it´s time for me to move,
+and try gitlab.com , or codeberg.org
+
+GitHub is a proprietary, trade-secret system that is not Free and Open Souce Software
 (FOSS). 
 
+[GiveUpGitHub ???](GiveUpGitHub.org)
 ![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
