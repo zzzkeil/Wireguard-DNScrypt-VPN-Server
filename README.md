@@ -21,6 +21,3 @@ and try codeberg.org
 
 GitHub is a proprietary, trade-secret system that is not Free and Open Souce Software
 (FOSS). 
-
-[GiveUpGitHub ???](https://GiveUpGitHub.org)
-![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
