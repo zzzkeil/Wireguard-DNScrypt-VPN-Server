@@ -1,6 +1,6 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Project moved to gitlab or codeberg
+### Project moved to codeberg
 
 [project home on codeberg for testing](https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
