@@ -6,8 +6,6 @@
 
 ## Setup (source form codeberg.org) :
 
-# Wireguard-DNScrypt-VPN-Server  x86 / arm64
-
 ### Version 2022.06.18
 major changes : 
  - add support for debian 12 
