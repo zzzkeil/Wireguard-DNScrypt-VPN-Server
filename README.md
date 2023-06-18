@@ -6,18 +6,16 @@
 
 ## Setup (source form codeberg.org) :
 
-###### Server x86 - Debian 11 and Ubuntu 20.04 / 22.04 
+###### Server x86 - Debian 12  (11)
 ```
 wget -O  wireguard-dnscrypt_blocklist_x86.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/debian_ubuntu/wireguard-dnscrypt_blocklist_x86.sh
 chmod +x wireguard-dnscrypt_blocklist_x86.sh
 ./wireguard-dnscrypt_blocklist_x86.sh
 
 ```
-== I´m Using GitHub Under Protest ==
 
-This project is no longer hosted on GitHub.
-After reading some articles about Github, i think it´s time for me to move,
-and try codeberg.org
+###### Server arm64 - Debian 12  (11)
+```
+comming soon ............
 
-GitHub is a proprietary, trade-secret system that is not Free and Open Souce Software
-(FOSS). 
+```
