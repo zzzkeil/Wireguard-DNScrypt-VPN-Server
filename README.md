@@ -6,7 +6,7 @@
 
 ## Setup (source form codeberg.org) :
 
-### Version 2022.06.18
+### Version 2023.06.18
 major changes : 
  - add support for debian 12 
  - add arm64 support
