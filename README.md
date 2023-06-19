@@ -30,14 +30,14 @@ major changes :
 
 ###### Server x86 - Debian 12  (11):
 ```
-wget -O  wireguard-dnscrypt_blocklist_x86.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/debian_ubuntu/wireguard-dnscrypt_blocklist_x86.sh
+wget -O  wireguard-dnscrypt_blocklist_x86.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/debian/wireguard-dnscrypt_blocklist_x86.sh
 chmod +x wireguard-dnscrypt_blocklist_x86.sh
 ./wireguard-dnscrypt_blocklist_x86.sh
 ```
 
 ###### Server arm64 - Debian 12  (11):
 ```
-wget -O  wireguard-dnscrypt_blocklist_arm64.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/debian_ubuntu/wireguard-dnscrypt_blocklist_arm64.sh
+wget -O  wireguard-dnscrypt_blocklist_arm64.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/debian/wireguard-dnscrypt_blocklist_arm64.sh
 chmod +x wireguard-dnscrypt_blocklist_arm64.sh
 ./wireguard-dnscrypt_blocklist_arm64.sh
 ```
