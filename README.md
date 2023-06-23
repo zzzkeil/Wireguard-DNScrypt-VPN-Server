@@ -4,29 +4,37 @@
 
 [project home on codeberg](https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
-## Setup (source form codeberg.org) :
-
-### Version 2023.06.18
+### Version 2023.06.23
 major changes : 
- - add support for debian 12 
+ - unified Debian 12 and Fedora 38 in one script 
  - add arm64 support
- - remove all support for ubuntu .......
+ - removed unbound  ( only DNScrypt is used )
+ - replaced ufw with firewalld for both systems 
+ - remove all support for ubuntu ...
  - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
-* DNScrypt with anonymized_dns / DNSSEC (unbound)
+* DNScrypt with anonymized_dns / DNSSEC
 * Ad-, Maleware-, ..., Blocking
 * 3 config files  for your clients
 * add or remove clients with add_client.sh / remove_client.sh 
 * backup, restore and unistall options
 
 ## How to install :  
-* Use a fresh / clean and  up to date  **server** os   debian or ubuntu
+* Use a fresh / clean and  up to date  **server** os   debian 12 (11) or fedora 38 (37)
 * Copy the lines for your system below, and run it and follow the instructions  
-* My script base_setup.sh need to installed -> [repository](https://gitlab.com/zzzkeil/base_setups)  
-   * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
+* My script base_setup.sh need to installed -> [repository](https://codeberg.org/zzzkeil/base_setups)  
+   * if not installed, unified_base_setup.sh will downloaded for you, just follow the instructions.  
 
 ----------------------------------------
+
+###### In Testing (mayby works)  unified Server arm64 - Debian 12 (11) and Fedora 38 (37):
+```
+wget -O  unified_wireguard-dnscrypt_blocklist_arm64.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/unified_wireguard-dnscrypt_blocklist_arm64.sh
+chmod +x unified_wireguard-dnscrypt_blocklist_arm64.sh
+./unified_wireguard-dnscrypt_blocklist_arm64.sh
+```
+
 
 ###### Server x86 - Debian 12  (11):
 ```
@@ -41,6 +49,7 @@ wget -O  wireguard-dnscrypt_blocklist_arm64.sh https://codeberg.org/zzzkeil/Wire
 chmod +x wireguard-dnscrypt_blocklist_arm64.sh
 ./wireguard-dnscrypt_blocklist_arm64.sh
 ```
+
 
 @ the end you see the QR Code for your wiregaurd app.
 
