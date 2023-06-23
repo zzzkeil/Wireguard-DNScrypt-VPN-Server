@@ -30,9 +30,9 @@ major changes :
 
 ###### In Testing (mayby works)  unified Server arm64 - Debian 12 (11) and Fedora 38 (37):
 ```
-wget -O  unified_wireguard-dnscrypt_blocklist_arm64.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/unified_wireguard-dnscrypt_blocklist_arm64.sh
-chmod +x unified_wireguard-dnscrypt_blocklist_arm64.sh
-./unified_wireguard-dnscrypt_blocklist_arm64.sh
+wget -O  unified_arm64_wireguard_dnscrypt_setup.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/unified_arm64_wireguard_dnscrypt_setup.sh
+chmod +x unified_arm64_wireguard_dnscrypt_setup.sh
+./unified_arm64_wireguard_dnscrypt_setup.sh
 ```
 
 
