@@ -1,6 +1,11 @@
 # Wireguard-DNScrypt-VPN-Server  x86 / arm64
 
-### Project moved to codeberg
+## 2023.06.24 a bigger update comming soon ...
+## Some files get removed, and one script will work on x86_64 / ARM64 and Debian / Fedora
+ 
+
+
+### Project  codeberg
 
 [project home on codeberg](https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
