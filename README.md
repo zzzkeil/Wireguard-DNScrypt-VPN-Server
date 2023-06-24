@@ -4,9 +4,9 @@
 
 [project home on codeberg](https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server)
 
-### Version 2023.06.23
+### Version 2023.06.24
 major changes : 
- - unified Debian 12 and Fedora 38 in one script 
+ - unified Debian 12, Fedora 38 and X86_64, ARM64 in one script 
  - add arm64 support
  - removed unbound  ( only DNScrypt is used )
  - replaced ufw with firewalld for both systems 
@@ -28,11 +28,11 @@ major changes :
 
 ----------------------------------------
 
-###### In Testing (mayby works)  unified Server arm64 - Debian 12 (11) and Fedora 38 (37):
+###### In Testing (mayby works) Server x86_64 and ARM64 - Debian 12 (11) and Fedora 38 (37):
 ```
-wget -O  unified_arm64_wireguard_dnscrypt_setup.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/unified_arm64_wireguard_dnscrypt_setup.sh
-chmod +x unified_arm64_wireguard_dnscrypt_setup.sh
-./unified_arm64_wireguard_dnscrypt_setup.sh
+wget -O  unified_wireguard_dnscrypt_setup.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/unified_wireguard_dnscrypt_setup.sh
+chmod +x unified_wireguard_dnscrypt_setup.sh
+./unified_wireguard_dnscrypt_setup.sh
 ```
 
 
