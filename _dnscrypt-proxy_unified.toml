@@ -1,0 +1,130 @@
+listen_addresses = ['[::]:53']
+#server_names = ['dns.digitale-gesellschaft.ch-ipv6', 'dns.digitale-gesellschaft.ch-2', 'dns.digitale-gesellschaft.ch-ipv6-2', 'dns.digitale-gesellschaft.ch', 'odoh-cloudflare', 'doh.ffmuc.net-v6']
+#server_names = ['nextdns-ipv6', 'dns.sb', 'dns.sb-ipv6', 'nextdns', 'meganerd-doh-ipv4', 'meganerd-doh-ipv6', 'dns.digitale-gesellschaft.ch-ipv6', 'dns.digitale-gesellschaft.ch-2', 'dns.digitale-gesellschaft.ch-ipv6-2', 'cz.nic', 'bortzmeyer-ipv6', 'doh.appliedprivacy.net', 'bortzmeyer', 'cz.nic-ipv6', 'dns.digitale-gesellschaft.ch', 'odoh-cloudflare', 'cloudflare-ipv6', 'ams-dnscrypt-nl', 'cloudflare', 'dnscrypt.be', 'doh.ffmuc.net-v6', 'dns.ryan-palmer', 'mullvad-doh']
+max_clients = 250
+# user_name = 'nobody'
+ipv4_servers = true
+ipv6_servers = true
+dnscrypt_servers = true
+doh_servers = true
+odoh_servers = true
+require_dnssec = true
+require_nolog = true
+require_nofilter = true
+disabled_server_names = []
+force_tcp = false
+timeout = 5000
+keepalive = 30
+lb_strategy = 'p2'
+lb_estimator = true
+log_level = 2
+log_file = '/var/log/dnscrypt-proxy.log'
+# log_file_latest = true
+cert_refresh_delay = 33
+# dnscrypt_ephemeral_keys = false
+# tls_disable_session_tickets = false
+# tls_cipher_suite = [52392, 49199]
+bootstrap_resolvers = ['9.9.9.9:53', '8.8.8.8:53']
+ignore_system_dns = false
+netprobe_timeout = 60
+netprobe_address = '9.9.9.9:53'
+# offline_mode = false
+# query_meta = ['key1:value1', 'key2:value2', 'token:MySecretToken']
+log_files_max_size = 10
+log_files_max_age = 7
+log_files_max_backups = 1
+block_ipv6 = false
+block_unqualified = true
+block_undelegated = true
+reject_ttl = 10
+# forwarding_rules = 'forwarding-rules.txt'
+# cloak_ttl = 600
+cache = true
+cache_size = 512
+cache_min_ttl = 600
+cache_max_ttl = 1800
+cache_neg_min_ttl = 60
+cache_neg_max_ttl = 600
+
+
+[query_log]
+# file = '/var/log/dnscrypt-query.log'
+format = 'tsv'
+# ignored_qtypes = ['DNSKEY', 'NS']
+
+
+[blocked_names]
+blocked_names_file = 'blocklist.txt'
+log_file = '/var/log/dnscrypt-urls-blocked.log'
+log_format = 'tsv'
+
+[blocked_ips]
+blocked_ips_file = 'blockedlist-ips.txt'
+log_file = '/var/log/dnscrypt-ips-blocked.log'
+log_format = 'tsv'
+
+[allowed_names]
+allowed_names_file = 'allowed-names.txt'
+log_file = '/var/log/dnscrypt-urls-allowed.log'
+log_format = 'tsv'
+
+[allowed_ips]
+# allowed_ips_file = 'allowed-ips.txt'
+# log_file = 'allowed-ips.log'
+# log_format = 'tsv'
+
+[schedules]
+
+
+[sources]
+
+  [sources.'public-resolvers']
+    urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md', 'https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/public-resolvers.md', 'https://download.dnscrypt.net/resolvers-list/v3/public-resolvers.md']
+    cache_file = 'public-resolvers.md'
+    minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+    refresh_delay = 72
+    prefix = ''
+
+  ## Anonymized DNS relays
+
+  [sources.'relays']
+    urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/relays.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/relays.md', 'https://download.dnscrypt.net/resolvers-list/v3/relays.md']
+    cache_file = 'relays.md'
+    minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+    refresh_delay = 72
+    prefix = ''
+
+  ## ODoH (Oblivious DoH) servers and relays
+ 
+  [sources.'odoh-servers']
+    urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/odoh-servers.md', 'https://download.dnscrypt.info/resolvers-list/v3/odoh-servers.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/odoh-servers.md', 'https://download.dnscrypt.net/resolvers-list/v3/odoh-servers.md']
+    cache_file = 'odoh-servers.md'
+    minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+    refresh_delay = 24
+    prefix = ''
+  [sources.'odoh-relays']
+    urls = ['https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/odoh-relays.md', 'https://download.dnscrypt.info/resolvers-list/v3/odoh-relays.md', 'https://ipv6.download.dnscrypt.info/resolvers-list/v3/odoh-relays.md', 'https://download.dnscrypt.net/resolvers-list/v3/odoh-relays.md']
+    cache_file = 'odoh-relays.md'
+    minisign_key = 'RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3'
+    refresh_delay = 24
+    prefix = ''
+
+
+[broken_implementations]
+fragments_blocked = ['cisco', 'cisco-ipv6', 'cisco-familyshield', 'cisco-familyshield-ipv6', 'cleanbrowsing-adult', 'cleanbrowsing-adult-ipv6', 'cleanbrowsing-family', 'cleanbrowsing-family-ipv6', 'cleanbrowsing-security', 'cleanbrowsing-security-ipv6']
+
+
+# Anonymized DNS section.
+# -----------------------
+[anonymized_dns]
+
+routes = [
+   { server_name='*', via=['*'] }
+]
+
+skip_incompatible = true
+
+# direct_cert_fallback = false
+
+[static]
+
