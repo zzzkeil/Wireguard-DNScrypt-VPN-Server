@@ -16,9 +16,9 @@ echo -e " ${GRAYB}##############################################################
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12 (11) and Fedora 38 (37)      ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed to setup this script correctly!! ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server      ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}            Version 2023.06.24 - no changelog just a testfile                ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}            Version 2023.06.24 -  changelog on github                    ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -93,14 +93,14 @@ if [[ -e /root/base_setup.README ]]; then
 	 else
 	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
 	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
-	 echo -e " ${YELLOW}Starting download unified_base_setup.sh from my repository${ENDCOLOR}"
+	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
 	 echo ""
 	 echo ""
-	 wget -O  unified_base_setup.sh https://codeberg.org/zzzkeil/base_setups/raw/branch/master/unified_base_setup.sh
-         chmod +x unified_base_setup.sh
+	 wget -O  base_setup.sh https://raw.githubusercontent.com/zzzkeil/base_setups/master/base_setup.sh
+         chmod +x base_setup.sh
 	 echo ""
 	 echo ""
-         echo -e " Now run ${YELLOW}./unified_base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
+         echo -e " Now run ${YELLOW}./base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
@@ -125,8 +125,8 @@ if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
 	 echo  "To uninstall run"
 	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
 	 echo ""
-	 echo "For - News / Updates / Issues - check my codeberg site"
-	 echo "https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server"
+	 echo "For - News / Updates / Issues - check my github site"
+	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
 	 echo
 	 echo
 	 exit 1
@@ -231,15 +231,15 @@ $wg0keepalive
 ---
 
 For - News / Updates / Issues - check my gitlab site
-https://gitlab.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
+https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
 
 
-curl -o add_client.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/tools/add_client.sh
-curl -o remove_client.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/tools/remove_client.sh
-curl -o wg_config_backup.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/tools/wg_config_backup.sh
-curl -o wg_config_restore.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/tools/wg_config_restore.sh
-curl -o uninstaller_back_to_base.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/tools/uninstaller_back_to_base.sh
+curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
+curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
+curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
+curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
+curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
 
 chmod +x add_client.sh
 chmod +x remove_client.sh
@@ -385,14 +385,14 @@ wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dn
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
-curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/configs/dnscrypt-proxy_main.toml
-curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/configs/dnscrypt-proxy-update.sh
+curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy.toml
+curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 
 ### setup blocklist (url & ips) and a allowlist from (anudeepND)"
 mkdir /etc/dnscrypt-proxy/utils/
 mkdir /etc/dnscrypt-proxy/utils/generate-domains-blocklists/
-curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/blocklist/domains-blocklist-default.conf
+curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.conf https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/domains-blocklist-default.conf
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist-local-additions.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blocklist/domains-blocklist-local-additions.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-time-restricted.txt https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/utils/generate-domains-blocklist/domains-time-restricted.txt
 curl -o /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-allowlist.txt https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
@@ -403,10 +403,10 @@ nano /etc/dnscrypt-proxy/utils/generate-domains-blocklists/domains-blocklist.con
 ./generate-domains-blocklist.py > /etc/dnscrypt-proxy/blocklist.txt
 cd
 ### setup your allowlist
-curl -o /etc/dnscrypt-proxy/allowed-names.txt https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/blocklist/domains-allowed-names.txt
+curl -o /etc/dnscrypt-proxy/allowed-names.txt https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/domains-allowed-names.txt
 nano /etc/dnscrypt-proxy/allowed-names.txt
 ## check if generate blocklist failed - file is empty
-curl -o /etc/dnscrypt-proxy/checkblocklist.sh https://codeberg.org/zzzkeil/Wireguard-DNScrypt-VPN-Server/raw/branch/master/configs/checkblocklist.sh
+curl -o /etc/dnscrypt-proxy/checkblocklist.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/checkblocklist.sh
 chmod +x /etc/dnscrypt-proxy/checkblocklist.sh
 
 curl -o /etc/dnscrypt-proxy/blockedlist-ips.txt https://iplists.firehol.org/files/yoyo_adservers.ipset
