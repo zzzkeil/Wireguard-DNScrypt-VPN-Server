@@ -265,7 +265,7 @@ fi
 firewall-cmd --zone=trusted --add-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
 firewall-cmd --zone=trusted --add-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
 
-# @end of script firewall-cmd --runtime-to-permanent
+firewall-cmd --runtime-to-permanent
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-wireguard_ip_forward.conf
 echo "net.ipv6.conf.all.forwarding=1" >> /etc/sysctl.d/99-wireguard_ip_forward.conf
@@ -456,6 +456,5 @@ ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
 
-firewall-cmd --runtime-to-permanent
 systemctl restart firewalld
 exit
