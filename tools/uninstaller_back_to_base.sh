@@ -57,10 +57,7 @@ crontab -l | grep -v 'checkblocklist.sh'  | crontab  -
 crontab -l | grep -v 'dnscrypt-proxy.service'  | crontab  -
 crontab -l | grep -v 'dnscrypt-proxy-update.sh'  | crontab  -
 
-
-cp /root/script_backupfiles/sysctl.conf.orig /etc/sysctl.conf
 cp /etc/resolv.conf.orig /etc/resolv.conf
-
 
 . /etc/os-release
 if [[ "$ID" = 'debian' ]]; then
@@ -74,11 +71,11 @@ fi
 
 
 if [[ "$systemos" = 'debian' ]]; then
-apt remove qrencode python-is-python3 curl linux-headers-$(uname -r) wireguard wireguard-tools -y
+apt remove qrencode python-is-python3 linux-headers-$(uname -r) wireguard wireguard-tools -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
-dnf remove qrencode python-is-python3 curl cronie cronie-anacron wireguard-tools -y
+dnf remove qrencode python-is-python3 cronie cronie-anacron wireguard-tools -y
 fi
 
 
@@ -91,18 +88,18 @@ wg0networkv6=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 wg0port=$(sed -n 12p /root/Wireguard-DNScrypt-VPN-Server.README)
 
 
-firewall-cmd --zone=public --remove-port="$wg0port"/udp
+firewall-cmd --zone=public --remove-port="$wg0port"/udp --permanent
 
-firewall-cmd --zone=trusted --remove-source=10.$wg0networkv4.0/24
-firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4"
+firewall-cmd --zone=trusted --remove-source=10.$wg0networkv4.0/24 --permanent
+firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4" --permanent
 
 if [[ -n "$hostipv6" ]]; then
-firewall-cmd --zone=trusted --remove-source=fd42:$wg0networkv6::/64
-firewall-cmd --direct --remove-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6"
+firewall-cmd --zone=trusted --remove-source=fd42:$wg0networkv6::/64 --permanent
+firewall-cmd --direct --remove-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6" --permanent
 fi
 
-firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
-firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
+firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1 --permanent
+firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1 --permanent
 
 
 
@@ -132,7 +129,6 @@ rm remove_client.sh
 rm wg_config_backup.sh
 rm wg_config_restore.sh
 
-firewall-cmd --runtime-to-permanent
 firewall-cmd --reload
 
 echo "reboot, soon as possible"
