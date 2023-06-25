@@ -36,8 +36,8 @@ fi
 ### remove existing firewalld rules from setup
 oldhostipv4=$(hostname -I | awk '{print $1}')
 oldhostipv6=$(hostname -I | awk '{print $2}')
-oldipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
-oldipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
+oldwg0networkv4=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+oldwg0networkv6=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 oldwg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
 firewall-cmd --zone=public --remove-port="$oldwg0port"/udp
 
@@ -61,9 +61,9 @@ tar -xvf /root/backup_wg_config.tar -C /
 ### restore firewalld rules from backup
 hostipv4=$(hostname -I | awk '{print $1}')
 hostipv6=$(hostname -I | awk '{print $2}')
-ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
-ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
-wg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
+wg0networkv4=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+wg0networkv6=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
+wg0port=$(sed -n 12p /root/Wireguard-DNScrypt-VPN-Server.README)
 firewall-cmd --zone=public --add-port="$wg0port"/udp
 
 firewall-cmd --zone=trusted --add-source=10.$wg0networkv4.0/24
