@@ -43,14 +43,12 @@ if [[ "$EUID" -ne 0 ]]; then
 	exit 1
 fi
 
-systemctl disable unbound
+
 systemctl disable dnscrypt-proxy.service
 systemctl disable wg-quick@wg0.service
-systemctl stop unbound
 systemctl stop dnscrypt-proxy.service
 systemctl stop wg-quick@wg0.service
 
-#ufw delete --- 
 
 crontab -l | grep -v 'generate-domains-blocklist.py'  | crontab  -
 crontab -l | grep -v 'domains-allowlist.txt'  | crontab  -
@@ -59,30 +57,68 @@ crontab -l | grep -v 'checkblocklist.sh'  | crontab  -
 crontab -l | grep -v 'dnscrypt-proxy.service'  | crontab  -
 crontab -l | grep -v 'dnscrypt-proxy-update.sh'  | crontab  -
 
-cp /root/script_backupfiles/ufw.orig /etc/default/ufw 
-cp /root/script_backupfiles/before.rules.orig /etc/ufw/before.rules 
-cp /root/script_backupfiles/before6.rules.orig /etc/ufw/before6.rules
+
 cp /root/script_backupfiles/sysctl.conf.orig /etc/sysctl.conf
-cp /root/script_backupfiles/sysctl.conf.ufw.orig /etc/ufw/sysctl.conf
 cp /etc/resolv.conf.orig /etc/resolv.conf
 
-apt remove qrencode unbound unbound-host wireguard wireguard-tools -y
-apt autoremove -y
-apt autoclean -y
+
+. /etc/os-release
+if [[ "$ID" = 'debian' ]]; then
+   systemos=debian
+   fi
+fi
+
+
+if [[ "$ID" = 'fedora' ]]; then
+   systemos=fedora
+   fi
+fi
+
+
+if [[ "$systemos" = 'debian' ]]; then
+apt remove qrencode python-is-python3 curl linux-headers-$(uname -r) wireguard wireguard-tools -y
+fi
+
+if [[ "$systemos" = 'fedora' ]]; then
+dnf remove qrencode python-is-python3 curl cronie cronie-anacron wireguard-tools -y
+fi
+
+
+#################### remove fw settings todo ?
+
+hostipv4=$(hostname -I | awk '{print $1}')
+hostipv6=$(hostname -I | awk '{print $2}')
+ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
+wg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
+
+
+firewall-cmd --zone=public --remove-port="$wg0port"/udp
+
+firewall-cmd --zone=trusted --remove-source=10.$wg0networkv4.0/24
+firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4"
+
+if [[ -n "$hostipv6" ]]; then
+firewall-cmd --zone=trusted --remove-source=fd42:$wg0networkv6::/64
+firewall-cmd --direct --remove-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6"
+fi
+
+firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
+firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
+
+firewall-cmd --runtime-to-permanent
+
+echo "net.ipv4.ip_forward=0" > /etc/sysctl.d/99-wireguard_ip_forward.conf
+echo "net.ipv6.conf.all.forwarding=0" >> /etc/sysctl.d/99-wireguard_ip_forward.conf
+
+echo 0 > /proc/sys/net/ipv4/ip_forward
+echo 0 > /proc/sys/net/ipv6/conf/all/forwarding
+
 
 systemctl enable systemd-resolved
 systemctl start systemd-resolved
 
-
-
-
-
-rm /root/script_backupfiles/ufw.orig
-rm /root/script_backupfiles/before.rules.orig
-rm /root/script_backupfiles/before6.rules.orig
 rm /root/script_backupfiles/sysctl.conf.orig
-rm /root/script_backupfiles/sysctl.conf.ufw.orig
-rm /root/script_backupfiles/unbound.service.orig
 rm /etc/resolv.conf.orig
 rm /var/log/dnscrypt-proxy.log
 rm /var/log/dnscrypt-proxy-blocked.log
@@ -90,8 +126,7 @@ rm /etc/systemd/system/dnscrypt-proxy.service
 rm -rf /etc/wireguard
 rm -rf /etc/dnscrypt-proxy
 rm -rf /etc/unbound
-rm wireguard-dnscrypt_blocklist_x86.sh
-rm wireguard-dnscrypt_blocklist_arm64.sh
+rm wireguard_dnscrypt_setup.sh
 rm /root/wireguard_folder
 rm /root/dnscrypt-proxy_folder
 rm /root/system-log_folder
@@ -101,9 +136,4 @@ rm remove_client.sh
 rm wg_config_backup.sh
 rm wg_config_restore.sh
 
-#ufw reload
-
-echo " for now, remove ufw firewall rule manual plz "
-ufw status numbered
-echo " ufw delete . "
-echo " run   ufw relaod   after deleting rules "
+echo "reboot, soon as possible"
