@@ -26,7 +26,3 @@ tracker.debian.org
 # However, blocking it prevents all sponsored links from the Google
 # search engine from being opened.
 #googleadservices.com
-
-# 2021.12.24 domains to get Apple App Store working
-#*.iadsdk.apple.com
-#*.cstat.apple.com
