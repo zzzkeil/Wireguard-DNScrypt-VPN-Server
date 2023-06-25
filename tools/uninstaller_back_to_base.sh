@@ -133,5 +133,6 @@ rm wg_config_backup.sh
 rm wg_config_restore.sh
 
 firewall-cmd --runtime-to-permanent
+firewall-cmd --reload
 
 echo "reboot, soon as possible"
