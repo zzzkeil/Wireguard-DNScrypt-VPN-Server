@@ -10,7 +10,7 @@ echo ""
 echo ""
 echo "                      To EXIT this script press  [ENTER]"
 echo 
-read -p "                   To RUN this script press  [Y]" -n 1 -r
+read -p "                 To RUN this script press  [Y]" -n 1 -r
 echo
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
@@ -91,11 +91,11 @@ wg0port=$(sed -n 12p /root/Wireguard-DNScrypt-VPN-Server.README)
 firewall-cmd --zone=public --remove-port="$wg0port"/udp --permanent
 
 firewall-cmd --zone=trusted --remove-source=10.$wg0networkv4.0/24 --permanent
-firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4" --permanent
+firewall-cmd --permanent --direct --remove-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4"
 
 if [[ -n "$hostipv6" ]]; then
 firewall-cmd --zone=trusted --remove-source=fd42:$wg0networkv6::/64 --permanent
-firewall-cmd --direct --remove-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6" --permanent
+firewall-cmd ---permanent -direct --remove-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6"
 fi
 
 firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1 --permanent
@@ -131,4 +131,9 @@ rm wg_config_restore.sh
 
 firewall-cmd --reload
 
+echo ""
+echo ""
+echo "sometimes firewall rules get not deleted, check your firewall settings, plz"
+echo ""
+echo ""
 echo "reboot, soon as possible"
