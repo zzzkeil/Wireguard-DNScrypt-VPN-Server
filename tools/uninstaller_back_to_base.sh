@@ -88,7 +88,7 @@ hostipv4=$(hostname -I | awk '{print $1}')
 hostipv6=$(hostname -I | awk '{print $2}')
 wg0networkv4=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
 wg0networkv6=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
-wg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
+wg0port=$(sed -n 12p /root/Wireguard-DNScrypt-VPN-Server.README)
 
 
 firewall-cmd --zone=public --remove-port="$wg0port"/udp
@@ -104,11 +104,9 @@ fi
 firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
 firewall-cmd --zone=trusted --remove-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
 
-firewall-cmd --runtime-to-permanent
 
-echo "net.ipv4.ip_forward=0" > /etc/sysctl.d/99-wireguard_ip_forward.conf
-echo "net.ipv6.conf.all.forwarding=0" >> /etc/sysctl.d/99-wireguard_ip_forward.conf
 
+rm /etc/sysctl.d/99-wireguard_ip_forward.conf
 echo 0 > /proc/sys/net/ipv4/ip_forward
 echo 0 > /proc/sys/net/ipv6/conf/all/forwarding
 
@@ -133,5 +131,7 @@ rm add_client.sh
 rm remove_client.sh
 rm wg_config_backup.sh
 rm wg_config_restore.sh
+
+firewall-cmd --runtime-to-permanent
 
 echo "reboot, soon as possible"
