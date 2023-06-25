@@ -18,7 +18,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}            Version 2023.06.24 -  changelog on github                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}            Version 2023.06.24 -  changelog on github                       ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
 echo ""
 echo ""
