@@ -252,23 +252,19 @@ chmod +x uninstaller_back_to_base.sh
 hostipv4=$(hostname -I | awk '{print $1}')
 hostipv6=$(hostname -I | awk '{print $2}')
 
-firewall-cmd --permanent --new-zone=wireguard
-firewall-cmd --reload
-
 firewall-cmd --zone=public --add-port="$wg0port"/udp
 
-firewall-cmd --zone=wireguard --add-source=10.$wg0networkv4.0/24
+firewall-cmd --zone=trusted --add-source=10.$wg0networkv4.0/24
 firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4"
 
 if [[ -n "$hostipv6" ]]; then
-firewall-cmd --zone=wireguard --add-source=fd42:$wg0networkv6::/64
+firewall-cmd --zone=trusted --add-source=fd42:$wg0networkv6::/64
 firewall-cmd --direct --add-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6"
 fi
 
-firewall-cmd --zone=wireguard --add-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
-firewall-cmd --zone=wireguard --add-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
+firewall-cmd --zone=trusted --add-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
+firewall-cmd --zone=trusted --add-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
 
-# @end of script firewall-cmd --zone=wireguard --change-interface=wg0
 # @end of script firewall-cmd --runtime-to-permanent
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-wireguard_ip_forward.conf
@@ -460,7 +456,6 @@ ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
 
-firewall-cmd --zone=wireguard --change-interface=wg0
 firewall-cmd --runtime-to-permanent
 systemctl restart firewalld
 exit
