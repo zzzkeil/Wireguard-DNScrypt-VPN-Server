@@ -65,13 +65,11 @@ cp /etc/resolv.conf.orig /etc/resolv.conf
 . /etc/os-release
 if [[ "$ID" = 'debian' ]]; then
    systemos=debian
-   fi
 fi
 
 
 if [[ "$ID" = 'fedora' ]]; then
    systemos=fedora
-   fi
 fi
 
 
@@ -88,8 +86,8 @@ fi
 
 hostipv4=$(hostname -I | awk '{print $1}')
 hostipv6=$(hostname -I | awk '{print $2}')
-ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
-ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
+wg0networkv4=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+wg0networkv6=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 wg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
 
 
