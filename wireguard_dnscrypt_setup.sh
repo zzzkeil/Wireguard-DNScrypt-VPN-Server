@@ -12,14 +12,14 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 clear
-echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12 (11) and Fedora 38 (37)      ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed to setup this script correctly!! ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server        ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}            Version 2023.06.24 -  changelog on github                       ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}##############################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12 and Fedora 38 (Rocky Linux 9 in testing)       ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed to setup this script correctly!!                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                          ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2023.06.24 -  changelog on github                               ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
@@ -51,7 +51,7 @@ echo -e "${GREEN}OS check ${ENDCOLOR}"
 if [[ "$ID" = 'debian' ]]; then
  if [[ "$VERSION_ID" = '12' ]] || [[ "$VERSION_ID" = '11' ]]; then
    echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
-   systemos=debian
+   systemos=apt
    fi
 fi
 
@@ -59,10 +59,19 @@ fi
 if [[ "$ID" = 'fedora' ]]; then
  if [[ "$VERSION_ID" = '38' ]] || [[ "$VERSION_ID" = '37' ]]; then
    echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
-   systemos=fedora
+   systemos=dnf
    fi
 fi
 
+### Just testing ....
+if [[ "$ID" = 'rocky' ]]; then
+ if [[ "$VERSION_ID" -ge '9.0' ]] then
+   if [[ "$VERSION_ID" -lt '10' ]] then
+   echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
+   systemos=dnf
+   fi
+ fi
+fi
 
 if [[ "$systemos" = '' ]]; then
    clear
@@ -200,13 +209,13 @@ echo ""
 #
 echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'apt' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode python-is-python3 curl linux-headers-$(uname -r) -y
 apt install wireguard wireguard-tools -y
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
+if [[ "$systemos" = 'dnf' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
 dnf install qrencode python-is-python3 curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
