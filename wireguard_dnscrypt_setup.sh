@@ -65,8 +65,8 @@ fi
 
 ### Just testing ....
 if [[ "$ID" = 'rocky' ]]; then
- if [[ "$VERSION_ID" -ge '9.0' ]] then
-   if [[ "$VERSION_ID" -lt '10' ]] then
+ if [[ "$VERSION_ID" -ge '9.0' ]]; then
+   if [[ "$VERSION_ID" -lt '10' ]]; then
    echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
    systemos=dnf
    fi
