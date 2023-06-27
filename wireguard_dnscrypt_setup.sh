@@ -12,14 +12,14 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 clear
-echo -e " ${GRAYB}################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12 and Fedora 38 (Rocky Linux 9 in testing)       ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed to setup this script correctly!!                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                          ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2023.06.24 -  changelog on github                               ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9,                              ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed to setup this script correctly!!                                             ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                                            ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                                                    ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2023.06.24 -  changelog on github                                                         ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
@@ -49,21 +49,20 @@ echo -e "${GREEN}OS check ${ENDCOLOR}"
 . /etc/os-release
 
 if [[ "$ID" = 'debian' ]]; then
- if [[ "$VERSION_ID" = '12' ]] || [[ "$VERSION_ID" = '11' ]]; then
+ if [[ "$VERSION_ID" = '12' ]]; then
    echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
    systemos=debian
    fi
 fi
 
-
 if [[ "$ID" = 'fedora' ]]; then
- if [[ "$VERSION_ID" = '38' ]] || [[ "$VERSION_ID" = '37' ]]; then
+ if [[ "$VERSION_ID" = '38' ]]; then
    echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
    systemos=fedora
    fi
 fi
 
-### Just testing ....
+### testing .... should run
 if [[ "$ID" = 'rocky' ]]; then
  if [[ "$ROCKY_SUPPORT_PRODUCT" = 'Rocky-Linux-9' ]]; then
    echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
@@ -71,11 +70,19 @@ if [[ "$ID" = 'rocky' ]]; then
  fi
 fi
 
+### testing .... should run
+if [[ "$ID" = 'centos' ]]; then
+ if [[ "$VERSION_ID" = '9' ]]; then
+   echo -e "${GREEN}OS = CentOS Stream ${ENDCOLOR}"
+   systemos=centos
+ fi
+fi
+
 if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12 / 11 or Fedora 38 / 37  !${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9 !${ENDCOLOR}"
    exit 1
 fi
 
@@ -219,7 +226,7 @@ dnf install qrencode python-is-python3 curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
 fi
 
-if [[ "$systemos" = 'rocky' ]]; then
+if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
 dnf install qrencode curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
