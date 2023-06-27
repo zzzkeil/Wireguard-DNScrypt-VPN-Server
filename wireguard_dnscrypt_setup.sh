@@ -51,7 +51,7 @@ echo -e "${GREEN}OS check ${ENDCOLOR}"
 if [[ "$ID" = 'debian' ]]; then
  if [[ "$VERSION_ID" = '12' ]] || [[ "$VERSION_ID" = '11' ]]; then
    echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
-   systemos=apt
+   systemos=debian
    fi
 fi
 
@@ -59,7 +59,7 @@ fi
 if [[ "$ID" = 'fedora' ]]; then
  if [[ "$VERSION_ID" = '38' ]] || [[ "$VERSION_ID" = '37' ]]; then
    echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
-   systemos=dnf
+   systemos=fedora
    fi
 fi
 
@@ -67,7 +67,7 @@ fi
 if [[ "$ID" = 'rocky' ]]; then
  if [[ "$ROCKY_SUPPORT_PRODUCT" = 'Rocky-Linux-9' ]]; then
    echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
-   systemos=dnf
+   systemos=rocky
  fi
 fi
 
@@ -207,18 +207,23 @@ echo ""
 #
 echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
-if [[ "$systemos" = 'apt' ]]; then
+if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode python-is-python3 curl linux-headers-$(uname -r) -y
 apt install wireguard wireguard-tools -y
 fi
 
-if [[ "$systemos" = 'dnf' ]]; then
+if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
 dnf install qrencode python-is-python3 curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
 fi
 
+if [[ "$systemos" = 'rocky' ]]; then
+dnf upgrade --refresh -y && dnf autoremove -y
+dnf install qrencode curl cronie cronie-anacron -y
+dnf install wireguard-tools -y
+fi
 
 ### create and download files for configs
 echo "
