@@ -2,14 +2,15 @@
  
 ### Version 2023.06.27
 major changes : 
- - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9 on X86_64 and ARM64
- - add arm64 support
+ - X86_64 and ARM64
+ - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9
  - removed unbound  ( only DNScrypt is used )
  - replaced ufw with firewalld
  - remove all support for ubuntu ... comeback later
  - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
+* on X86_64 or ARM64 systems
 * DNScrypt with anonymized_dns / DNSSEC
 * Ad-, Maleware-, ..., Blocking
 * 3 config files  for your clients
@@ -17,7 +18,7 @@ major changes :
 * backup, restore and unistall options
 
 ## How to install :  
-###### Server x86_64 and ARM64 - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9:
+###### Server x86_64 and ARM64 - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9:
 ```
 wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_setup.sh
 chmod +x wireguard_dnscrypt_setup.sh
