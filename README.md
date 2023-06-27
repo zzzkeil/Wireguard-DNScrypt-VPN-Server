@@ -23,11 +23,10 @@ wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/W
 chmod +x wireguard_dnscrypt_setup.sh
 ./wireguard_dnscrypt_setup.sh
 ```
-
-* Use a fresh / clean and  up to date  **server** os   Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9
-* Copy the lines for your system below, and run it and follow the instructions  
+* Copy the lines above, execute and follow the instructions  
+* Use a fresh / clean **server** os > Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9
 * My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
-   * if not installed, unified_base_setup.sh will downloaded for you, just follow the instructions.  
+   * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
 
 @ the end you see the QR Code for your wiregaurd app.
 
@@ -39,4 +38,3 @@ run ./add_client.sh or ./remove_client.sh
 ```
 run ./wg_config_backup.sh or ./wg_config_restore.sh
 ```
-
