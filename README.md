@@ -3,10 +3,9 @@
 ### Version 2023.06.27
 major changes : 
  - X86_64 and ARM64
- - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9
+ - Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9
  - removed unbound  ( only DNScrypt is used )
  - replaced ufw with firewalld
- - remove all support for ubuntu ... comeback later
  - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
@@ -18,14 +17,14 @@ major changes :
 * backup, restore and unistall options
 
 ## How to install :  
-###### Server x86_64 and ARM64 - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9:
+###### Server x86_64 and ARM64 - Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9:
 ```
 wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_setup.sh
 chmod +x wireguard_dnscrypt_setup.sh
 ./wireguard_dnscrypt_setup.sh
 ```
 * Copy the lines above, execute and follow the instructions  
-* Use a fresh / clean **server** os > Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9
+* Use a fresh / clean **server** os > Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9:
 * My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
    * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
 
