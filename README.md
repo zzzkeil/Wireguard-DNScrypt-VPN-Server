@@ -17,13 +17,6 @@ major changes :
 * backup, restore and unistall options
 
 ## How to install :  
-* Use a fresh / clean and  up to date  **server** os   Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9
-* Copy the lines for your system below, and run it and follow the instructions  
-* My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
-   * if not installed, unified_base_setup.sh will downloaded for you, just follow the instructions.  
-
-----------------------------------------
-
 ###### Server x86_64 and ARM64 - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9:
 ```
 wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_setup.sh
@@ -31,20 +24,19 @@ chmod +x wireguard_dnscrypt_setup.sh
 ./wireguard_dnscrypt_setup.sh
 ```
 
+* Use a fresh / clean and  up to date  **server** os   Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9
+* Copy the lines for your system below, and run it and follow the instructions  
+* My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
+   * if not installed, unified_base_setup.sh will downloaded for you, just follow the instructions.  
 
 @ the end you see the QR Code for your wiregaurd app.
-
-
------------------------------------------
 
 ## How to add or remove clients :
 ```
 run ./add_client.sh or ./remove_client.sh
 ```
-
-
 ## How to backup or restore settings :
 ```
 run ./wg_config_backup.sh or ./wg_config_restore.sh
 ```
------------------------------------------
+
