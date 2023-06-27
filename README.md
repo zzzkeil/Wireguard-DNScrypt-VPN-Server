@@ -5,7 +5,7 @@ major changes :
  - Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9 on X86_64 and ARM64
  - add arm64 support
  - removed unbound  ( only DNScrypt is used )
- - replaced ufw with firewalld for both systems 
+ - replaced ufw with firewalld
  - remove all support for ubuntu ... comeback later
  - all other things i forgot :)
 
