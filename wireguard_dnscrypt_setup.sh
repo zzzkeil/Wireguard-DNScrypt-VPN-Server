@@ -12,14 +12,14 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 clear
-echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!                                                     ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                                            ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                                                    ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2023.06.27 -  changelog on github                                                         ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9                 ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                                                         ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                                                                 ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2023.06.27 -  changelog on github                                                                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
@@ -52,6 +52,13 @@ if [[ "$ID" = 'debian' ]]; then
  if [[ "$VERSION_ID" = '12' ]]; then
    echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
    systemos=debian
+   fi
+fi
+
+if [[ "$ID" = 'ubuntu' ]]; then
+ if [[ "$VERSION_ID" = '22.04' ]]; then
+   echo -e "${GREEN}OS = Ubuntu ${ENDCOLOR}"
+   systemos=ubuntu
    fi
 fi
 
@@ -222,7 +229,7 @@ echo ""
 #
 echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
 apt install qrencode python-is-python3 curl linux-headers-$(uname -r) -y
 apt install wireguard wireguard-tools -y
