@@ -64,20 +64,25 @@ if [[ "$ID" = 'debian' ]]; then
    systemos=debian
 fi
 
-
 if [[ "$ID" = 'fedora' ]]; then
    systemos=fedora
 fi
 
+if [[ "$ID" = 'rocky' ]]; then
+systemos=rocky
+fi
 
 if [[ "$systemos" = 'debian' ]]; then
 apt remove qrencode python-is-python3 linux-headers-$(uname -r) wireguard wireguard-tools -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
-dnf remove qrencode python-is-python3 cronie cronie-anacron wireguard-tools -y
+dnf remove qrencode python-is-python3 wireguard-tools -y
 fi
 
+if [[ "$systemos" = 'rocky' ]]; then
+dnf remove qrencode wireguard-tools -y
+fi
 
 #################### remove fw settings todo ?
 
@@ -133,7 +138,7 @@ firewall-cmd --reload
 
 echo ""
 echo ""
-echo "sometimes firewall rules get not deleted, check your firewall settings, plz"
+echo "sometimes firewall rules get not deleted, check your firewall settings, and edit manually"
 echo ""
 echo ""
 echo "reboot, soon as possible"
