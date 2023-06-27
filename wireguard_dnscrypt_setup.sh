@@ -13,8 +13,8 @@ ENDCOLOR="\e[0m"
 
 clear
 echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9,                              ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My unified_base_setup.sh script is needed to setup this script correctly!!                                             ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!                                                     ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                                            ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                                                    ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}##########################################################################################################################${ENDCOLOR}"
@@ -67,6 +67,14 @@ if [[ "$ID" = 'rocky' ]]; then
  if [[ "$ROCKY_SUPPORT_PRODUCT" = 'Rocky-Linux-9' ]]; then
    echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
    systemos=rocky
+ fi
+fi
+
+### testing .... should run
+if [[ "$ID" = 'almalinux' ]]; then
+ if [[ "$ALMALINUX_MANTISBT_PROJECT" = 'AlmaLinux-9' ]]; then
+   echo -e "${GREEN}OS = AlmaLinux ${ENDCOLOR}"
+   systemos=almalinux
  fi
 fi
 
@@ -226,7 +234,7 @@ dnf install qrencode python-is-python3 curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
 fi
 
-if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]]; then
+if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
 dnf install qrencode curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
