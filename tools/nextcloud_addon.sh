@@ -109,8 +109,6 @@ read -p "your apache https port: " -e -i 23443 httpsport
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 rm /etc/apache2/ports.conf
 echo "
-
-" >> /etc/apache2/ports.conf
 Listen 2380
 
 <IfModule ssl_module>
@@ -120,7 +118,7 @@ Listen 2380
 <IfModule mod_gnutls.c>
         Listen $httpsport
 </IfModule>
-
+" >> /etc/apache2/ports.conf
 
 echo "
 <VirtualHost *:$httpsport>
