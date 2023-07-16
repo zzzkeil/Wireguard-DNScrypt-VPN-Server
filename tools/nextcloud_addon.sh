@@ -139,10 +139,47 @@ sudo openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/priva
 </VirtualHost>
 >> /etc/apache2/sites-available/nc.conf
 
+read -p "mariaDB -port: " -e -i 3306 dbport
+
+
+randomkey1=$(date +%s | cut -c 3-)
+read -p "sql databasename: " -e -i db$randomkey1 databasename
+read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
+randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
+read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
+echo "
+Database
+databasename : $databasename
+databaseuser : $databaseuser
+databaseuserpasswd : $databaseuserpasswd
+#
+" >> /root/mysql_database_list.txt
+
+mysql -uroot <<EOF
+CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE USER '$databaseuser'@'10.$ipv4network.%' identified by '$databaseuserpasswd';
+GRANT ALL PRIVILEGES on $databasename.* to '$databaseuser'@'10.$ipv4network.%' identified by '$databaseuserpasswd';
+FLUSH privileges;
+EOF
+
+
+
 mysql_secure_installation
-mysql -u root -p
 
 
+mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
+echo "
+[mysqld]
+bind-address = 10.$ipv4network.1
+port = $dbport
+
+slow_query_log_file    = /var/log/mysql/mariadb-slow.log
+long_query_time        = 10
+log_slow_rate_limit    = 1000
+log_slow_verbosity     = query_plan
+log-queries-not-using-indexes
+
+" > /etc/mysql/my.cnf
 
 mkdir /var/www/nc-wireguard
 chown -R www-data:www-data /var/www/nc-wireguard
