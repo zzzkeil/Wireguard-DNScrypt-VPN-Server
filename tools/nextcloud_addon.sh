@@ -113,6 +113,8 @@ fi
 #notes
 ###########
 
+
+#### Apache
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
@@ -139,7 +141,39 @@ sudo openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/priva
 </VirtualHost>
 >> /etc/apache2/sites-available/nc.conf
 
+mkdir /var/www/nc-wireguard
+chown -R www-data:www-data /var/www/nc-wireguard
+cd /var/www/nc-wireguard
+curl -o nextcloud.zip https://download.nextcloud.com/server/releases/.....
+
+a2ensite nc.conf
+
+
+####php settings
+
+
+
+#### DB 
+systemctl stop mariadb
 read -p "mariaDB -port: " -e -i 3306 dbport
+mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
+echo "
+[mysqld]
+bind-address = 10.$ipv4network.1
+port = $dbport
+
+slow_query_log_file    = /var/log/mysql/mariadb-slow.log
+long_query_time        = 10
+log_slow_rate_limit    = 1000
+log_slow_verbosity     = query_plan
+log-queries-not-using-indexes
+" > /etc/mysql/my.cnf
+systemctl stop mariadb
+echo ""
+echo " Your database server will now be hardened - just follow the instructions."
+echo " Keep in mind: your MariaDB root password is still NOT set!"
+echo ""
+mysql_secure_installation
 
 
 randomkey1=$(date +%s | cut -c 3-)
@@ -164,29 +198,12 @@ EOF
 
 
 
-mysql_secure_installation
 
 
-mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
-echo "
-[mysqld]
-bind-address = 10.$ipv4network.1
-port = $dbport
 
-slow_query_log_file    = /var/log/mysql/mariadb-slow.log
-long_query_time        = 10
-log_slow_rate_limit    = 1000
-log_slow_verbosity     = query_plan
-log-queries-not-using-indexes
 
-" > /etc/mysql/my.cnf
 
-mkdir /var/www/nc-wireguard
-chown -R www-data:www-data /var/www/nc-wireguard
-cd /var/www/nc-wireguard
-curl -o nextcloud.zip https://download.nextcloud.com/server/releases/.....
 
-a2ensite nc.conf
 
  
 
