@@ -125,7 +125,7 @@ fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-
+dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip
 fi
 
 if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
@@ -133,4 +133,30 @@ dnf upgrade --refresh -y && dnf autoremove -y
 
 fi
 
+##########################################################################
+#notes
+###########
+
+a2enmod ssl
+sudo openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt
+
+<VirtualHost 10.x.x.1:23443>
+   ServerName 10.x.x.1
+   DocumentRoot /var/www/nc-wireguard
+
+   SSLEngine on
+   SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
+   SSLCertificateKeyFile /etc/ssl/private/nc-selfsigned.key
+
+<Directory /var/www/nc-wireguard/>
+  Require host localhost
+  Require ip 10
+</Directory>
+
+</VirtualHost>
+>> /etc/apache2/sites-available/nc.conf
+
+mkdir /var/www/nc-wireguard
+a2ensite nc.conf
+ 
 
