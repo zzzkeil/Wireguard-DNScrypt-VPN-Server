@@ -226,6 +226,8 @@ echo "
 ?>
 " > /var/www/nc-wireguard/index.php
 
+a2ensite nc.conf
+
 
 if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
