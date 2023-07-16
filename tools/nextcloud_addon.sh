@@ -3,6 +3,7 @@ clear
 echo "just a thought/idea"
 echo "a small/singel nextcloud environment, with access only over wireguard"
 echo "without let's encrypt, just self-signed certificate"
+echo "only for debian 12 and fedora 38, > out-of-the-box php 8.2"
 
 
 echo ""
@@ -38,13 +39,6 @@ if [[ "$ID" = 'debian' ]]; then
    fi
 fi
 
-if [[ "$ID" = 'ubuntu' ]]; then
- if [[ "$VERSION_ID" = '22.04' ]]; then
-   echo -e "${GREEN}OS = Ubuntu ${ENDCOLOR}"
-   systemos=ubuntu
-   fi
-fi
-
 if [[ "$ID" = 'fedora' ]]; then
  if [[ "$VERSION_ID" = '38' ]]; then
    echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
@@ -57,23 +51,9 @@ if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12, Ubuntu 22.04, Fedora 38${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12, Fedora 38${ENDCOLOR}"
    exit 1
 fi
-
-#
-# Architecture check for dnsscrpt 
-#
-ARCH=$(uname -m)
-if [[ "$ARCH" == x86_64* ]]; then
-  dnsscrpt_arch=x86_64
-elif [[ "$ARCH" == aarch64* ]]; then
-    dnsscrpt_arch=arm64
-else
-   echo -e "${RED}This script is only for x86_64 or ARM64  Architecture !${ENDCOLOR}"
-   exit 1
-fi
-echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 
 
@@ -94,24 +74,19 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
-fi
-
-if [[ "$systemos" = 'ubuntu' ]]; then
-apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
+apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
+dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip -y
 fi
 
 
 ### self-signed 4096 certificate
 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -days 3650 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
-                                                                                                                                                                     
 
+### apache part
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
@@ -121,13 +96,15 @@ a2enmod mime
 a2enmod setenvif
 
 
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
+if [[ "$systemos" = 'debian' ]]; then
 systemctl stop apache2.service
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 systemctl stop httpd.service
 fi
+
+read -p "your apache https port: " -e -i 23443 httpsport
 
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 rm /etc/apache2/ports.conf
@@ -137,16 +114,16 @@ echo "
 Listen 2380
 
 <IfModule ssl_module>
-        Listen 23443
+        Listen $httpsport
 </IfModule>
 
 <IfModule mod_gnutls.c>
-        Listen 23443
+        Listen $httpsport
 </IfModule>
 
 
 echo "
-<VirtualHost *:23443>
+<VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nc-wireguard
 
@@ -245,9 +222,14 @@ h1 {
 " > /var/www/nc-wireguard/index.css 
 
 
+echo "
+<?php
+	phpinfo();
+?>
+" > /var/www/nc-wireguard/index.php
 
 
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
+if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
 fi
 
@@ -256,61 +238,21 @@ systemctl start httpd.service
 fi
 
 
+### DB part
 
+if [[ "$systemos" = 'debian' ]]; then
+systemctl stop mariadb.service
+fi
 
+if [[ "$systemos" = 'fedora' ]]; then
+systemctl stop mariadb.service
+fi
 
-
-
-
-
-
-
-exit
-##########################################################################
-#notes
-###########
-
-
-#### Apache
-
-
-openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt
-
-<VirtualHost 10.$ipv4network.1:23443>
-   ServerName 10.$ipv4network.1
-   DocumentRoot /var/www/nc-wireguard
-
-   SSLEngine on
-   SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
-   SSLCertificateKeyFile /etc/ssl/private/nc-selfsigned.key
-
-<Directory /var/www/nc-wireguard/>
-  Require host localhost
-  Require ip 10.$ipv4network
-</Directory>
-
-</VirtualHost>
->> /etc/apache2/sites-available/nc.conf
-
-mkdir /var/www/nc-wireguard
-chown -R www-data:www-data /var/www/nc-wireguard
-cd /var/www/nc-wireguard
-curl -o nextcloud.zip https://download.nextcloud.com/server/releases/.....
-
-a2ensite nc.conf
-
-
-####php settings
-
-
-
-#### DB 
-systemctl stop mariadb
-read -p "mariaDB -port: " -e -i 3306 dbport
+read -p "Your mariaDB port: " -e -i 3306 dbport
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
 [mysqld]
-bind-address = 10.$ipv4network.1
+bind-address = 127.0.0.1
 port = $dbport
 
 slow_query_log_file    = /var/log/mysql/mariadb-slow.log
@@ -319,7 +261,6 @@ log_slow_rate_limit    = 1000
 log_slow_verbosity     = query_plan
 log-queries-not-using-indexes
 " > /etc/mysql/my.cnf
-systemctl stop mariadb
 echo ""
 echo " Your database server will now be hardened - just follow the instructions."
 echo " Keep in mind: your MariaDB root password is still NOT set!"
@@ -342,10 +283,47 @@ databaseuserpasswd : $databaseuserpasswd
 
 mysql -uroot <<EOF
 CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-CREATE USER '$databaseuser'@'10.$ipv4network.%' identified by '$databaseuserpasswd';
-GRANT ALL PRIVILEGES on $databasename.* to '$databaseuser'@'10.$ipv4network.%' identified by '$databaseuserpasswd';
+CREATE USER '$databaseuser'@'127.0.0.1' identified by '$databaseuserpasswd';
+GRANT ALL PRIVILEGES on $databasename.* to '$databaseuser'@'127.0.0.1' identified by '$databaseuserpasswd';
 FLUSH privileges;
 EOF
+
+
+if [[ "$systemos" = 'debian' ]]; then
+systemctl start mariadb.service
+fi
+
+if [[ "$systemos" = 'fedora' ]]; then
+systemctl start mariadb.service
+fi
+
+
+
+
+
+
+
+exit
+##########################################################################
+#notes
+###########
+
+
+#### Apache
+
+
+#### Nextcloud setup
+cd /var/www/nc-wireguard
+curl -o nextcloud.zip https://download.nextcloud.com/server/releases/.....
+
+
+
+####php settings
+
+
+
+#### DB 
+
 
 
 
