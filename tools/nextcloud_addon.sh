@@ -90,11 +90,11 @@ openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc
 ### apache part
 a2enmod ssl
 a2enmod rewrite
-a2enmod headers
-a2enmod env
-a2enmod dir
-a2enmod mime
-a2enmod setenvif
+#a2enmod headers
+#a2enmod env
+#a2enmod dir
+#a2enmod mime
+#a2enmod setenvif
 
 
 if [[ "$systemos" = 'debian' ]]; then
