@@ -107,7 +107,6 @@ fi
 read -p "your apache https port: " -e -i 23443 httpsport
 
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
-rm /etc/apache2/ports.conf
 echo "
 Listen 2380
 
