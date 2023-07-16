@@ -52,35 +52,12 @@ if [[ "$ID" = 'fedora' ]]; then
    fi
 fi
 
-### testing .... should run
-if [[ "$ID" = 'rocky' ]]; then
- if [[ "$ROCKY_SUPPORT_PRODUCT" = 'Rocky-Linux-9' ]]; then
-   echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
-   systemos=rocky
- fi
-fi
-
-### testing .... should run
-if [[ "$ID" = 'almalinux' ]]; then
- if [[ "$ALMALINUX_MANTISBT_PROJECT" = 'AlmaLinux-9' ]]; then
-   echo -e "${GREEN}OS = AlmaLinux ${ENDCOLOR}"
-   systemos=almalinux
- fi
-fi
-
-### testing .... should run
-if [[ "$ID" = 'centos' ]]; then
- if [[ "$VERSION_ID" = '9' ]]; then
-   echo -e "${GREEN}OS = CentOS Stream ${ENDCOLOR}"
-   systemos=centos
- fi
-fi
 
 if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9 !${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12, Ubuntu 22.04, Fedora 38${ENDCOLOR}"
    exit 1
 fi
 
@@ -107,6 +84,8 @@ else
 	 exit 1
 fi
 
+ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 
 #
 # OS updates
@@ -115,33 +94,37 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip
+apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
 fi
 
 if [[ "$systemos" = 'ubuntu' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip
+apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip
+dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
 fi
 
-if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-dnf upgrade --refresh -y && dnf autoremove -y
 
-fi
 
 ##########################################################################
 #notes
 ###########
 
 a2enmod ssl
+a2enmod rewrite
+a2enmod headers
+a2enmod env
+a2enmod dir
+a2enmod mime
+a2enmod setenvif
+
 sudo openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt
 
-<VirtualHost 10.x.x.1:23443>
-   ServerName 10.x.x.1
+<VirtualHost 10.$ipv4network.1:23443>
+   ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nc-wireguard
 
    SSLEngine on
@@ -150,13 +133,23 @@ sudo openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/priva
 
 <Directory /var/www/nc-wireguard/>
   Require host localhost
-  Require ip 10
+  Require ip 10.$ipv4network
 </Directory>
 
 </VirtualHost>
 >> /etc/apache2/sites-available/nc.conf
 
+mysql_secure_installation
+mysql -u root -p
+
+
+
 mkdir /var/www/nc-wireguard
+chown -R www-data:www-data /var/www/nc-wireguard
+cd /var/www/nc-wireguard
+curl -o nextcloud.zip https://download.nextcloud.com/server/releases/.....
+
 a2ensite nc.conf
+
  
 
