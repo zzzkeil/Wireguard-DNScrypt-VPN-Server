@@ -108,11 +108,11 @@ dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-
 fi
 
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
-systemctl stop apache
+systemctl stop apache2.service
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
-systemctl stop httpd
+systemctl stop httpd.service
 fi
 
 
@@ -221,11 +221,11 @@ h1 {
 
 
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
-systemctl start apache
+systemctl start apache2.service
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
-systemctl start httpd
+systemctl start httpd.service
 fi
 
 
