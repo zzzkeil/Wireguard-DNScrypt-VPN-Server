@@ -2,7 +2,7 @@
 clear
 echo "just a thought/idea"
 echo "a small/singel nextcloud environment, with access only over wireguard"
-echo "without let's encrypt, just self-signed 4096 certificate"
+echo "without let's encrypt, just self-signed certificate"
 
 
 echo ""
@@ -107,6 +107,20 @@ dnf upgrade --refresh -y && dnf autoremove -y
 dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip unzip -y
 fi
 
+
+### self-signed 4096 certificate
+openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:secp384r1 -days 3650 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
+                                                                                                                                                                     
+
+a2enmod ssl
+a2enmod rewrite
+a2enmod headers
+a2enmod env
+a2enmod dir
+a2enmod mime
+a2enmod setenvif
+
+
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl stop apache2.service
 fi
@@ -115,11 +129,24 @@ if [[ "$systemos" = 'fedora' ]]; then
 systemctl stop httpd.service
 fi
 
+mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
+rm /etc/apache2/ports.conf
+echo "
 
-openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt
+" >> /etc/apache2/ports.conf
+Listen 2380
+
+<IfModule ssl_module>
+        Listen 23443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 23443
+</IfModule>
+
 
 echo "
-<VirtualHost 10.$ipv4network.1:23443>
+<VirtualHost *:23443>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nc-wireguard
 
@@ -245,13 +272,7 @@ exit
 
 
 #### Apache
-a2enmod ssl
-a2enmod rewrite
-a2enmod headers
-a2enmod env
-a2enmod dir
-a2enmod mime
-a2enmod setenvif
+
 
 openssl req -x509 -nodes -days 1825 -newkey rsa:4096 -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt
 
