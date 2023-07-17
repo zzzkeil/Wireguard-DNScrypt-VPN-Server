@@ -166,7 +166,9 @@ sed -i 's,^opcache.jit_buffer_size =.*$,opcache.jit_buffer_size = 128M,' /etc/ph
 sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
 
-sed -i "/);/i\  'memcache.local' => '\OC\Memcache\APCu'," /var/www/nextcloud/config/config.php
+#sed -i "/);/i\  'memcache.local' => '\OC\Memcache\APCu'," /var/www/nextcloud/config/config.php
+------------------------sed -i "/);/i\  'memcache.local' => '\ OC \ Memcache \ APCu'," /var/www/nextcloud/config/config.php
+
 #opcache optimieren , memcache.local’ => ‘\OC\Memcache\APCu
 #redis usw
 
