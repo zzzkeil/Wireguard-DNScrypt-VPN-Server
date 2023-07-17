@@ -84,8 +84,8 @@ fi
 
 
 ### self-signed  certificate
-openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
-#openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
+#openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
+openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 
 ### apache part
 a2enmod ssl
@@ -123,13 +123,12 @@ Listen 2380
 echo "
 <VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
-   DocumentRoot /var/www/nc-wireguard
-
+   DocumentRoot /var/www/nextcloud
    SSLEngine on
    SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
    SSLCertificateKeyFile /etc/ssl/private/nc-selfsigned.key
 
-<Directory /var/www/nc-wireguard/>
+<Directory /var/www/nextcloud/>
   Require host localhost
   Require ip 10.$ipv4network
 </Directory>
@@ -137,12 +136,11 @@ echo "
 </VirtualHost>
 " >> /etc/apache2/sites-available/nc.conf
 
-mkdir /var/www/nc-wireguard
+mkdir /var/www
 cd /var/www
-curl -o nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/latest.tar.bz2
-#curl -o nextcloud.tar.bz2.md5  https://download.nextcloud.com/server/releases/latest.tar.bz2.md5
-tar -xjf nextcloud.tar.bz2 -C /var/www/nc-wireguard
-chown -R www-data:www-data /var/www/nc-wireguard
+curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
+unzip -qq nextcloud.zip
+chown -R www-data:www-data /var/www/nextcloud
 
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
