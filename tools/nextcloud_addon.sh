@@ -141,7 +141,7 @@ mkdir /var/www/nc-wireguard
 cd /var/www
 curl -o nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/latest.tar.bz2
 #curl -o nextcloud.tar.bz2.md5  https://download.nextcloud.com/server/releases/latest.tar.bz2.md5
-tar -xjf latest.tar.bz2 -C /var/www/nc-wireguard
+tar -xjf nextcloud.tar.bz2 -C /var/www/nc-wireguard
 chown -R www-data:www-data /var/www/nc-wireguard
 
 ##php settings nextcloud
