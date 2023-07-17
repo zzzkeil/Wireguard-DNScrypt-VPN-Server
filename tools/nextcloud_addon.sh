@@ -159,7 +159,7 @@ echo "
 <?php
 	phpinfo();
 ?>
-" > /var/www/nc-wireguard/index.php
+" > /var/www/nc-wireguard/phpinfotest.php
 
 a2ensite nc.conf
 
