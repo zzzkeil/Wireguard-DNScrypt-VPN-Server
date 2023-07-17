@@ -74,12 +74,12 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip -y
+apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip libmagickcore-6.q16-6-extra -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip -y
+dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip libmagickcore-6.q16-6-extra -y
 fi
 
 
@@ -137,10 +137,12 @@ echo "
 " >> /etc/apache2/sites-available/nc.conf
 
 mkdir /var/www
+mkdir /opt/nextcloud/data
 cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 chown -R www-data:www-data /var/www/nextcloud
+chown -R www-data:www-data /opt/nextcloud/data
 
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
@@ -150,14 +152,18 @@ sed -i 's,^max_execution_time =.*$,max_execution_time = 3600,' /etc/php/8.2/apac
 sed -i 's,^max_input_time =.*$,max_input_time = 3600,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^memory_limit =.*$,memory_limit = 512M,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^max_file_uploads =.*$,max_file_uploads = 20,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^output_buffering =.*$,output_buffering = 0,' /etc/php/8.2/apache2/php.ini
+
+
 #opcache optimieren ?
+#redis usw
 
 
 echo "
 <?php
 	phpinfo();
 ?>
-" > /var/www/nc-wireguard/phpinfotest.php
+" > /var/www/nextcloud/phpinfotest.php
 
 a2ensite nc.conf
 
