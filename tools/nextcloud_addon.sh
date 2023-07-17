@@ -84,7 +84,9 @@ fi
 
 
 ### self-signed 4096 certificate
-openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
+#openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
+openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
+
 
 
 ### apache part
