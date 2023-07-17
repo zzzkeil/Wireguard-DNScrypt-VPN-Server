@@ -83,11 +83,9 @@ dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-
 fi
 
 
-### self-signed 4096 certificate
-#openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
-openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1" -addext "subjectAltName=IP:10.$ipv4network.1"
-
-
+### self-signed  certificate
+openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
+#openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 
 ### apache part
 a2enmod ssl
@@ -140,6 +138,10 @@ echo "
 " >> /etc/apache2/sites-available/nc.conf
 
 mkdir /var/www/nc-wireguard
+cd /var/www
+curl -o nextcloud.tar.bz2 https://download.nextcloud.com/server/releases/latest.tar.bz2
+#curl -o nextcloud.tar.bz2.md5  https://download.nextcloud.com/server/releases/latest.tar.bz2.md5
+tar -xjf latest.tar.bz2 -C /var/www/nc-wireguard
 chown -R www-data:www-data /var/www/nc-wireguard
 
 ##php settings nextcloud
@@ -226,10 +228,6 @@ fi
 
 
 
-
-
-
-
 exit
 ##########################################################################
 #notes
@@ -241,7 +239,7 @@ exit
 
 #### Nextcloud setup
 cd /var/www/nc-wireguard
-curl -o nextcloud.zip https://download.nextcloud.com/server/releases/.....
+curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.tar.bz2
 
 
 
