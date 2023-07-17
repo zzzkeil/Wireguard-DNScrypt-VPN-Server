@@ -74,12 +74,12 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip libmagickcore-6.q16-6-extra -y
+apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu unzip libmagickcore-6.q16-6-extra -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary unzip libmagickcore-6.q16-6-extra -y
+dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu unzip libmagickcore-6.q16-6-extra -y
 fi
 
 
@@ -90,7 +90,7 @@ openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -node
 ### apache part
 a2enmod ssl
 a2enmod rewrite
-#a2enmod headers
+a2enmod headers
 #a2enmod env
 #a2enmod dir
 #a2enmod mime
@@ -129,9 +129,14 @@ echo "
    SSLCertificateKeyFile /etc/ssl/private/nc-selfsigned.key
 
 <Directory /var/www/nextcloud/>
+  AllowOverride All
   Require host localhost
   Require ip 10.$ipv4network
 </Directory>
+
+<IfModule mod_headers.c>
+   Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+</IfModule>
 
 </VirtualHost>
 " >> /etc/apache2/sites-available/nc.conf
@@ -153,9 +158,17 @@ sed -i 's,^max_input_time =.*$,max_input_time = 3600,' /etc/php/8.2/apache2/php.
 sed -i 's,^memory_limit =.*$,memory_limit = 512M,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^max_file_uploads =.*$,max_file_uploads = 20,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^output_buffering =.*$,output_buffering = 0,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.save_comments =.*$,opcache.save_comments = 1,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.revalidate_freq =.*$,opcache.revalidate_freq = 60,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.validate_timestamps =.*$,opcache.validate_timestamps = 0,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.jit =.*$,opcache.jit = 1255,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.jit_buffer_size =.*$,opcache.jit_buffer_size = 128M,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
 
-#opcache optimieren ?
+sed  -i "/'installed' => true,/ { N; s/'installed' => true,\n/'memcache.local' => '\OC\Memcache\APCu',\n&/ }" /var/www/nextcloud/config/config.php
+
+#opcache optimieren , memcache.local’ => ‘\OC\Memcache\APCu
 #redis usw
 
 
