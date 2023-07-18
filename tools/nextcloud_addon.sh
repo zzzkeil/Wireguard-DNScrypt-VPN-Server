@@ -225,20 +225,30 @@ sed -i 's,^opcache.revalidate_freq =.*$,opcache.revalidate_freq = 60,' /etc/php/
 sed -i 's,^opcache.validate_timestamps =.*$,opcache.validate_timestamps = 0,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^opcache.jit =.*$,opcache.jit = 1255,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^opcache.jit_buffer_size =.*$,opcache.jit_buffer_size = 128M,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.memory_consumption =.*$,opcache.memory_consumption= 256' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.interned_strings_buffer =.*$,opcache.interned_strings_buffer= 64' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.max_accelerated_files =.*$,opcache.max_accelerated_files= 100000' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.memory_consumption =.*$,opcache.memory_consumption= 256,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.interned_strings_buffer =.*$,opcache.interned_strings_buffer= 64,' /etc/php/8.2/apache2/php.ini
+sed -i 's,^opcache.max_accelerated_files =.*$,opcache.max_accelerated_files= 100000,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
 
-#nextcloud config.php
-sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
-sed -i "/);/i\  'memcache.locking' => '\\\OC\\\Memcache\\\Memcached'," /var/www/nextcloud/config/config.php
-sed -i "/);/i\  'logtimezone' => '$ltz'," /var/www/nextcloud/config/config.php
-sed -i "/);/i\  'default_phone_region' => '$dpr'," /var/www/nextcloud/config/config.php
 
-#opcache optimieren , memcache.local’ => ‘\OC\Memcache\APCu
-#redis usw
+
+
+#nextcloud config.php
+#sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
+#sed -i "/);/i\  'memcache.locking' => '\\\OC\\\Memcache\\\Memcached'," /var/www/nextcloud/config/config.php
+#sed -i "/);/i\  'logtimezone' => '$ltz'," /var/www/nextcloud/config/config.php
+#sed -i "/);/i\  'default_phone_region' => '$dpr'," /var/www/nextcloud/config/config.php
+
+
+echo '<?php
+
+   'memcache.local' => '\OC\Memcache\APCu',
+   'memcache.locking' => '\OC\Memcache\Memcached',
+   'logtimezone' => '$ltz',
+   'default_phone_region' => '$dpr',
+);
+' >> /var/www/nextcloud/config/myextra.config.php
 
 
 echo "
