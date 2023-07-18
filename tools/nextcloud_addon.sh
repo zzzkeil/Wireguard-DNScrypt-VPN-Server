@@ -209,7 +209,7 @@ unzip -qq nextcloud.zip
 
 cat <<EOF >> /var/www/nextcloud/config/autoconfig.php
 <?php
-$AUTOCONFIG = array(
+\$AUTOCONFIG = array(
   "dbtype"        => "mysql",
   "dbname"        => "$databasename",
   "dbuser"        => "$databaseuser",
@@ -252,7 +252,7 @@ sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
 cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
 <?php
-$CONFIG = array (
+\$CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
    'memcache.locking' => '\OC\Memcache\Memcached',
    'logtimezone' => '$ltz',
