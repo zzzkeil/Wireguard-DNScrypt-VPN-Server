@@ -13,12 +13,12 @@ ENDCOLOR="\e[0m"
 clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Nextcloud addon to my wireguard_dnscrypt_setup.sh                                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -- don't run this file now.....                                                             ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -- don't run this file now.....                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now                                                                         ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  1                                                                       ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
@@ -167,7 +167,7 @@ Listen 2380
 </IfModule>
 " >> /etc/apache2/ports.conf
 
-echo "
+echo '
 <VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nextcloud
@@ -186,15 +186,15 @@ echo "
 </IfModule>
 
 </VirtualHost>
-" >> /etc/apache2/sites-available/nc.conf
+' >> /etc/apache2/sites-available/nc.conf
 
-mkdir /var/www
-mkdir /opt/nextcloud/data
+
+mkdir -p /opt/nextcloud/data
 cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 
-echo "<?php
+echo '<?php
 $AUTOCONFIG = array(
   "dbtype"        => "mysql",
   "dbname"        => "$databasename",
@@ -206,7 +206,7 @@ $AUTOCONFIG = array(
   "adminpass"     => "$nextpass",
   "directory"     => "/opt/nextcloud/data",
 );
-" >> /var/www/nextcloud/config/autoconfig.php
+' >> /var/www/nextcloud/config/autoconfig.php
 
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data /opt/nextcloud/data
