@@ -241,14 +241,14 @@ sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 #sed -i "/);/i\  'default_phone_region' => '$dpr'," /var/www/nextcloud/config/config.php
 
 
-echo '<?php
+echo "<?php
 
    'memcache.local' => '\OC\Memcache\APCu',
    'memcache.locking' => '\OC\Memcache\Memcached',
    'logtimezone' => '$ltz',
    'default_phone_region' => '$dpr',
 );
-' >> /var/www/nextcloud/config/myextra.config.php
+" >> /var/www/nextcloud/config/myextra.config.php
 
 
 echo "
