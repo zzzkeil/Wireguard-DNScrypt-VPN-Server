@@ -99,16 +99,23 @@ dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-
 #systemctl start memcached
 fi
 
+clear
 randomkey1=$(date +%s | cut -c 3-)
 randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
+randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
 ###your vars
 read -p "Your apache https port: " -e -i 23443 httpsport
+echo ""
 read -p "Your mariaDB port: " -e -i 3306 dbport
+echo ""
 read -p "nextcloud logtimezone: " -e -i Europe/Berlin ltz 
+echo ""
 read -p "nextcloud default phone region: " -e -i DE dpr
 echo ""
 read -p "nextcloud admin user name: " -e -i nextroot nextroot
-read -p "nextcloud admin password : " -e -i $randomkey2 nextpass
+echo ""
+read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
+echo ""
 
 ###sql vars
 echo "The following will saved in /root/mysql_database_list.txt"
