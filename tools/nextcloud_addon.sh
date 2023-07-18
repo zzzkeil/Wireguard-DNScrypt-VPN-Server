@@ -17,8 +17,8 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  3                                                                       ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  4                                                                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
@@ -167,7 +167,7 @@ Listen 2380
 </IfModule>
 " >> /etc/apache2/ports.conf
 
-echo '
+echo "
 <VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nextcloud
@@ -182,11 +182,11 @@ echo '
 </Directory>
 
 <IfModule mod_headers.c>
-   Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+   Header always set Strict-Transport-Security 'max-age=15552000; includeSubDomains'
 </IfModule>
 
 </VirtualHost>
-' >> /etc/apache2/sites-available/nc.conf
+" >> /etc/apache2/sites-available/nc.conf
 
 
 mkdir -p /opt/nextcloud/data
@@ -194,19 +194,19 @@ cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 
-echo '<?php
+echo "<?php
 $AUTOCONFIG = array(
-  "dbtype"        => "mysql",
-  "dbname"        => "$databasename",
-  "dbuser"        => "$databaseuser",
-  "dbpass"        => "$databaseuserpasswd",
-  "dbhost"        => "localhost:$dbport",
-  "dbtableprefix" => "nc_",
-  "adminlogin"    => "$nextroot",
-  "adminpass"     => "$nextpass",
-  "directory"     => "/opt/nextcloud/data",
+  'dbtype'        => 'mysql',
+  'dbname'        => '$databasename',
+  'dbuser'        => '$databaseuser',
+  'dbpass'        => '$databaseuserpasswd',
+  'dbhost'        => 'localhost:$dbport',
+  'dbtableprefix' => 'nc_',
+  'adminlogin'    => '$nextroot',
+  'adminpass'     => '$nextpass',
+  'directory'     => '/opt/nextcloud/data',
 );
-' >> /var/www/nextcloud/config/autoconfig.php
+" >> /var/www/nextcloud/config/autoconfig.php
 
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data /opt/nextcloud/data
