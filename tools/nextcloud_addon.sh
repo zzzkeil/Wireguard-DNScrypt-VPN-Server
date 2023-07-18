@@ -1,19 +1,34 @@
 #!/bin/bash
+# visual text settings
+RED="\e[31m"
+GREEN="\e[32m"
+GRAY="\e[37m"
+YELLOW="\e[93m"
+
+REDB="\e[41m"
+GREENB="\e[42m"
+GRAYB="\e[47m"
+ENDCOLOR="\e[0m"
+
 clear
-echo "just a thought/idea"
-echo "a small/singel nextcloud environment, with access only over wireguard"
-echo "without let's encrypt, just self-signed certificate"
-echo "only for debian 12 and fedora 38, > out-of-the-box php 8.2"
-
-
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Nextcloud addon to my wireguard_dnscrypt_setup.sh                                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -- don't run this file now.....                                                             ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now                                                                         ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo ""
+echo ""
 echo ""
 echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
 echo ""
-echo  -e "                            ${GREEN}Press [Y] , but not (N)ow :)${ENDCOLOR}"
+echo  -e "                            ${GREEN}Press [Y] to begin${ENDCOLOR}"
 read -p "" -n 1 -r
 echo ""
 echo ""
-if [[ ! $REPLY =~ ^[Nn]$ ]]
+if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     exit 1
 fi
@@ -84,12 +99,29 @@ dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-
 #systemctl start memcached
 fi
 
-
-
+randomkey1=$(date +%s | cut -c 3-)
+randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
+###your vars
 read -p "Your apache https port: " -e -i 23443 httpsport
 read -p "Your mariaDB port: " -e -i 3306 dbport
 read -p "nextcloud logtimezone: " -e -i Europe/Berlin ltz 
 read -p "nextcloud default phone region: " -e -i DE dpr
+echo ""
+read -p "nextcloud admin user name: " -e -i nextroot nextroot
+read -p "nextcloud admin password : " -e -i $randomkey2 nextpass
+
+###sql vars
+echo "The following will saved in /root/mysql_database_list.txt"
+read -p "sql databasename: " -e -i db$randomkey1 databasename
+read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
+read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
+echo "
+Database
+databasename : $databasename
+databaseuser : $databaseuser
+databaseuserpasswd : $databaseuserpasswd
+#
+" >> /root/mysql_database_list.txt
 
 ### self-signed  certificate
 #openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
@@ -154,6 +186,21 @@ mkdir /opt/nextcloud/data
 cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
+
+echo "<?php
+$AUTOCONFIG = array(
+  "dbtype"        => "mysql",
+  "dbname"        => "$databasename",
+  "dbuser"        => "$databaseuser",
+  "dbpass"        => "$databaseuserpasswd",
+  "dbhost"        => "localhost:$dbport",
+  "dbtableprefix" => "nc_",
+  "adminlogin"    => "$nextroot",
+  "adminpass"     => "$nextpass",
+  "directory"     => "/opt/nextcloud/data",
+);
+" >> /var/www/nextcloud/config/autoconfig.php
+
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data /opt/nextcloud/data
 
@@ -229,18 +276,6 @@ echo ""
 mysql_secure_installation
 
 
-randomkey1=$(date +%s | cut -c 3-)
-read -p "sql databasename: " -e -i db$randomkey1 databasename
-read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
-randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
-read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
-echo "
-Database
-databasename : $databasename
-databaseuser : $databaseuser
-databaseuserpasswd : $databaseuserpasswd
-#
-" >> /root/mysql_database_list.txt
 
 mysql -uroot <<EOF
 CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -258,13 +293,15 @@ if [[ "$systemos" = 'fedora' ]]; then
 systemctl restart mariadb.service
 fi
 
+(crontab  -u www-data -l ; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
-echo " Setup your Nextcloud         :  https://10.$ipv4network.1:$httpsport"
-echo " Your database name           :  $databasename"
-echo " Your database user           :  $databaseuser"
-echo " Your database password       :  $databaseuserpasswd"
-echo " Your database host           :  localhost:$dbport"
-echo " Your nextcloud data folder   :  /opt/nextcloud/data"
+
+#echo " Setup your Nextcloud         :  https://10.$ipv4network.1:$httpsport"
+#echo " Your database name           :  $databasename"
+#echo " Your database user           :  $databaseuser"
+#echo " Your database password       :  $databaseuserpasswd"
+#echo " Your database host           :  localhost:$dbport"
+#echo " Your nextcloud data folder   :  /opt/nextcloud/data"
 
 
 
