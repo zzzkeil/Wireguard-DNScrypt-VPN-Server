@@ -103,6 +103,7 @@ clear
 randomkey1=$(date +%s | cut -c 3-)
 randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
+echo "The following will saved in /root/nextcloud_mysql_password_list.txt"
 ###your vars
 read -p "Your apache https port: " -e -i 23443 httpsport
 echo ""
@@ -122,13 +123,24 @@ echo "The following will saved in /root/mysql_database_list.txt"
 read -p "sql databasename: " -e -i db$randomkey1 databasename
 read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
 read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
-echo "
-Database
+
+
+cat <<EOF >> /root/mysql_database_list.txt
+!! Maybe delete this file .... !!
+Apache2
+port : $httpsport
+
+Nextcloud
+adminuser : $nextroot
+password  : $nextpass
+
+SQL Database
+databaseport : $dbport
 databasename : $databasename
 databaseuser : $databaseuser
 databaseuserpasswd : $databaseuserpasswd
-#
-" >> /root/mysql_database_list.txt
+EOF
+
 
 ### self-signed  certificate
 #openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
@@ -167,7 +179,8 @@ Listen 2380
 </IfModule>
 " >> /etc/apache2/ports.conf
 
-echo "
+
+cat <<EOF >> /etc/apache2/sites-available/nc.conf
 <VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nextcloud
@@ -182,11 +195,11 @@ echo "
 </Directory>
 
 <IfModule mod_headers.c>
-   Header always set Strict-Transport-Security 'max-age=15552000; includeSubDomains'
+   Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
 </IfModule>
 
 </VirtualHost>
-" >> /etc/apache2/sites-available/nc.conf
+EOF
 
 
 mkdir -p /opt/nextcloud/data
@@ -194,19 +207,20 @@ cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 
-echo "<?php
+cat <<EOF >> /var/www/nextcloud/config/autoconfig.php
+<?php
 $AUTOCONFIG = array(
-  'dbtype'        => 'mysql',
-  'dbname'        => '$databasename',
-  'dbuser'        => '$databaseuser',
-  'dbpass'        => '$databaseuserpasswd',
-  'dbhost'        => 'localhost:$dbport',
-  'dbtableprefix' => 'nc_',
-  'adminlogin'    => '$nextroot',
-  'adminpass'     => '$nextpass',
-  'directory'     => '/opt/nextcloud/data',
+  "dbtype"        => "mysql",
+  "dbname"        => "$databasename",
+  "dbuser"        => "$databaseuser",
+  "dbpass"        => "$databaseuserpasswd",
+  "dbhost"        => "localhost:$dbport",
+  "dbtableprefix" => "nc_",
+  "adminlogin"    => "$nextroot",
+  "adminpass"     => "$nextpass",
+  "directory"     => "/opt/nextcloud/data/",
 );
-" >> /var/www/nextcloud/config/autoconfig.php
+EOF
 
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data /opt/nextcloud/data
@@ -230,35 +244,30 @@ sed -i 's,^opcache.interned_strings_buffer =.*$,opcache.interned_strings_buffer=
 sed -i 's,^opcache.max_accelerated_files =.*$,opcache.max_accelerated_files= 100000,' /etc/php/8.2/apache2/php.ini
 sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
-
-
-
-
 #nextcloud config.php
 #sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
 #sed -i "/);/i\  'memcache.locking' => '\\\OC\\\Memcache\\\Memcached'," /var/www/nextcloud/config/config.php
 #sed -i "/);/i\  'logtimezone' => '$ltz'," /var/www/nextcloud/config/config.php
 #sed -i "/);/i\  'default_phone_region' => '$dpr'," /var/www/nextcloud/config/config.php
 
-
-echo "<?php
-
+cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
+<?php
+$CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
    'memcache.locking' => '\OC\Memcache\Memcached',
    'logtimezone' => '$ltz',
    'default_phone_region' => '$dpr',
 );
-" >> /var/www/nextcloud/config/myextra.config.php
+EOF
 
 
-echo "
+cat <<EOF >> /var/www/nextcloud/phpinfotest.php
 <?php
 	phpinfo();
 ?>
-" > /var/www/nextcloud/phpinfotest.php
+EOF
 
 a2ensite nc.conf
-
 
 if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
