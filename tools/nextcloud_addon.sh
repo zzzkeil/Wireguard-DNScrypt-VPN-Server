@@ -85,9 +85,15 @@ dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-
 fi
 
 
+
+read -p "Your apache https port: " -e -i 23443 httpsport
+read -p "Your mariaDB port: " -e -i 3306 dbport
+read -p "nextcloud logtimezone: " -e -i Europe/Berlin ltz 
+read -p "nextcloud default phone region: " -e -i DE dpr
+
 ### self-signed  certificate
 #openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
-openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=BY/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
+openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 
 ### apache part
 a2enmod ssl
@@ -107,7 +113,7 @@ if [[ "$systemos" = 'fedora' ]]; then
 systemctl stop httpd.service
 fi
 
-read -p "your apache https port: " -e -i 23443 httpsport
+
 
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 echo "
@@ -168,8 +174,7 @@ sed -i 's,^opcache.jit_buffer_size =.*$,opcache.jit_buffer_size = 128M,' /etc/ph
 sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
 
-read -p "nextcloud logtimezone: " -e -i Europe/Berlin ltz 
-read -p "nextcloud default phone region: " -e -i DE dpr
+
 #nextcloud config.php
 sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
 sed -i "/);/i\  'memcache.locking' => '\\\OC\\\Memcache\\\Memcached'," /var/www/nextcloud/config/config.php
@@ -200,7 +205,7 @@ fi
 
 ### DB part
 
-read -p "Your mariaDB port: " -e -i 3306 dbport
+
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
 [mysqld]
@@ -252,27 +257,13 @@ systemctl restart mariadb.service
 fi
 
 
+echo " Setup your Nextcloud         :  https://10.$ipv4network.1:$httpsport"
+echo " Your database name           :  $databasename"
+echo " Your database user           :  $databaseuser"
+echo " Your database password       :  $databaseuserpasswd"
+echo " Your database host           :  localhost:$dbport"
+echo " Your nextcloud data folder   :  /opt/nextcloud/data"
 
-exit
-##########################################################################
-#notes
-###########
-
-
-#### Apache
-
-
-#### Nextcloud setup
-cd /var/www/nc-wireguard
-curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.tar.bz2
-
-
-
-####php settings
-
-
-
-#### DB 
 
 
 
