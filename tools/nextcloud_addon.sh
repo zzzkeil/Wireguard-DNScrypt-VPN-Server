@@ -74,12 +74,14 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu unzip libmagickcore-6.q16-6-extra -y
+apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-6.q16-6-extra -y
 fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu unzip libmagickcore-6.q16-6-extra -y
+dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip libmagickcore-6.q16-6-extra -y
+#systemctl enable memcached
+#systemctl start memcached
 fi
 
 
@@ -166,8 +168,13 @@ sed -i 's,^opcache.jit_buffer_size =.*$,opcache.jit_buffer_size = 128M,' /etc/ph
 sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
 
 
-#sed -i "/);/i\  'memcache.local' => '\OC\Memcache\APCu'," /var/www/nextcloud/config/config.php
-------------------------sed -i "/);/i\  'memcache.local' => '\ OC \ Memcache \ APCu'," /var/www/nextcloud/config/config.php
+read -p "nextcloud logtimezone: " -e -i Europe/Berlin ltz 
+read -p "nextcloud default phone region: " -e -i DE dpr
+#nextcloud config.php
+sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
+sed -i "/);/i\  'memcache.locking' => '\\\OC\\\Memcache\\\Memcached'," /var/www/nextcloud/config/config.php
+sed -i "/);/i\  'logtimezone' => '$ltz'," /var/www/nextcloud/config/config.php
+sed -i "/);/i\  'default_phone_region' => '$dpr'," /var/www/nextcloud/config/config.php
 
 #opcache optimieren , memcache.local’ => ‘\OC\Memcache\APCu
 #redis usw
