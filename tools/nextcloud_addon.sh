@@ -17,7 +17,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  1                                                                       ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  2                                                                       ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
