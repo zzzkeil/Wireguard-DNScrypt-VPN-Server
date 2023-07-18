@@ -17,7 +17,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  2                                                                       ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  3                                                                       ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -313,12 +313,14 @@ fi
 (crontab  -u www-data -l ; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
 
-#echo " Setup your Nextcloud         :  https://10.$ipv4network.1:$httpsport"
-#echo " Your database name           :  $databasename"
-#echo " Your database user           :  $databaseuser"
-#echo " Your database password       :  $databaseuserpasswd"
-#echo " Your database host           :  localhost:$dbport"
-#echo " Your nextcloud data folder   :  /opt/nextcloud/data"
+echo " Setup your Nextcloud           :  https://10.$ipv4network.1:$httpsport"
+echo " Your database name             :  $databasename"
+echo " Your database user             :  $databaseuser"
+echo " Your database password         :  $databaseuserpasswd"
+echo " Your database host             :  localhost:$dbport"
+echo " Your nextcloud data folder     :  /opt/nextcloud/data"
+echo " Your nextcloud admin user      :  $nextroot"
+echo " Your nextcloud login password  :  $nextpass"
 
 
 
