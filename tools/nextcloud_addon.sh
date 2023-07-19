@@ -255,6 +255,16 @@ sed -i '$aopcache.jit=1255' /etc/php/8.2/mods-available/opcache.ini
 sed -i '$aopcache.jit_buffer_size=256M' /etc/php/8.2/mods-available/opcache.ini
 
 
+sed -i '$a[mysql]' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.allow_local_infile=On' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.allow_persistent=On' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.cache_size=2000' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.max_persistent=-1' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.max_links=-1' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.default_port=3306' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.connect_timeout=60' /etc/php/8.2/mods-available/mysqli.ini
+sed -i '$amysql.trace_mode=Off' /etc/php/8.2/mods-available/mysqli.ini
+
 
 #nextcloud config.php
 #sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
