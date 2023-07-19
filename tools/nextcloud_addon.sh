@@ -341,7 +341,21 @@ if [[ "$systemos" = 'fedora' ]]; then
 systemctl restart mariadb.service
 fi
 
-(crontab  -u www-data -l ; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
+#(crontab -u www-data -l ; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
+#(crontab -l ; echo "*/5  *  *  *  * www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
+
+
+
+
+
+
+cd /var/www/nextcloud
+sudo -u www-data php occ app:enable encryption
+sudo -u www-data php occ encryption:enable
+
+
+
+
 
 
 echo " Setup your Nextcloud           :  https://10.$ipv4network.1:$httpsport"
