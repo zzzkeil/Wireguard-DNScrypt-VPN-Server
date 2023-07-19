@@ -227,22 +227,34 @@ chown -R www-data:www-data /opt/nextcloud/data
 
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
-sed -i 's,^post_max_size =.*$,post_max_size = 10G,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^upload_max_filesize =.*$,upload_max_filesize = 10G,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^max_execution_time =.*$,max_execution_time = 3600,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^max_input_time =.*$,max_input_time = 3600,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^memory_limit =.*$,memory_limit = 512M,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^max_file_uploads =.*$,max_file_uploads = 20,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^output_buffering =.*$,output_buffering = 0,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.save_comments =.*$,opcache.save_comments = 1,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.revalidate_freq =.*$,opcache.revalidate_freq = 60,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.validate_timestamps =.*$,opcache.validate_timestamps = 0,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.jit =.*$,opcache.jit = 1255,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.jit_buffer_size =.*$,opcache.jit_buffer_size = 128M,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.memory_consumption =.*$,opcache.memory_consumption= 256,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.interned_strings_buffer =.*$,opcache.interned_strings_buffer= 64,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^opcache.max_accelerated_files =.*$,opcache.max_accelerated_files= 100000,' /etc/php/8.2/apache2/php.ini
-sed -i 's,^apc.enable_cli =.*$,apc.enable_cli = 1,' /etc/php/8.2/apache2/php.ini
+sed -i "s/memory_limit = 128M/memory_limit = 1G/" /etc/php/8.2/apache2/php.ini
+sed -i "s/output_buffering =.*/output_buffering = 'Off'/" /etc/php/8.2/apache2/php.ini
+sed -i "s/max_execution_time =.*/max_execution_time = 3600/" /etc/php/8.2/apache2/php.ini
+sed -i "s/max_input_time =.*/max_input_time = 3600/" /etc/php/8.2/apache2/php.ini
+sed -i "s/post_max_size =.*/post_max_size = 10G/" /etc/php/8.2/apache2/php.ini
+sed -i "s/upload_max_filesize =.*/upload_max_filesize = 10G/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;date.timezone.*/date.timezone = Europe\/\Berlin/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;cgi.fix_pathinfo.*/cgi.fix_pathinfo=0/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;session.cookie_secure.*/session.cookie_secure = True/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.enable=.*/opcache.enable=1/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.validate_timestamps=.*/opcache.validate_timestamps=0/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.enable_cli=.*/opcache.enable_cli=1/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=256/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.interned_strings_buffer=.*/opcache.interned_strings_buffer=64/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.max_accelerated_files=.*/opcache.max_accelerated_files=100000/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.revalidate_freq=.*/opcache.revalidate_freq=60/" /etc/php/8.2/apache2/php.ini
+sed -i "s/;opcache.save_comments=.*/opcache.save_comments=1/" /etc/php/8.2/apache2/php.ini
+sed -i "s/max_file_uploads =.*/max_file_uploads = 20/" /etc/php/8.2/apache2/php.ini
+
+sed -i '$aopcache.jit=1255' /etc/php/8.2/apache2/php.ini
+sed -i '$aopcache.jit_buffer_size=256M' /etc/php/8.2/apache2/php.ini
+
+sed -i '$aapc.enable_cli=1' /etc/php/8.2/apache2/php.ini
+sed -i '$aapc.enable_cli=1' /etc/php/8.2/mods-available/apcu.ini
+sed -i '$aopcache.jit=1255' /etc/php/8.2/mods-available/opcache.ini
+sed -i '$aopcache.jit_buffer_size=256M' /etc/php/8.2/mods-available/opcache.ini
+
+
 
 #nextcloud config.php
 #sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
