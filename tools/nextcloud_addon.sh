@@ -207,20 +207,6 @@ cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 
-cat <<EOF >> /var/www/nextcloud/config/autoconfig.php
-<?php
-\$AUTOCONFIG = array(
-  "dbtype"        => "mysql",
-  "dbname"        => "$databasename",
-  "dbuser"        => "$databaseuser",
-  "dbpass"        => "$databaseuserpasswd",
-  "dbhost"        => "localhost:$dbport",
-  "dbtableprefix" => "nc_",
-  "adminlogin"    => "$nextroot",
-  "adminpass"     => "$nextpass",
-  "directory"     => "/opt/nextcloud/data/",
-);
-EOF
 
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data /opt/nextcloud/data
@@ -346,13 +332,12 @@ fi
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
 
-
-
-
-
 cd /var/www/nextcloud
-sudo -u www-data php occ app:enable encryption
-sudo -u www-data php occ encryption:enable
+
+sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
+sudo -u www-data php occ app:enable end_to_end_encryption
+sudo -u www-data php occ background:cron
+
 
 
 
