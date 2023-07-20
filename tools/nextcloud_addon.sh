@@ -342,7 +342,8 @@ systemctl restart mariadb.service
 fi
 
 #(crontab -u www-data -l ; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
-#(crontab -l ; echo "*/5  *  *  *  * www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
+#echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php" >> /var/spool/cron/crontabs/www-data
+(crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
 
 
