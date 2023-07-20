@@ -335,10 +335,18 @@ fi
 cd /var/www/nextcloud
 
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
+sudo -u www-data php occ config:system:set trusted_domains 2 --value=10.$ipv4network.1
 sudo -u www-data php occ app:enable end_to_end_encryption
 sudo -u www-data php occ background:cron
 
 
+if [[ "$systemos" = 'debian' ]]; then
+systemctl start apache2.service
+fi
+
+if [[ "$systemos" = 'fedora' ]]; then
+systemctl start httpd.service
+fi
 
 
 
