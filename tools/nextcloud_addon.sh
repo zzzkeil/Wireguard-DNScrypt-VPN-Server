@@ -17,7 +17,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  4                                                                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  6                                                                      ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -252,22 +252,6 @@ sed -i '$amysql.connect_timeout=60' /etc/php/8.2/mods-available/mysqli.ini
 sed -i '$amysql.trace_mode=Off' /etc/php/8.2/mods-available/mysqli.ini
 
 
-#nextcloud config.php
-#sed -i "/);/i\  'memcache.local' => '\\\OC\\\Memcache\\\APCu'," /var/www/nextcloud/config/config.php
-#sed -i "/);/i\  'memcache.locking' => '\\\OC\\\Memcache\\\Memcached'," /var/www/nextcloud/config/config.php
-#sed -i "/);/i\  'logtimezone' => '$ltz'," /var/www/nextcloud/config/config.php
-#sed -i "/);/i\  'default_phone_region' => '$dpr'," /var/www/nextcloud/config/config.php
-
-cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
-<?php
-\$CONFIG = array (
-   'memcache.local' => '\OC\Memcache\APCu',
-   'memcache.locking' => '\OC\Memcache\Memcached',
-   'logtimezone' => '$ltz',
-   'default_phone_region' => '$dpr',
-);
-EOF
-
 
 cat <<EOF >> /var/www/nextcloud/phpinfotest.php
 <?php
@@ -327,14 +311,24 @@ if [[ "$systemos" = 'fedora' ]]; then
 systemctl restart mariadb.service
 fi
 
-#(crontab -u www-data -l ; echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
-#echo "*/5  *  *  *  * php -f /var/www/nextcloud/cron.php" >> /var/spool/cron/crontabs/www-data
+
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
 
-cd /var/www/nextcloud
+cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
+<?php
+\$CONFIG = array (
+   'memcache.local' => '\OC\Memcache\APCu',
+   'memcache.locking' => '\OC\Memcache\Memcached',
+   'default_phone_region' => '$dpr',
+);
+EOF
 
+
+cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
+
+sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
 sudo -u www-data php occ config:system:set trusted_domains 2 --value=10.$ipv4network.1
 sudo -u www-data php occ app:enable end_to_end_encryption
 sudo -u www-data php occ background:cron
@@ -348,7 +342,8 @@ if [[ "$systemos" = 'fedora' ]]; then
 systemctl start httpd.service
 fi
 
-
+echo ""
+echo ""
 
 
 
@@ -360,17 +355,3 @@ echo " Your database host             :  localhost:$dbport"
 echo " Your nextcloud data folder     :  /opt/nextcloud/data"
 echo " Your nextcloud admin user      :  $nextroot"
 echo " Your nextcloud login password  :  $nextpass"
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
