@@ -94,9 +94,16 @@ fi
 
 if [[ "$systemos" = 'fedora' ]]; then
 dnf upgrade --refresh -y && dnf autoremove -y
-dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip libmagickcore-6.q16-6-extra -y
-#systemctl enable memcached
-#systemctl start memcached
+#dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip libmagickcore-6.q16-6-extra -y
+dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysqlnd php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip -y
+#libmagickcore-6.q16-6-extra
+#libapache2-mod-php
+systemctl enable httpd
+systemctl start httpd
+systemctl enable mariadb
+systemctl start mariadb 
+systemctl enable memcached
+systemctl start memcached
 fi
 
 clear
