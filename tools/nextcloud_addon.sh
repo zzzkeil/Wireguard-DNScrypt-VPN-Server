@@ -66,11 +66,14 @@ if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12, Fedora 38${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12. Support on Fedora 38 is in work ......${ENDCOLOR}"
    exit 1
 fi
 
-
+if [[ "$systemos" = 'fedora' ]]; then
+   echo -e "${RED}Support on Fedora 38 is in work, exit script here......${ENDCOLOR}"
+   exit 1
+fi
 
 ### check if script installed
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
@@ -126,7 +129,6 @@ read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
 echo ""
 
 ###sql vars
-echo "The following will saved in /root/mysql_database_list.txt"
 read -p "sql databasename: " -e -i db$randomkey1 databasename
 read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
 read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
