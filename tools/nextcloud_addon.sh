@@ -151,18 +151,27 @@ databaseuserpasswd : $databaseuserpasswd
 EOF
 
 
+if [[ "$systemos" = 'fedora' ]]; then
+mkdir -p /etc/ssl/private
+fi
+
 ### self-signed  certificate
 #openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 
+
+
 ### apache part
+if [[ "$systemos" = 'debian' ]]; then
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
-#a2enmod env
-#a2enmod dir
-#a2enmod mime
-#a2enmod setenvif
+fi
+
+if [[ "$systemos" = 'fedora' ]]; then
+
+
+fi
 
 
 if [[ "$systemos" = 'debian' ]]; then
