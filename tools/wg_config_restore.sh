@@ -44,7 +44,7 @@ firewall-cmd --zone=public --remove-port="$oldwg0port"/udp
 firewall-cmd --zone=trusted --remove-source=10.$oldwg0networkv4.0/24
 firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s 10.$oldwg0networkv4.0/24 ! -d 10.$oldwg0networkv4.0/24 -j SNAT --to "$oldhostipv4"
 
-if [[ -n "$hostipv6" ]]; then
+if [[ -n "$oldhostipv6" ]]; then
 firewall-cmd --zone=trusted --remove-source=fd42:$oldwg0networkv6::/64
 firewall-cmd --direct --add-remove ipv6 nat POSTROUTING 0 -s fd42:$oldwg0networkv6::/64 ! -d fd42:$oldwg0networkv6::/64 -j SNAT --to "$oldhostipv6"
 fi
