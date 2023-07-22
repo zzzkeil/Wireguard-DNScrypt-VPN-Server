@@ -13,11 +13,12 @@ ENDCOLOR="\e[0m"
 clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Nextcloud addon to my wireguard_dnscrypt_setup.sh                                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas -- don't run this file now.....                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GRAYB} !!! This addon is for Debian 12 only !!!                                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas, but shoud work for now                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  6                                                                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  8                                                                      ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -54,30 +55,27 @@ if [[ "$ID" = 'debian' ]]; then
    fi
 fi
 
-if [[ "$ID" = 'fedora' ]]; then
- if [[ "$VERSION_ID" = '38' ]]; then
-   echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
-   systemos=fedora
-   fi
-fi
+#if [[ "$ID" = 'fedora' ]]; then
+# if [[ "$VERSION_ID" = '38' ]]; then
+#   echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
+#   systemos=fedora
+#   fi
+#fi
 
 
 if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12. Support on Fedora 38 is in work ......${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12. Support for Fedora maybe sometime later ${ENDCOLOR}"
    exit 1
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-   echo -e "${RED}Support on Fedora 38 is in work, exit script here......${ENDCOLOR}"
-   exit 1
-fi
+
 
 ### check if script installed
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
-     echo ""
+     echo "my wireguard script is needed > https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
 else
 	 exit 1
 fi
@@ -95,47 +93,67 @@ apt update && apt upgrade -y && apt autoremove -y
 apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-6.q16-6-extra -y
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-dnf upgrade --refresh -y && dnf autoremove -y
-#dnf install httpd mod_ssl libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip libmagickcore-6.q16-6-extra -y
-dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysqlnd php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip -y
+#if [[ "$systemos" = 'fedora' ]]; then
+#dnf upgrade --refresh -y && dnf autoremove -y
+#dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysqlnd php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip -y
 #libmagickcore-6.q16-6-extra
 #libapache2-mod-php
-systemctl enable httpd
-systemctl start httpd
-systemctl enable mariadb
-systemctl start mariadb 
-systemctl enable memcached
-systemctl start memcached
-fi
+#systemctl enable httpd
+#systemctl start httpd
+#systemctl enable mariadb
+#systemctl start mariadb 
+#systemctl enable memcached
+#systemctl start memcached
+#fi
 
+
+###your vars
 clear
 randomkey1=$(date +%s | cut -c 3-)
 randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
-echo "The following will saved in /root/nextcloud_mysql_password_list.txt"
-###your vars
+echo ""
+echo ""
+echo " -- Your turn, make some decisions -- "
+echo " ---> your decisions will saved in clear text here : /root/nextcloud_mysql_password_list.txt"
+echo -e "${YELLOW}---->maybe you shoud delete or encrypt this file later !${ENDCOLOR}"
+echo ""
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 read -p "Your apache https port: " -e -i 23443 httpsport
-echo ""
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "Your apache https port: " -e -i 23443 httpsport
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 read -p "Your mariaDB port: " -e -i 3306 dbport
-echo ""
-read -p "nextcloud logtimezone: " -e -i Europe/Berlin ltz 
-echo ""
-read -p "nextcloud default phone region: " -e -i DE dpr
-echo ""
-read -p "nextcloud admin user name: " -e -i nextroot nextroot
-echo ""
-read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
-echo ""
-
-###sql vars
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 read -p "sql databasename: " -e -i db$randomkey1 databasename
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "nextcloud logtimezone (TZ identifier): " -e -i Europe/Berlin ltz 
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "nextcloud default phone region (Country code): " -e -i DE dpr
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "nextcloud admin user name: " -e -i nextroot nextroot
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 
 
 cat <<EOF >> /root/mysql_database_list.txt
-!! Maybe delete this file .... !!
+!! Maybe delete or encrypt this file .... !!
 Apache2
 port : $httpsport
 
@@ -151,12 +169,11 @@ databaseuserpasswd : $databaseuserpasswd
 EOF
 
 
-if [[ "$systemos" = 'fedora' ]]; then
-mkdir -p /etc/ssl/private
-fi
+#if [[ "$systemos" = 'fedora' ]]; then
+#mkdir -p /etc/ssl/private
+#fi
 
 ### self-signed  certificate
-#openssl req -x509 -newkey rsa:4096 -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=XX/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 
 
@@ -168,19 +185,17 @@ a2enmod rewrite
 a2enmod headers
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-
-
-fi
+#if [[ "$systemos" = 'fedora' ]]; then
+#fi
 
 
 if [[ "$systemos" = 'debian' ]]; then
 systemctl stop apache2.service
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-systemctl stop httpd.service
-fi
+#if [[ "$systemos" = 'fedora' ]]; then
+#systemctl stop httpd.service
+#fi
 
 
 
@@ -269,13 +284,11 @@ sed -i '$amysql.default_port=3306' /etc/php/8.2/mods-available/mysqli.ini
 sed -i '$amysql.connect_timeout=60' /etc/php/8.2/mods-available/mysqli.ini
 sed -i '$amysql.trace_mode=Off' /etc/php/8.2/mods-available/mysqli.ini
 
-
-
-cat <<EOF >> /var/www/nextcloud/phpinfotest.php
-<?php
-	phpinfo();
-?>
-EOF
+#cat <<EOF >> /var/www/nextcloud/phpinfotest.php
+#<?php
+#	phpinfo();
+#?>
+#EOF
 
 a2ensite nc.conf
 
@@ -283,14 +296,12 @@ if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-systemctl start httpd.service
-fi
+#if [[ "$systemos" = 'fedora' ]]; then
+#systemctl start httpd.service
+#fi
 
 
 ### DB part
-
-
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
 [mysqld]
@@ -325,9 +336,9 @@ if [[ "$systemos" = 'debian' ]]; then
 systemctl restart mariadb.service
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-systemctl restart mariadb.service
-fi
+#if [[ "$systemos" = 'fedora' ]]; then
+#systemctl restart mariadb.service
+#fi
 
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
@@ -347,7 +358,7 @@ cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
 
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
-sudo -u www-data php occ config:system:set trusted_domains 2 --value=10.$ipv4network.1
+sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
 sudo -u www-data php occ app:enable end_to_end_encryption
 sudo -u www-data php occ background:cron
 
@@ -356,20 +367,19 @@ if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-systemctl start httpd.service
-fi
+#if [[ "$systemos" = 'fedora' ]]; then
+#systemctl start httpd.service
+#fi
 
 echo ""
 echo ""
-
-
-
-echo " Setup your Nextcloud           :  https://10.$ipv4network.1:$httpsport"
-echo " Your database name             :  $databasename"
-echo " Your database user             :  $databaseuser"
-echo " Your database password         :  $databaseuserpasswd"
-echo " Your database host             :  localhost:$dbport"
-echo " Your nextcloud data folder     :  /opt/nextcloud/data"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " Setup Nextcloud to your needs  :  https://10.$ipv4network.1:$httpsport"
+echo "--------------------------------------------------------------------------------------------------------"
 echo " Your nextcloud admin user      :  $nextroot"
+echo "--------------------------------------------------------------------------------------------------------"
 echo " Your nextcloud login password  :  $nextpass"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " end to end encryption is enabled - maybe you better juse this, because: "
+echo " never trust someone else host system -- your cloud VPS is not your host, its just someone else one"
+echo "--------------------------------------------------------------------------------------------------------"
