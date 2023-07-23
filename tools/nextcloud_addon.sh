@@ -75,9 +75,10 @@ fi
 
 ### check if script installed
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
-     echo "my wireguard script is needed > https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
 else
-	 exit 1
+ echo -e "${RED} !!! my wireguard script is needed !!!${ENDCOLOR}"
+ echo -e "${RED} Download here:  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
+ exit 1
 fi
 
 ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
@@ -114,7 +115,7 @@ randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
 echo ""
 echo ""
-echo " -- Your turn, make some decisions -- "
+echo -e " ${GREEN}-- Your turn, make some decisions -- ${ENDCOLOR}"
 echo " ---> your decisions will saved in clear text here : /root/nextcloud_mysql_password_list.txt"
 echo -e "${YELLOW}---->maybe you shoud delete or encrypt this file later !${ENDCOLOR}"
 echo ""
@@ -149,17 +150,16 @@ echo "--------------------------------------------------------------------------
 echo "--------------------------------------------------------------------------------------------------------"
 
 
-cat <<EOF >> /root/mysql_database_list.txt
+cat <<EOF >> /root/nextcloud_mysql_password_list.txt
 !! Maybe delete or encrypt this file .... !!
-Apache2
-port : $httpsport
+Apache2 port : $httpsport
+MariaDB port : $dbport
 
-Nextcloud
+Nextcloud Login
 adminuser : $nextroot
 password  : $nextpass
 
-SQL Database
-databaseport : $dbport
+Nextcloud Database
 databasename : $databasename
 databaseuser : $databaseuser
 databaseuserpasswd : $databaseuserpasswd
@@ -281,11 +281,6 @@ sed -i '$amysql.default_port=3306' /etc/php/8.2/mods-available/mysqli.ini
 sed -i '$amysql.connect_timeout=60' /etc/php/8.2/mods-available/mysqli.ini
 sed -i '$amysql.trace_mode=Off' /etc/php/8.2/mods-available/mysqli.ini
 
-#cat <<EOF >> /var/www/nextcloud/phpinfotest.php
-#<?php
-#	phpinfo();
-#?>
-#EOF
 
 a2ensite nc.conf
 
@@ -313,14 +308,14 @@ log-queries-not-using-indexes
 " > /etc/mysql/my.cnf
 
 
-echo ""
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 echo " Your database server will now be hardened - just follow the instructions."
-echo " Keep in mind: your MariaDB root password is still NOT set!"
-echo ""
+echo " Keep in mind: your MariaDB root password is still NOT set !"
+echo -e "${YELLOW} You should set a root password, when asked${ENDCOLOR}"
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 mysql_secure_installation
-
-
-
 mysql -uroot <<EOF
 CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE USER '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
@@ -340,7 +335,6 @@ fi
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
-
 cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
 <?php
 \$CONFIG = array (
@@ -350,12 +344,13 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
 );
 EOF
 
-echo ""
-echo "Wait, please nextcloud setup in progress...."
-echo ""
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
+echo -e "${GREEN}Wait please, nextcloud occ setup is in progress....${ENDCOLOR}"
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
-
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
 sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
 sudo -u www-data php occ app:enable end_to_end_encryption
@@ -379,6 +374,8 @@ echo " Your nextcloud admin user      :  $nextroot"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Your nextcloud login password  :  $nextpass"
 echo "--------------------------------------------------------------------------------------------------------"
-echo " end to end encryption is enabled - maybe you better juse this, because: "
-echo " never trust someone else host system -- your cloud VPS is not your host, its just someone else one"
+echo " end to end encryption is enabled - maybe you better use this, because: "
+echo " Your cloud VPS server is not your host, its just someone else system,"
+echo " you only rent the system from them, so protect your data"
+echo -e " ${YELLOW} reminder: cleartext password in /root/nextcloud_mysql_password_list.txt - take care of that file${ENDCOLOR}"
 echo "--------------------------------------------------------------------------------------------------------"
