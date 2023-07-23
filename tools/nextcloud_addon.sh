@@ -123,9 +123,6 @@ echo "--------------------------------------------------------------------------
 read -p "Your apache https port: " -e -i 23443 httpsport
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "Your apache https port: " -e -i 23443 httpsport
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
 read -p "Your mariaDB port: " -e -i 3306 dbport
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
@@ -353,7 +350,9 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
 );
 EOF
 
-
+echo ""
+echo "Wait, please nextcloud setup in progress...."
+echo ""
 cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
 
