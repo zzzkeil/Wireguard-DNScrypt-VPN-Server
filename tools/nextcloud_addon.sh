@@ -75,6 +75,7 @@ fi
 
 ### check if script installed
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
+echo -e "${GREEN}OK = Wireguard-DNScrypt-VPN-Server is installed ${ENDCOLOR}"
 else
  echo -e "${RED} !!! my wireguard script is needed !!!${ENDCOLOR}"
  echo -e "${RED} Download here:  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
