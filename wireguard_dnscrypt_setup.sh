@@ -284,6 +284,13 @@ chmod +x uninstaller_back_to_base.sh
 chmod +x beta_nextcloud_addon.sh
 
 
+firewalldstatus="$(systemctl is-active firewalld)"
+if [ "${firewalldstatus}" = "active" ]; then
+echo "ok firewalld is running"
+else 
+systemctl restart firewalld  
+fi
+
 ### setup firewalld and sysctl
 hostipv4=$(hostname -I | awk '{print $1}')
 hostipv6=$(hostname -I | awk '{print $2}')
