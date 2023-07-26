@@ -245,7 +245,7 @@ chown -R www-data:www-data /opt/nextcloud/data
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
 sed -i "s/memory_limit = 128M/memory_limit = 1G/" /etc/php/8.2/apache2/php.ini
-sed -i "s/output_buffering =.*/output_buffering = 'Off'/" /etc/php/8.2/apache2/php.ini
+sed -i "s/output_buffering =.*/output_buffering = '0'/" /etc/php/8.2/apache2/php.ini
 sed -i "s/max_execution_time =.*/max_execution_time = 3600/" /etc/php/8.2/apache2/php.ini
 sed -i "s/max_input_time =.*/max_input_time = 3600/" /etc/php/8.2/apache2/php.ini
 sed -i "s/post_max_size =.*/post_max_size = 10G/" /etc/php/8.2/apache2/php.ini
