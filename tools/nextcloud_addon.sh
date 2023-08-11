@@ -149,7 +149,9 @@ echo "--------------------------------------------------------------------------
 read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-
+read -p "nextcloud data folder : " -e -i  /opt/nextcloud/data ncdatafolder
+echo "--------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------------------------------------------"
 
 cat <<EOF >> /root/nextcloud_mysql_password_list.txt
 !! Maybe delete or encrypt this file .... !!
@@ -233,14 +235,14 @@ cat <<EOF >> /etc/apache2/sites-available/nc.conf
 EOF
 
 
-mkdir -p /opt/nextcloud/data
+mkdir -p $ncdatafolder
 cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 
 
 chown -R www-data:www-data /var/www/nextcloud
-chown -R www-data:www-data /opt/nextcloud/data
+chown -R www-data:www-data $ncdatafolder
 
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
@@ -351,7 +353,7 @@ echo -e "${GREEN}Wait please, nextcloud occ setup is in progress....${ENDCOLOR}"
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 cd /var/www/nextcloud
-sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "/opt/nextcloud/data/"
+sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
 sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
 sudo -u www-data php occ app:enable end_to_end_encryption
