@@ -344,6 +344,7 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
    'memcache.local' => '\OC\Memcache\APCu',
    'memcache.locking' => '\OC\Memcache\Memcached',
    'default_phone_region' => '$dpr',
+   'skeletondirectory' => '',
 );
 EOF
 
@@ -356,6 +357,8 @@ cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
 sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
+sudo -u www-data php occ app:enable encryption
+sudo -u www-data php occ encryption:enable
 sudo -u www-data php occ app:enable end_to_end_encryption
 sudo -u www-data php occ background:cron
 
