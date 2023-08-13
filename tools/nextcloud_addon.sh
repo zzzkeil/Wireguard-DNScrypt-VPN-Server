@@ -166,6 +166,9 @@ Nextcloud Database
 databasename : $databasename
 databaseuser : $databaseuser
 databaseuserpasswd : $databaseuserpasswd
+
+Nextcloud datafolder
+$ncdatafolder
 EOF
 
 
