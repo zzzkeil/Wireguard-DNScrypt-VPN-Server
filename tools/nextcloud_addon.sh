@@ -247,6 +247,7 @@ unzip -qq nextcloud.zip
 
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data $ncdatafolder
+chown -R www-data:www-data $ncdatafolder/keys
 
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
