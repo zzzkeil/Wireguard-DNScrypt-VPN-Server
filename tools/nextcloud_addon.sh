@@ -147,7 +147,7 @@ echo "--------------------------------------------------------------------------
 read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud data folder : " -e -i  /opt/nextcloud/data ncdatafolder
+read -p "nextcloud data folder : " -e -i  /opt/nextcloud_data ncdatafolder
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 
@@ -343,11 +343,11 @@ cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
 sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
-#sudo -u www-data php occ app:enable encryption
-#sudo -u www-data php occ encryption:enable
+sudo -u www-data php occ app:enable encryption
+sudo -u www-data php occ encryption:enable
+sudo -u www-data php occ encryption:encrypt-all
 #sudo -u www-data php occ encryption:enable-master-key
-#sudo -u www-data php occ encryption:encrypt-all
-sudo -u www-data php occ app:enable end_to_end_encryption
+# 2023.08 E2EE really not working as it should??? sudo -u www-data php occ app:enable end_to_end_encryption
 sudo -u www-data php occ background:cron
 
 
@@ -360,7 +360,8 @@ fi
 #fi
 
 echo "--------------------------------------------------------------------------------------------------------"
-echo " E2EE end 2 end encryption is enabled - you should activate them on your clients "
+echo " E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08 "
+echo " Used serverside encryption for now, less secure but better than nothing ..... "
 echo " A cloud VPS server is not really your host, its just someone else system,storage,and so on ......"
 echo "--------------------------------------------------------------------------------------------------------"
 echo ""
