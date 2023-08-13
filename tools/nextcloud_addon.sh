@@ -117,8 +117,6 @@ randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
 echo ""
 echo ""
 echo -e " ${GREEN}-- Your turn, make some decisions -- ${ENDCOLOR}"
-echo " ---> your decisions will saved in clear text here : /root/nextcloud_mysql_password_list.txt"
-echo -e "${YELLOW}---->maybe you shoud delete or encrypt this file later !${ENDCOLOR}"
 echo ""
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
@@ -152,24 +150,6 @@ echo "--------------------------------------------------------------------------
 read -p "nextcloud data folder : " -e -i  /opt/nextcloud/data ncdatafolder
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-
-cat <<EOF >> /root/nextcloud_mysql_password_list.txt
-!! Maybe delete or encrypt this file .... !!
-Apache2 port : $httpsport
-MariaDB port : $dbport
-
-Nextcloud Login
-adminuser : $nextroot
-password  : $nextpass
-
-Nextcloud Database
-databasename : $databasename
-databaseuser : $databaseuser
-databaseuserpasswd : $databaseuserpasswd
-
-Nextcloud datafolder
-$ncdatafolder
-EOF
 
 
 #if [[ "$systemos" = 'fedora' ]]; then
@@ -239,7 +219,6 @@ EOF
 
 
 mkdir -p $ncdatafolder
-mkdir -p $ncdatafolder/keys
 cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
@@ -247,7 +226,6 @@ unzip -qq nextcloud.zip
 
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data $ncdatafolder
-chown -R www-data:www-data $ncdatafolder/keys
 
 ##php settings nextcloud
 cp /etc/php/8.2/apache2/php.ini /etc/php/8.2/apache2/php.ini.bak
@@ -352,7 +330,10 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
    'skeletondirectory' => '',
 );
 EOF
-
+echo ""
+echo ""
+echo ""
+echo ""
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 echo -e "${GREEN}Wait please, nextcloud occ setup is in progress....${ENDCOLOR}"
@@ -378,17 +359,34 @@ fi
 #systemctl start httpd.service
 #fi
 
+echo "--------------------------------------------------------------------------------------------------------"
+echo " E2EE end 2 end encryption is enabled - you should activate them on your clients "
+echo " A cloud VPS server is not really your host, its just someone else system,storage,and so on ......"
+echo "--------------------------------------------------------------------------------------------------------"
+echo ""
+echo ""
+echo -e "${GREEN} Your settings, and passwords, maybe take a copy ..... ${ENDCOLOR}"
 echo ""
 echo ""
 echo "--------------------------------------------------------------------------------------------------------"
-echo " Setup Nextcloud to your needs  :  https://10.$ipv4network.1:$httpsport"
+echo " Your apache https port         :  $httpsport"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " Your mariaDB port              :  $dbport"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " sql databasename               :  $databasename"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " sql databaseuser               :  $databaseuser"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " sql databaseuserpasswd         :  $databaseuserpasswd"
+echo "--------------------------------------------------------------------------------------------------------"
+echo " Your nextcloud data folder     :  $ncdatafolder"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Your nextcloud admin user      :  $nextroot"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Your nextcloud login password  :  $nextpass"
 echo "--------------------------------------------------------------------------------------------------------"
-echo " end to end encryption is enabled - maybe you better use this, because: "
-echo " Your cloud VPS server is not your host, its just someone else system,"
-echo " you only rent the system from them, so protect your data"
-echo -e " ${YELLOW} reminder: cleartext password in /root/nextcloud_mysql_password_list.txt - take care of that file${ENDCOLOR}"
+echo " Now setup Nextcloud to your needs  :  https://10.$ipv4network.1:$httpsport"
 echo "--------------------------------------------------------------------------------------------------------"
+echo ""
+echo ""
+
