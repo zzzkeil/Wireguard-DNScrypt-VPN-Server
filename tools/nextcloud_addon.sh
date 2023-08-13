@@ -236,6 +236,7 @@ EOF
 
 
 mkdir -p $ncdatafolder
+mkdir -p $ncdatafolder/keys
 cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
@@ -359,6 +360,9 @@ sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
 sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
 sudo -u www-data php occ app:enable encryption
 sudo -u www-data php occ encryption:enable
+sudo -u www-data php occ encryption:change-key-storage-root $ncdatafolder/keys
+sudo -u www-data php occ encryption:enable-master-key
+sudo -u www-data php occ encryption:encrypt-all
 sudo -u www-data php occ app:enable end_to_end_encryption
 sudo -u www-data php occ background:cron
 
