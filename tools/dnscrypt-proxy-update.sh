@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 INSTALL_DIR="/etc/dnscrypt-proxy"
 LATEST_URL="https://api.github.com/repos/DNSCrypt/dnscrypt-proxy/releases/latest"
