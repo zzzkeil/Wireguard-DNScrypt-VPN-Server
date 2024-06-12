@@ -180,6 +180,7 @@ then
 wg0port=51820
 wg0networkv4=66.66
 wg0networkv6=66:66:66
+wg0servermtu="#MTU = 1420"
 wg0mtu="#MTU = 1420"
 wg0keepalive="#PersistentKeepalive = 25"
 else
@@ -189,6 +190,13 @@ echo "--------------------------------------------------------------------------
 read -p "Port: " -e -i 51820 wg0port
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
+#echo " Wireguard ${GREEN} SERVER ${ENDCOLOR} MTU settings :"
+#echo -e " If you not familiar with MTU settings, change to the default value ${GREEN} 1420 ${ENDCOLOR} and press [ENTER]."
+#echo "--------------------------------------------------------------------------------------------------------"
+#echo "--------------------------------------------------------------------------------------------------------"
+#read -p "MTU =  " -e -i 1420 wg0servermtu
+#echo "--------------------------------------------------------------------------------------------------------"
+#echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard ipv4 settings :"
 echo -e " Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}66.66${ENDCOLOR}.1"
 echo " If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER]."
@@ -204,7 +212,7 @@ echo "--------------------------------------------------------------------------
 read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-echo " Wireguard MTU settings :"
+echo " Wireguard ${GREEN} CLIENTS ${ENDCOLOR} MTU settings :"
 echo -e " If you not familiar with MTU settings, change to the default value ${GREEN} 1420 ${ENDCOLOR} and press [ENTER]."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
@@ -247,7 +255,7 @@ dnf install qrencode curl cronie cronie-anacron -y
 dnf install wireguard-tools -y
 fi
 
-### create and download files for configs
+### create and download files for configs  wg0servermtu später noch einpflegen 
 echo "
 !!! do not delete or modify this file
 !!  This file contains values line by line, used for config, backups and restores
@@ -346,6 +354,7 @@ echo "[Interface]
 Address = 10.$wg0networkv4.1/24
 Address = fd42:$wg0networkv6::1/112
 ListenPort = $wg0port
+#MTU = $wg0servermtu
 PrivateKey = SK01
 
 
