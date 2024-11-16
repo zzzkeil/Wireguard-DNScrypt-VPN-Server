@@ -239,11 +239,6 @@ if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
 fi
 
-#if [[ "$systemos" = 'fedora' ]]; then
-#systemctl start httpd.service
-#fi
-
-
 ### DB part
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
@@ -278,11 +273,6 @@ EOF
 if [[ "$systemos" = 'debian' ]]; then
 systemctl restart mariadb.service
 fi
-
-#if [[ "$systemos" = 'fedora' ]]; then
-#systemctl restart mariadb.service
-#fi
-
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
@@ -319,10 +309,6 @@ sudo -u www-data php occ background:cron
 if [[ "$systemos" = 'debian' ]]; then
 systemctl start apache2.service
 fi
-
-#if [[ "$systemos" = 'fedora' ]]; then
-#systemctl start httpd.service
-#fi
 
 echo "--------------------------------------------------------------------------------------------------------"
 echo " E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08 "
