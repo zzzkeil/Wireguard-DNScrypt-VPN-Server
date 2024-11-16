@@ -316,6 +316,8 @@ chmod 600 /etc/wireguard/keys/client3
 wg genkey > /etc/wireguard/keys/client3
 wg pubkey < /etc/wireguard/keys/client3 > /etc/wireguard/keys/client3.pub
 
+##set AllowedIPs to execlute local ips > Class A: 10. Class B: 172.16. Class C: 192.168.
+allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.6.6.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:6:6:6::/64, fe00::/9, fec0::/10, ff00::/8"
 
 echo "[Interface]
 Address = 10.$wg0networkv4.1/24
@@ -356,7 +358,7 @@ $wg0mtu
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
-AllowedIPs = 0.0.0.0/0, ::/0
+AllowedIPs = $allownet
 $wg0keepalive
 " > /etc/wireguard/client1.conf
 sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/client1.conf
@@ -373,7 +375,7 @@ $wg0mtu
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
-AllowedIPs = 0.0.0.0/0, ::/0
+AllowedIPs = $allownet
 $wg0keepalive
 " > /etc/wireguard/client2.conf
 sed -i "s@CK02@$(cat /etc/wireguard/keys/client2)@" /etc/wireguard/client2.conf
@@ -390,7 +392,7 @@ $wg0mtu
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
-AllowedIPs = 0.0.0.0/0, ::/0
+AllowedIPs = $allownet
 $wg0keepalive
 " > /etc/wireguard/client3.conf
 sed -i "s@CK03@$(cat /etc/wireguard/keys/client3)@" /etc/wireguard/client3.conf
@@ -401,7 +403,7 @@ chmod 600 /etc/wireguard/client3.conf
 
 ###setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.4/dnscrypt-proxy-linux_$dnsscrpt_arch-2.1.4.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.5/dnscrypt-proxy-linux_$dnsscrpt_arch-2.1.5.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
