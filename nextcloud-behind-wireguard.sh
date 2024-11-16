@@ -14,7 +14,6 @@ clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Nextcloud addon to my wireguard_dnscrypt_setup.sh                                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GRAYB} !!! This addon is for Debian 12 only !!!                                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${RED}Not finished, just a collections of ideas, but shoud work for now                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
@@ -55,19 +54,12 @@ if [[ "$ID" = 'debian' ]]; then
    fi
 fi
 
-#if [[ "$ID" = 'fedora' ]]; then
-# if [[ "$VERSION_ID" = '38' ]]; then
-#   echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
-#   systemos=fedora
-#   fi
-#fi
-
 
 if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12. Support for Fedora maybe sometime later ${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12!${ENDCOLOR}"
    exit 1
 fi
 
@@ -94,20 +86,6 @@ if [[ "$systemos" = 'debian' ]]; then
 apt update && apt upgrade -y && apt autoremove -y
 apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-6.q16-6-extra -y
 fi
-
-#if [[ "$systemos" = 'fedora' ]]; then
-#dnf upgrade --refresh -y && dnf autoremove -y
-#dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysqlnd php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-pecl-redis php-igbinary php-pecl-apcu memcached php-pecl-memcached unzip -y
-#libmagickcore-6.q16-6-extra
-#libapache2-mod-php
-#systemctl enable httpd
-#systemctl start httpd
-#systemctl enable mariadb
-#systemctl start mariadb 
-#systemctl enable memcached
-#systemctl start memcached
-#fi
-
 
 ###your vars
 clear
@@ -152,10 +130,6 @@ echo "--------------------------------------------------------------------------
 echo "--------------------------------------------------------------------------------------------------------"
 
 
-#if [[ "$systemos" = 'fedora' ]]; then
-#mkdir -p /etc/ssl/private
-#fi
-
 ### self-signed  certificate
 openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
 
@@ -168,18 +142,9 @@ a2enmod rewrite
 a2enmod headers
 fi
 
-#if [[ "$systemos" = 'fedora' ]]; then
-#fi
-
-
 if [[ "$systemos" = 'debian' ]]; then
 systemctl stop apache2.service
 fi
-
-#if [[ "$systemos" = 'fedora' ]]; then
-#systemctl stop httpd.service
-#fi
-
 
 
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
