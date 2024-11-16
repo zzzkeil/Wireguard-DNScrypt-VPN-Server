@@ -13,13 +13,18 @@ ENDCOLOR="\e[0m"
 
 clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9                 ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions                                                         ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server                                                                 ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2023.06.27 -  changelog on github                                                                      ${GRAYB}#${ENDCOLOR}"
+echo ""
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN} Test Version 2024.11.xx - ------   ${ENDCOLOR}"
+echo ""
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12 ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
+echo ""
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+
 echo ""
 echo ""
 echo ""
@@ -55,49 +60,11 @@ if [[ "$ID" = 'debian' ]]; then
    fi
 fi
 
-if [[ "$ID" = 'ubuntu' ]]; then
- if [[ "$VERSION_ID" = '22.04' ]]; then
-   echo -e "${GREEN}OS = Ubuntu ${ENDCOLOR}"
-   systemos=ubuntu
-   fi
-fi
-
-if [[ "$ID" = 'fedora' ]]; then
- if [[ "$VERSION_ID" = '38' ]]; then
-   echo -e "${GREEN}OS = Fedora ${ENDCOLOR}"
-   systemos=fedora
-   fi
-fi
-
-### testing .... should run
-if [[ "$ID" = 'rocky' ]]; then
- if [[ "$ROCKY_SUPPORT_PRODUCT" = 'Rocky-Linux-9' ]]; then
-   echo -e "${GREEN}OS = Rocky Linux ${ENDCOLOR}"
-   systemos=rocky
- fi
-fi
-
-### testing .... should run
-if [[ "$ID" = 'almalinux' ]]; then
- if [[ "$ALMALINUX_MANTISBT_PROJECT" = 'AlmaLinux-9' ]]; then
-   echo -e "${GREEN}OS = AlmaLinux ${ENDCOLOR}"
-   systemos=almalinux
- fi
-fi
-
-### testing .... should run
-if [[ "$ID" = 'centos' ]]; then
- if [[ "$VERSION_ID" = '9' ]]; then
-   echo -e "${GREEN}OS = CentOS Stream ${ENDCOLOR}"
-   systemos=centos
- fi
-fi
-
 if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12, Fedora 38, Rocky Linux 9, CentOS Stream 9 !${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 12 !${ENDCOLOR}"
    exit 1
 fi
 
