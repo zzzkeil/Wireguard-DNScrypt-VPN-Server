@@ -249,14 +249,14 @@ curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNS
 curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
 curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
 curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
-curl -o nextcloud_addon.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/nextcloud_addon.sh
+curl -o nextcloud-behind-wireguard.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/nextcloud-behind-wireguard.sh
 
 chmod +x add_client.sh
 chmod +x remove_client.sh
 chmod +x wg_config_backup.sh
 chmod +x wg_config_restore.sh
 chmod +x uninstaller_back_to_base.sh
-chmod +x nextcloud_addon.sh
+chmod +x nextcloud-behind-wireguard.sh
 
 
 firewalldstatus="$(systemctl is-active firewalld)"
@@ -474,6 +474,12 @@ echo ""
 echo ""
 echo " Now it takes a time befor dnscrypt-proxy is ready. You can check the logfile with : cat /var/log/dnscrypt-proxy.log "
 echo ""
+echo ""
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}You can only connect to this nextcloud, if you have wireguard on ......  ${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
