@@ -303,6 +303,9 @@ sudo -u www-data php occ encryption:enable
 sudo -u www-data php occ encryption:encrypt-all
 #sudo -u www-data php occ encryption:enable-master-key
 # 2023.08 E2EE really not working as it should??? sudo -u www-data php occ app:enable end_to_end_encryption
+sudo -u www-data php occ config:system:set maintenance_window_start --type=integer --value=1
+sudo -u www-data php occ maintenance:repair --include-expensive
+sudo -u www-data php occ db:add-missing-indices
 sudo -u www-data php occ background:cron
 
 
