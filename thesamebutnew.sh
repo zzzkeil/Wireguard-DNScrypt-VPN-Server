@@ -196,7 +196,7 @@ wg0mtu="MTU = $wg0mtu02"
 wg0keepalive="PersistentKeepalive = $wg0keepalive02"
 
 fi
-### AllowedIPs options
+### AllowedIPs options - local ips in testing... maybe not a perfect solution !!!
 echo " -- AllowedIPs handling for the first 3 preset client configs -- "
 echo "--------------------------------------------------------------------------------------------------------"
 echo -e "${GREEN}Press any key to tunnel all trafic over wireguard ${ENDCOLOR}"
