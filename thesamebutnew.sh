@@ -197,7 +197,7 @@ wg0keepalive="PersistentKeepalive = $wg0keepalive02"
 
 fi
 ### AllowedIPs options
-echo " -- AllowedIPs handling - make your decision -- "
+echo " -- AllowedIPs handling for the first 3 preset client configs -- "
 echo "--------------------------------------------------------------------------------------------------------"
 echo -e "${GREEN}Press any key to tunnel all trafic over wireguard ${ENDCOLOR}"
 echo "or"
