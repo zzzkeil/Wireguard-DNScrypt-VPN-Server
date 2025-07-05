@@ -13,11 +13,11 @@ ENDCOLOR="\e[0m"
 clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Nextcloud addon to my wireguard_dnscrypt_setup.sh                                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GRAYB} !!! This addon is for Debian 12 only !!!                                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GRAYB} !!! This addon is for Debian 13 only !!!                                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version XXXX.XX.XX -  no changelog now  8                                                                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2025.07.05 -  no changelog now  9                                                                      ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -48,7 +48,7 @@ echo -e "${GREEN}OS check ${ENDCOLOR}"
 . /etc/os-release
 
 if [[ "$ID" = 'debian' ]]; then
- if [[ "$VERSION_ID" = '12' ]]; then
+ if [[ "$VERSION_ID" = '13' ]]; then
    echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
    systemos=debian
    fi
@@ -59,7 +59,7 @@ if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12!${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 13!${ENDCOLOR}"
    exit 1
 fi
 
@@ -83,8 +83,8 @@ ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
-apt update && apt upgrade -y && apt autoremove -y
-apt install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-6.q16-6-extra -y
+apt-get update && apt-get upgrade -y && apt-get autoremove -y
+apt-get install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-7.q16-10 -y
 fi
 
 ###your vars
