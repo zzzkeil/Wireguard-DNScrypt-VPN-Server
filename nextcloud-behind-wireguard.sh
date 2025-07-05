@@ -261,8 +261,8 @@ echo " Keep in mind: your MariaDB root password is still NOT set !"
 echo -e "${YELLOW} You should set a root password, when asked${ENDCOLOR}"
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-mysql_secure_installation
-mysql -uroot <<EOF
+mariadb-secure-installation
+mariadb -uroot <<EOF
 CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 CREATE USER '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
 GRANT ALL PRIVILEGES on $databasename.* to '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
