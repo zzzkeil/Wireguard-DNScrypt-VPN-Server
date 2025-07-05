@@ -5,12 +5,13 @@
 
 [![https://hetzner.cloud/?ref=iP0i3O1wRcHu](https://img.shields.io/badge/maybe_you_can_support_me_-_my_VPS_hoster_hetzner_(referral_link)_thanks-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://hetzner.cloud/?ref=iP0i3O1wRcHu) 
 
-### Version 2023.06.27
+### Version 2025.07.05
 major changes : 
  - X86_64 and ARM64
- - Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9
- - removed unbound  ( only DNScrypt is used )
- - replaced ufw with firewalld
+ - Debian 13  for now the only one .....
+ - Nextcloud shoud be working ... after 1 year testing/using :)
+ - apt changed to apt-get ... better ???
+ - add Threat Intelligence Feeds to Blocklist
  - all other things i forgot :)
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
@@ -36,8 +37,20 @@ chmod +x wireguard_dnscrypt_debian13_setup.sh
    * if not installed, base_setup.sh will downloaded for you, just follow the instructions.
 * Optional: Nextcloud can be installed afterwards
 
+@ the end you see the QR Code for your wiregaurd app.
 
-# How to install other  :  
+## How to add or remove clients :
+```
+run ./add_client.sh or ./remove_client.sh
+```
+## How to backup or restore settings :
+```
+run ./wg_config_backup.sh or ./wg_config_restore.sh
+```
+
+
+-----------------------------------------------------------------------------------------------------------------
+# ( outdated 2025 ) How to install other :  
 ###### Server x86_64 and ARM64 - Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9:
 ```
 wget -O  wireguard_dnscrypt_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/wireguard_dnscrypt_setup.sh
@@ -49,16 +62,6 @@ chmod +x wireguard_dnscrypt_setup.sh
 * My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
    * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
 
-@ the end you see the QR Code for your wiregaurd app.
-
-## How to add or remove clients :
-```
-run ./add_client.sh or ./remove_client.sh
-```
-## How to backup or restore settings :
-```
-run ./wg_config_backup.sh or ./wg_config_restore.sh
-```
 
 
 
