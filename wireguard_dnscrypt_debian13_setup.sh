@@ -14,8 +14,8 @@ ENDCOLOR="\e[0m"
 clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN} Test Version 2024.11.xx - ------   ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 12 ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN} Test Version 2025.07.xx - ------   ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 13 ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
@@ -51,7 +51,7 @@ echo -e "${GREEN}OS check ${ENDCOLOR}"
 . /etc/os-release
 
 if [[ "$ID" = 'debian' ]]; then
- if [[ "$VERSION_ID" = '12' ]]; then
+ if [[ "$VERSION_ID" = '13' ]]; then
    echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
    systemos=debian
    fi
@@ -61,7 +61,7 @@ if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 12 !${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 13 !${ENDCOLOR}"
    exit 1
 fi
 
@@ -218,22 +218,11 @@ echo ""
 echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
-apt update && apt upgrade -y && apt autoremove -y
-apt install qrencode python-is-python3 curl linux-headers-$(uname -r) -y
-apt install wireguard wireguard-tools -y
+apt-get update && apt upgrade -y && apt autoremove -y
+apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) -y
+apt-get install wireguard wireguard-tools -y
 fi
 
-if [[ "$systemos" = 'fedora' ]]; then
-dnf upgrade --refresh -y && dnf autoremove -y
-dnf install qrencode python-is-python3 curl cronie cronie-anacron -y
-dnf install wireguard-tools -y
-fi
-
-if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-dnf upgrade --refresh -y && dnf autoremove -y
-dnf install qrencode curl cronie cronie-anacron -y
-dnf install wireguard-tools -y
-fi
 
 ### create and download files for configs  wg0servermtu später noch einpflegen 
 echo "
@@ -293,9 +282,10 @@ firewall-cmd --zone=trusted --add-source=fd42:$wg0networkv6::/64
 firewall-cmd --direct --add-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6"
 fi
 
-# wrong....
-#firewall-cmd --zone=trusted --add-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
-#firewall-cmd --zone=trusted --add-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
+# maybe wrong....
+firewall-cmd --zone=trusted --add-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
+firewall-cmd --zone=trusted --add-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
+                             
 
 firewall-cmd --runtime-to-permanent
 
