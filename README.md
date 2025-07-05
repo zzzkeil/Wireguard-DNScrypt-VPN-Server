@@ -21,6 +21,21 @@ major changes :
 * add or remove clients with add_client.sh / remove_client.sh 
 * backup, restore and unistall options
 
+
+# How to install Debian 13 only with/without nextcloud behind wg:  
+###### Server x86_64 and ARM64 - 
+###### Nextcloud can only accessed with wireguard, it´s not puplic available.    hope so .... ;)
+```
+wget -O  wireguard_dnscrypt_debian13_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/wireguard_dnscrypt_debian13_setup.sh
+chmod +x wireguard_dnscrypt_debian13_setup.sh
+./wireguard_dnscrypt_debian13_setup.sh
+```
+* Copy the lines above, execute and follow the instructions  
+* Use a fresh / clean **server** os > Debian 13 :
+* My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
+   * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
+
+
 ## How to install :  
 ###### Server x86_64 and ARM64 - Debian 12, Ubuntu 22.04, Fedora 38, Rocky Linux 9, CentOS Stream 9, AlmaLinux 9:
 ```
@@ -43,19 +58,6 @@ run ./add_client.sh or ./remove_client.sh
 ```
 run ./wg_config_backup.sh or ./wg_config_restore.sh
 ```
-
-
-# How to install testing :  
-###### Server x86_64 and ARM64 - Debian 13 only
-```
-wget -O  wireguard_dnscrypt_debian13_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/wireguard_dnscrypt_debian13_setup.sh
-chmod +x wireguard_dnscrypt_debian13_setup.sh
-./wireguard_dnscrypt_debian13_setup.sh
-```
-* Copy the lines above, execute and follow the instructions  
-* Use a fresh / clean **server** os > Debian 13 :
-* My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
-   * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
 
 
 
