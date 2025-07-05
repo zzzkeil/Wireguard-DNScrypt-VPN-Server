@@ -94,7 +94,7 @@ if [[ -e /root/base_setup.README ]]; then
          chmod +x base_setup_debian13.sh
 	 echo ""
 	 echo ""
-         echo -e " Now run ${YELLOW}./base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
+         echo -e " Now run ${YELLOW}./base_setup_debian13.sh${ENDCOLOR} manualy and reboot, then run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
