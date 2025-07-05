@@ -22,7 +22,7 @@ major changes :
 * backup, restore and unistall options
 
 
-# How to install Debian 13 only (optional: nextcloud behind wg):  
+# How to install Debian 13 only (optional: nextcloud):  
 ###### Server x86_64 and ARM64 - 
 ###### Nextcloud can only accessed with wireguard, it´s not puplic available.    hope so .... ;)
 ```
