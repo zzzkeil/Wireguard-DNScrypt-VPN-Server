@@ -14,10 +14,11 @@ ENDCOLOR="\e[0m"
 clear
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN} Test Version 2025.07.xx - ------   ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Version 2025.07.05    ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 13 ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup.sh script is needed to setup this script correctly!!${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup script is needed to setup this script correctly!!${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}addon for nextcloud behind wireguard is ready, manual run after setup${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
@@ -89,8 +90,8 @@ if [[ -e /root/base_setup.README ]]; then
 	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
 	 echo ""
 	 echo ""
-	 wget -O  base_setup.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/thesamebutnew.sh
-         chmod +x base_setup.sh
+	 wget -O  base_setup_debian13.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_debian13.sh
+         chmod +x base_setup_debian13.sh
 	 echo ""
 	 echo ""
          echo -e " Now run ${YELLOW}./base_setup.sh${ENDCOLOR} manualy and reboot, then run this script again."
@@ -218,7 +219,7 @@ echo ""
 echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
-apt-get update && apt upgrade -y && apt autoremove -y
+apt-get update && apt-get upgrade -y && apt-get autoremove -y
 apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) -y
 apt-get install wireguard wireguard-tools -y
 fi
@@ -406,7 +407,7 @@ chmod 600 /etc/wireguard/client3.conf
 
 ###setup DNSCrypt
 mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.5/dnscrypt-proxy-linux_$dnsscrpt_arch-2.1.5.tar.gz
+wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.12/dnscrypt-proxy-linux_$dnsscrpt_arch-2.1.12.tar.gz
 tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
@@ -445,8 +446,11 @@ curl -o /etc/dnscrypt-proxy/blockedlist-ips.txt https://iplists.firehol.org/file
 (crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
 
 ### setup systemctl
+echo -e " ${YELLOW}Ignore systemd-resolved error, just in case i try to disable systemd-resolved :${ENDCOLOR}"
 systemctl stop systemd-resolved
 systemctl disable systemd-resolved
+
+
 cp /etc/resolv.conf /etc/resolv.conf.orig
 rm -f /etc/resolv.conf
 systemctl enable wg-quick@wg0.service
