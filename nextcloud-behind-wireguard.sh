@@ -84,7 +84,7 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
-apt-get install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-7.q16-10 -y
+apt-get install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-7.q16-10-extra -y
 fi
 
 ###your vars
