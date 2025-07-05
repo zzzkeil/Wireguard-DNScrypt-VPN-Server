@@ -45,4 +45,25 @@ run ./wg_config_backup.sh or ./wg_config_restore.sh
 ```
 
 
+# How to install testing :  
+###### Server x86_64 and ARM64 - Debian 13 only
+```
+wget -O  wireguard_dnscrypt_debian13_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/wireguard_dnscrypt_debian13_setup.sh
+chmod +x wireguard_dnscrypt_debian13_setup.sh
+./wireguard_dnscrypt_debian13_setup.sh
+```
+* Copy the lines above, execute and follow the instructions  
+* Use a fresh / clean **server** os > Debian 13 :
+* My script base_setup.sh need to installed -> [repository](https://github.com/zzzkeil/base_setups)  
+   * if not installed, base_setup.sh will downloaded for you, just follow the instructions.  
+
+
+
+
+
+
+
+
+
+
 Badge found and used from : [github - Ileriayo - mark-down-badges](https://github.com/Ileriayo/markdown-badges)
