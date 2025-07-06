@@ -128,3 +128,28 @@ skip_incompatible = true
 
 [static]
 
+
+##########################
+### testing maybe usefull.......
+[monitoring_ui]
+enabled = true
+listen_address = "0.0.0.0:8080"
+username = "test8080"
+password = "test8080"
+#
+tls_certificate = ""
+tls_key = ""
+enable_query_log = true
+## 0: show all 
+## 1: anonymize client IPs
+## 2: aggregate data only 
+privacy_level = 0
+## Maximum number of recent query log entries to keep in memory
+## Helps control memory usage on high-traffic servers
+## Default: 100
+max_query_log_entries = 250
+## Maximum memory usage in MB for recent query logs
+## Automatic cleanup when limit is exceeded
+## Default: 1
+# max_memory_mb = 1
+
