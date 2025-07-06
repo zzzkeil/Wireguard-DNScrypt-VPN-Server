@@ -204,7 +204,7 @@ fi
 
 systemctl stop $apache2os.service
 
-mv /etc/$apache2os/ports.conf /etc/apache2/ports.conf.bak
+mv /etc/$apache2os/ports.conf /etc/$apache2os/ports.conf.bak
 echo "
 Listen 2380
 
@@ -292,7 +292,45 @@ sed -i '$amysql.trace_mode=Off' /etc/php/8.4/mods-available/mysqli.ini
 fi
 
 if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-#whereis php8.4....  path ....
+cp /etc/php.ini /etc/php.ini.bak
+sed -i "s/memory_limit = 128M/memory_limit = 1G/" /etc/php.ini
+sed -i "s/output_buffering =.*/output_buffering = '0'/" /etc/php.ini
+sed -i "s/max_execution_time =.*/max_execution_time = 3600/" /etc/php.ini
+sed -i "s/max_input_time =.*/max_input_time = 3600/" /etc/php.ini
+sed -i "s/post_max_size =.*/post_max_size = 10G/" /etc/php.ini
+sed -i "s/upload_max_filesize =.*/upload_max_filesize = 10G/" /etc/php.ini
+sed -i "s/;date.timezone.*/date.timezone = Europe\/\Berlin/" /etc/php.ini
+sed -i "s/;cgi.fix_pathinfo.*/cgi.fix_pathinfo=0/" /etc/php.ini
+sed -i "s/;session.cookie_secure.*/session.cookie_secure = True/" /etc/php.ini
+sed -i "s/;opcache.enable=.*/opcache.enable=1/" /etc/php.ini
+sed -i "s/;opcache.validate_timestamps=.*/opcache.validate_timestamps=0/" /etc/php.ini
+sed -i "s/;opcache.enable_cli=.*/opcache.enable_cli=1/" /etc/php.ini
+sed -i "s/;opcache.memory_consumption=.*/opcache.memory_consumption=256/" /etc/php.ini
+sed -i "s/;opcache.interned_strings_buffer=.*/opcache.interned_strings_buffer=64/" /etc/php.ini
+sed -i "s/;opcache.max_accelerated_files=.*/opcache.max_accelerated_files=100000/" /etc/php.ini
+sed -i "s/;opcache.revalidate_freq=.*/opcache.revalidate_freq=60/" /etc/php.ini
+sed -i "s/;opcache.save_comments=.*/opcache.save_comments=1/" /etc/php.ini
+sed -i "s/max_file_uploads =.*/max_file_uploads = 20/" /etc/php.ini
+
+sed -i '$aopcache.jit=1255' /etc/php.ini
+sed -i '$aopcache.jit_buffer_size=256M' /etc/php.ini
+
+sed -i '$aapc.enable_cli=1' /etc/php.ini
+sed -i '$aapc.enable_cli=1' /etc/php.d/40-apcu.ini
+sed -i '$aopcache.jit=1255' /etc/php.d/10-opcache.ini
+sed -i '$aopcache.jit_buffer_size=256M' /etc/php.d/10-opcache.ini
+
+
+sed -i '$a[mysql]' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.allow_local_infile=On' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.allow_persistent=On' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.cache_size=2000' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.max_persistent=-1' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.max_links=-1' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.default_port=3306' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.connect_timeout=60' /etc/php.d/20-mysqlnd.ini
+sed -i '$amysql.trace_mode=Off' /etc/php.d/20-mysqlnd.ini
+
 fi
 
 
