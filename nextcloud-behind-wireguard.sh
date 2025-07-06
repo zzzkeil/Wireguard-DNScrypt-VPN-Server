@@ -54,14 +54,22 @@ if [[ "$ID" = 'debian' ]]; then
    fi
 fi
 
+if [[ "$ID" = 'ubuntu' ]]; then
+ if [[ "$VERSION_ID" = '24.04' ]]; then
+   echo -e "${GREEN}OS = Ubuntu ${ENDCOLOR}"
+   systemos=ubuntu
+   fi
+fi
+
 
 if [[ "$systemos" = '' ]]; then
    clear
    echo ""
    echo ""
-   echo -e "${RED}This script is only for Debian 13!${ENDCOLOR}"
+   echo -e "${RED}This script is only for Debian 13 and Ubuntu 24.04 !${ENDCOLOR}"
    exit 1
 fi
+
 
 
 
@@ -85,6 +93,14 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 if [[ "$systemos" = 'debian' ]]; then
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
 apt-get install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-7.q16-10-extra -y
+fi
+
+
+if [[ "$systemos" = 'ubuntu' ]]; then
+add-apt-repository ppa:ondrej/apache2 -y
+add-apt-repository ppa:ondrej/php -y
+apt-get update && apt-get upgrade -y && apt-get autoremove -y
+apt-get install apache2 libapache2-mod-php mariadb-server php8.4-xml php8.4-cli php8.4-cgi php8.4-mysql php8.4-mbstring php8.4-gd php8.4-curl php8.4-intl php8.4-gmp php8.4-bcmath php8.4-imagick php8.4-zip php8.4-bz2 php8.4-opcache php8.4-common php8.4-redis php8.4-igbinary php8.4-apcu memcached php8.4-memcached unzip libmagickcore-6.q16-7-extra -y
 fi
 
 ###your vars
@@ -136,13 +152,13 @@ openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -node
 
 
 ### apache part
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
 fi
 
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl stop apache2.service
 fi
 
@@ -235,7 +251,7 @@ sed -i '$amysql.trace_mode=Off' /etc/php/8.4/mods-available/mysqli.ini
 
 a2ensite nc.conf
 
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl start apache2.service
 fi
 
@@ -270,7 +286,7 @@ FLUSH privileges;
 EOF
 
 
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl restart mariadb.service
 fi
 
@@ -309,7 +325,7 @@ sudo -u www-data php occ db:add-missing-indices
 sudo -u www-data php occ background:cron
 
 
-if [[ "$systemos" = 'debian' ]]; then
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl start apache2.service
 fi
 
