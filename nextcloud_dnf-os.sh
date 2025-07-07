@@ -130,7 +130,12 @@ if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos"
 dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm -y
 dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm -y
 dnf module enable php:remi-8.4 -y
-dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-process php-redis php-igbinary php-apcu memcached php-pecl-memcache php-pecl-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
+#dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-process php-redis php-igbinary php-apcu memcached php-pecl-memcache php-pecl-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
+# php php-mysqlnd php-pdo php-gd php-mbstring httpd php php-cli php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json php-pdo php-pecl-apcu php-pecl-apcu-devel php-mysqlnd php-gd php-curl php-ftp php-fpm 
+# php-pear php-mbstring php-pdo php-intl php-xml php-gd php-mysqlnd php-bcmath php-gmp php-soap php-sodium php-opcache php-devel php-pecl-zip php-pecl-json-post php-pecl-apcu php-pecl-redis6 php-pecl-imagick valkey
+# mariadb-server php php-mysqlnd php-pdo php-gd php-mbstring php-xml php-zip php-curl php-json php-intl
+# mal rausfinden wie das bei redhat heist ......
+
 fi
 
 
