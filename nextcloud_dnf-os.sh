@@ -130,7 +130,7 @@ if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos"
 dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm -y
 dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm -y
 dnf module enable php:remi-8.4 -y
-dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
+dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-process php-redis php-igbinary php-apcu memcached php-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
 fi
 
 
