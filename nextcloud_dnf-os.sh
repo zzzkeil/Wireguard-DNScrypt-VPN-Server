@@ -390,7 +390,7 @@ a2ensite nc.conf
 fi
 
 if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-echo !is on with file nc.conf in conf.d folder?"
+echo "is on with file nc.conf in conf.d folder?"
 fi
 
 
