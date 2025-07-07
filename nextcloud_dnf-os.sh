@@ -398,6 +398,7 @@ systemctl start $apache2os.service
 
 
 ### DB part
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
 [mysqld]
@@ -410,6 +411,21 @@ log_slow_rate_limit    = 1000
 log_slow_verbosity     = query_plan
 log-queries-not-using-indexes
 " > /etc/mysql/my.cnf
+fi
+
+if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
+echo "
+[mysqld]
+bind-address = 127.0.0.1
+port = $dbport
+
+slow_query_log_file    = /var/log/mysql/mariadb-slow.log
+long_query_time        = 10
+log_slow_rate_limit    = 1000
+log_slow_verbosity     = query_plan
+log-queries-not-using-indexes
+" > /etc/my.cnf.d/my.cnf
+fi
 
 
 echo "--------------------------------------------------------------------------------------------------------"
