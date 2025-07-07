@@ -259,10 +259,10 @@ Listen 2380
 <IfModule mod_gnutls.c>
         Listen $httpsport
 </IfModule>
-" >> etc/httpd/conf.d/ports.conf
+" > /etc/httpd/conf.d/ports.conf
 
 
-cat <<EOF >> etc/httpd/conf.d/nc.conf
+cat <<EOF >> /etc/httpd/conf.d/nc.conf
 <VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nextcloud
@@ -291,9 +291,15 @@ cd /var/www
 curl -o nextcloud.zip https://download.nextcloud.com/server/releases/latest.zip
 unzip -qq nextcloud.zip
 
-
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 chown -R www-data:www-data /var/www/nextcloud
 chown -R www-data:www-data $ncdatafolder
+fi
+
+if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
+chown -R apache:apache /var/www/nextcloud
+chown -R apache:apache $ncdatafolder
+fi
 
 ##php settings nextcloud  
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
@@ -376,7 +382,6 @@ sed -i '$amysql.max_links=-1' /etc/php.d/20-mysqlnd.ini
 sed -i '$amysql.default_port=3306' /etc/php.d/20-mysqlnd.ini
 sed -i '$amysql.connect_timeout=60' /etc/php.d/20-mysqlnd.ini
 sed -i '$amysql.trace_mode=Off' /etc/php.d/20-mysqlnd.ini
-
 fi
 
 
@@ -385,7 +390,7 @@ a2ensite nc.conf
 fi
 
 if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-#is on with file nc.conf in conf.d folder? 
+echo !is on with file nc.conf in conf.d folder?"
 fi
 
 
