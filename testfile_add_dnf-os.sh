@@ -121,11 +121,11 @@ if [[ -e /root/base_setup.README ]]; then
 	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
 	 echo ""
 	 echo ""
-	 wget -O  base_setup_debian13.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_debian13.sh
-         chmod +x base_setup_debian13.sh
+	 wget -O  base_dnf.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_with-dnf-os.sh
+         chmod +x base_dnf.sh
 	 echo ""
 	 echo ""
-         echo -e " Now run ${YELLOW}./base_setup_debian13.sh${ENDCOLOR} manualy and reboot, then run this script again."
+         echo -e " Now run ${YELLOW}./base_dnf.sh${ENDCOLOR} manualy and reboot, then run this script again."
 	 echo ""
 	 echo ""
 	 exit 1
