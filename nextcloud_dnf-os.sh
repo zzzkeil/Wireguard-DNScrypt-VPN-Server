@@ -425,6 +425,9 @@ log_slow_rate_limit    = 1000
 log_slow_verbosity     = query_plan
 log-queries-not-using-indexes
 " > /etc/my.cnf.d/my.cnf
+
+systemctl enable mariadb.service
+systemctl start mariadb.service
 fi
 
 
@@ -456,6 +459,16 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
    'skeletondirectory' => '',
 );
 EOF
+
+
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
+apache2user="www-data"
+fi
+
+if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
+apache2user="apache"
+fi
+
 echo ""
 echo ""
 echo ""
@@ -466,18 +479,18 @@ echo -e "${GREEN}Wait please, nextcloud occ setup is in progress....${ENDCOLOR}"
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 cd /var/www/nextcloud
-sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
-sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
-sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
-sudo -u www-data php occ app:enable encryption
-sudo -u www-data php occ encryption:enable
-sudo -u www-data php occ encryption:encrypt-all
-#sudo -u www-data php occ encryption:enable-master-key
+sudo -u $apache2user php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
+sudo -u $apache2user php occ config:system:set logtimezone --value="$ltz"
+sudo -u $apache2user php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
+sudo -u $apache2user php occ app:enable encryption
+sudo -u $apache2user php occ encryption:enable
+sudo -u $apache2user php occ encryption:encrypt-all
+#sudo -u $apache2user php occ encryption:enable-master-key
 # 2023.08 E2EE really not working as it should??? sudo -u www-data php occ app:enable end_to_end_encryption
-sudo -u www-data php occ config:system:set maintenance_window_start --type=integer --value=1
-sudo -u www-data php occ maintenance:repair --include-expensive
-sudo -u www-data php occ db:add-missing-indices
-sudo -u www-data php occ background:cron
+sudo -u $apache2user php occ config:system:set maintenance_window_start --type=integer --value=1
+sudo -u $apache2user php occ maintenance:repair --include-expensive
+sudo -u $apache2user php occ db:add-missing-indices
+sudo -u $apache2user php occ background:cron
 
 
 systemctl start $apache2os.service
