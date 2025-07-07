@@ -130,7 +130,7 @@ if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos"
 dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm -y
 dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm -y
 dnf module enable php:remi-8.4 -y
-dnf install httpd mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
+dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
 fi
 
 
@@ -178,8 +178,8 @@ echo "--------------------------------------------------------------------------
 
 
 ### self-signed  certificate
+mkdir /etc/ssl/private/
 openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
-
 
 
 ### apache part
@@ -195,16 +195,24 @@ if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
+#rewrite default on?
+#headers default on?
 fi
 
 if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-#no equivalent to a2enmod,   all manual to do  .... realy redhat .......
+echo '
+SSLCertificateFile "/etc/ssl/certs/nc-selfsigned.crt"
+SSLCertificateKeyFile "/etc/ssl/private/nc-selfsigned.key"
+ '>> /etc/httpd/conf.d/ssl.conf
+#rewrite default on?
+#headers default on?
 fi
 
 
 systemctl stop $apache2os.service
 
-mv /etc/$apache2os/ports.conf /etc/$apache2os/ports.conf.bak
+if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
+mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 echo "
 Listen 2380
 
@@ -215,10 +223,9 @@ Listen 2380
 <IfModule mod_gnutls.c>
         Listen $httpsport
 </IfModule>
-" >> /etc/$apache2os/ports.conf
+" >> /etc/apache2/ports.conf
 
-
-cat <<EOF >> /etc/$apache2os/sites-available/nc.conf
+cat <<EOF >> /etc/apache2/sites-available/nc.conf
 <VirtualHost *:$httpsport>
    ServerName 10.$ipv4network.1
    DocumentRoot /var/www/nextcloud
@@ -238,6 +245,45 @@ cat <<EOF >> /etc/$apache2os/sites-available/nc.conf
 
 </VirtualHost>
 EOF
+
+fi
+
+if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
+echo "
+Listen 2380
+
+<IfModule ssl_module>
+        Listen $httpsport
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen $httpsport
+</IfModule>
+" >> etc/httpd/conf.d/ports.conf
+
+
+cat <<EOF >> etc/httpd/conf.d/nc.conf
+<VirtualHost *:$httpsport>
+   ServerName 10.$ipv4network.1
+   DocumentRoot /var/www/nextcloud
+   SSLEngine on
+   SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
+   SSLCertificateKeyFile /etc/ssl/private/nc-selfsigned.key
+
+<Directory /var/www/nextcloud/>
+  AllowOverride All
+  Require host localhost
+  Require ip 10.$ipv4network
+</Directory>
+
+<IfModule mod_headers.c>
+   Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+</IfModule>
+
+</VirtualHost>
+EOF
+
+fi
 
 
 mkdir -p $ncdatafolder
@@ -339,7 +385,7 @@ a2ensite nc.conf
 fi
 
 if [[ "$systemos" = 'rocky' ]] || [[ "$systemos" = 'centos' ]] || [[ "$systemos" = 'almalinux' ]]; then
-#no equivalent to a2ensite,   all manual to do  .... realy redhat .......
+#is on with file nc.conf in conf.d folder? 
 fi
 
 
