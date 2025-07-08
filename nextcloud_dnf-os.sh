@@ -131,7 +131,7 @@ dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.
 dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm -y
 dnf module enable php:remi-8.4 -y
 #dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-process php-redis php-igbinary php-apcu memcached php-pecl-memcache php-pecl-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl -y
-dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-process php-redis php-igbinary php-apcu memcached php-pecl-memcache php-pecl-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl php-mysqlnd php-pdo php-devel php-mcrypt php-pear php-json php-pecl-apcu php-pecl-apcu-devel php-ftp php-fpm php-soap php-sodium php-pecl-zip php-pecl-json-post php-pecl-redis6 php-pecl-imagick valkey
+dnf install httpd mod_ssl mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-process php-redis php-igbinary php-apcu memcached php-pecl-memcache php-pecl-memcached unzip ImageMagick ImageMagick-devel ImageMagick-perl php-mysqlnd php-pdo php-devel php-mcrypt php-pear php-json php-pecl-apcu php-pecl-apcu-devel php-ftp php-fpm php-soap php-sodium php-pecl-zip php-pecl-json-post php-pecl-redis6 valkey -y
 fi
 
 
