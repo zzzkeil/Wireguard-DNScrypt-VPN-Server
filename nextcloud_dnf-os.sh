@@ -494,7 +494,7 @@ sudo -u $apache2user php occ db:add-missing-indices
 sudo -u $apache2user php occ background:cron
 
 
-systemctl start $apache2os.service
+systemctl restart $apache2os.service
 
 
 echo "--------------------------------------------------------------------------------------------------------"
