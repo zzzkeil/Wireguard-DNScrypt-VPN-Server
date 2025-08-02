@@ -429,7 +429,7 @@ $wg0mtu
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
-AllowedIPs = $allownet
+AllowedIPs = 10.$wg0networkv4.0/24, fd42:$wg0networkv6::0/64
 $wg0keepalive
 " > /etc/wireguard/clientpihole.conf
 sed -i "s@CKPI@$(cat /etc/wireguard/keys/clientpihole)@" /etc/wireguard/clientpihole.conf
