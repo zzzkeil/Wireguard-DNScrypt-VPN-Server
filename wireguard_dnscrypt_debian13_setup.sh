@@ -327,7 +327,7 @@ echo "[Interface]
 Address = 10.$wg0networkv4.1/24
 Address = fd42:$wg0networkv6::1/112
 ListenPort = $wg0port
-#MTU = $wg0servermtu$wg0networkv4
+#MTU = $wg0servermtu
 PrivateKey = SK01
 
 
