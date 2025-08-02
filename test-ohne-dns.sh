@@ -435,7 +435,7 @@ $wg0keepalive
 sed -i "s@CKPI@$(cat /etc/wireguard/keys/clientpihole)@" /etc/wireguard/clientpihole.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/clientpihole.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/clientpihole.conf
-chmod 600 /etc/wireguard/clientpiholr.conf
+chmod 600 /etc/wireguard/clientpihole.conf
 
 ### create crontabs
 
