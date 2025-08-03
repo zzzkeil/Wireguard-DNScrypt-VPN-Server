@@ -1,4 +1,4 @@
-listen_addresses = ['[::]:5353']
+listen_addresses = ['[::]:5335']
 server_names = ['nextdns-ipv6', 'nextdns', 'mullvad-doh', 'meganerd', 'meganerd-ipv6', 'dns.digitale-gesellschaft.ch-ipv6', 'dns.digitale-gesellschaft.ch', 'bortzmeyer', 'bortzmeyer-ipv6', 'doh.appliedprivacy.net', 'ffmuc.net', 'ffmuc.net-v6', 'v.dnscrypt.uk-ipv4', 'v.dnscrypt.uk-ipv6']
 #server_names = ['dns.digitale-gesellschaft.ch-ipv6', 'dns.digitale-gesellschaft.ch-2', 'dns.digitale-gesellschaft.ch-ipv6-2', 'dns.digitale-gesellschaft.ch', 'odoh-cloudflare', 'doh.ffmuc.net-v6']
 max_clients = 250
