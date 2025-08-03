@@ -12,23 +12,23 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 clear
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Version 2025.xx.xx   ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Wireguard-DNScrypt-Server setup for Debian 13 and Ubuntu 24.04 ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My base_setup script is needed to setup this script correctly!!${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}addon for nextcloud behind wireguard is ready, manual run after setup${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Version 2025.08.03${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Wireguard DNScrypt Server setup for Debian 13 and Ubuntu 24.04 ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}My base_setup script is needed to setup this script correctly!!${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}addon for nextcloud behind wireguard is ready, manual run after setup${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 
 echo ""
 echo ""
 echo ""
-echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
-echo ""
-echo  -e "                            ${GREEN}Press [Y] to begin${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${RED}To EXIT this script press any key${ENDCOLOR}"
+echo -e " ${GRAYB}###${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Press [Y] to begin${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 read -p "" -n 1 -r
 echo ""
 echo ""
@@ -137,14 +137,13 @@ fi
 
 ### options
 echo ""
-echo ""
-echo -e " -- Your turn, make a decision -- "
-echo ""
-echo ""
-echo ""
-echo -e "${GREEN}Press any key for default port and ip and settings ${ENDCOLOR}"
-echo "or"
-echo -e "${RED}Press [Y] to change default port; ip; MTU; keepalive (advanced user)${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}  -- Your turn, make a decision -- ${ENDCOLOR}"
+echo -e " ${GRAYB}###${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Press any key for default port and ip and settings ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} or"
+echo -e " ${GRAYB}##${ENDCOLOR} ${RED}Press [Y] to change default port; ip; MTU; keepalive (advanced user)${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo ""
 read -p "" -n 1 -r
 
@@ -158,64 +157,53 @@ wg0mtu="#MTU = 1420"
 wg0keepalive="#PersistentKeepalive = 25"
 else
 echo ""
-echo " Wireguard port settings :"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Port: " -e -i 51820 wg0port
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-#echo " Wireguard ${GREEN} SERVER ${ENDCOLOR} MTU settings :"
-#echo -e " If you not familiar with MTU settings, change to the default value ${GREEN} 1420 ${ENDCOLOR} and press [ENTER]."
-#echo "--------------------------------------------------------------------------------------------------------"
-#echo "--------------------------------------------------------------------------------------------------------"
-#read -p "MTU =  " -e -i 1420 wg0servermtu
-#echo "--------------------------------------------------------------------------------------------------------"
-#echo "--------------------------------------------------------------------------------------------------------"
-echo " Wireguard ipv4 settings :"
-echo -e " Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}66.66${ENDCOLOR}.1"
-echo " If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER]."
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "clients ipv4 network: " -e -i 66.66 wg0networkv4
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Wireguard ipv6 settings :"
-echo -e " Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}66:66:66${ENDCOLOR}::1"
-echo " If you not familiar with ipv6 address scheme, do not change the defaults and press [ENTER]."
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo -e " Wireguard ${GREEN} CLIENTS ${ENDCOLOR} MTU settings :"
-echo -e " If you not familiar with MTU settings, change to the default value ${GREEN} 1420 ${ENDCOLOR} and press [ENTER]."
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "MTU =  " -e -i 1380 wg0mtu02
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Wireguard keepalive settings :"
-echo -e " If you not familiar with keepalive settings, do not change the defaults and press [ENTER] ${GREEN}[default = 0]${ENDCOLOR}."
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "PersistentKeepalive =  : " -e -i 0 wg0keepalive02
-echo "--------------------------------------------------------------------------------------------------------"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Wireguard port settings : ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}"
+read -p " Port: " -e -i 51820 wg0port
+echo -e " ${GRAYB}##${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Wireguard ipv4 settings :${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}11.12${ENDCOLOR}.1"
+echo -e " ${GRAYB}##${ENDCOLOR}If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER]."
+echo -e " ${GRAYB}##${ENDCOLOR}"
+read -p " clients ipv4 network: " -e -i 11.12 wg0networkv4
+echo -e " ${GRAYB}##${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Wireguard ipv6 settings :${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}10:11:12${ENDCOLOR}::1"
+echo -e " ${GRAYB}##${ENDCOLOR}If you not familiar with ipv6 address scheme, do not change the defaults and press [ENTER]."
+echo -e " ${GRAYB}##${ENDCOLOR}"
+read -p " clients ipv6 network: " -e -i 10:11:12 wg0networkv6
+echo -e " ${GRAYB}##${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}Wireguard ${GREEN} CLIENTS ${ENDCOLOR} MTU settings :"
+echo -e " ${GRAYB}##${ENDCOLOR}If you not familiar with MTU settings, change to the default value ${GREEN} 1420 ${ENDCOLOR} and press [ENTER]."
+echo -e " ${GRAYB}##${ENDCOLOR}"
+read -p " MTU =  " -e -i 1380 wg0mtu02
+echo -e " ${GRAYB}##${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}Wireguard keepalive settings :"
+echo -e " ${GRAYB}##${ENDCOLOR}If you not familiar with keepalive settings, do not change the defaults and press [ENTER] ${GREEN}[default = 0]${ENDCOLOR}."
+echo -e " ${GRAYB}##${ENDCOLOR}"
+read -p " PersistentKeepalive =  : " -e -i 0 wg0keepalive02
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 wg0mtu="MTU = $wg0mtu02"
 wg0keepalive="PersistentKeepalive = $wg0keepalive02"
 
 fi
+echo ""
 ### AllowedIPs options - local ips in testing... maybe not a perfect solution !!!
-echo " -- AllowedIPs handling for the first 3 preset client configs -- "
-echo "--------------------------------------------------------------------------------------------------------"
-echo -e "${GREEN}Press any key to tunnel all trafic over wireguard ${ENDCOLOR}"
-echo "or"
-echo -e "${RED}Press [A] to exclude local ips > Class A: 10. Class B: 172.16. Class C: 192.168. (advanced user)${ENDCOLOR}"
-echo "--------------------------------------------------------------------------------------------------------"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} AllowedIPs handling for the first 3 preset client configs -- "
+echo -e " ${GRAYB}##${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Press any key to tunnel all trafic over wireguard ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} or"
+echo -e " ${GRAYB}##${ENDCOLOR} ${RED}Press [A] to exclude local ips > Class A: 10. Class B: 172.16. Class C: 192.168. (advanced user)${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo ""
 read -p "" -n 1 -r
 if [[ ! $REPLY =~ ^[Aa]$ ]]
 then
 allownet="0.0.0.0/0, ::/0"
 else
-allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$ipv4network.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$ipv6network::/64, fe00::/9, fec0::/10, ff00::/8"
+allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$wg0networkv4.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$wg0networkv6::/64, fe00::/9, fec0::/10, ff00::/8"
 fi
 
 clear
@@ -327,9 +315,6 @@ touch /etc/wireguard/keys/client3
 chmod 600 /etc/wireguard/keys/client3
 wg genkey > /etc/wireguard/keys/client3
 wg pubkey < /etc/wireguard/keys/client3 > /etc/wireguard/keys/client3.pub
-
-##set AllowedIPs to execlute local ips > Class A: 10. Class B: 172.16. Class C: 192.168.
-allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$wg0networkv4.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$wg0networkv6::/64, fe00::/9, fec0::/10, ff00::/8"
 
 echo "[Interface]
 Address = 10.$wg0networkv4.1/24
@@ -479,22 +464,21 @@ qrencode -o /etc/wireguard/client1.png < /etc/wireguard/client1.conf
 qrencode -o /etc/wireguard/client2.png < /etc/wireguard/client2.conf
 qrencode -o /etc/wireguard/client3.png < /etc/wireguard/client3.conf
 echo ""
-echo " 2 extra client configs with QR Codes created in folder : /etc/wireguard/"
+echo -e " ${GREENB}##>${ENDCOLOR}"
+echo -e " ${GREENB}##${ENDCOLOR} ${GREEN}Almost done, now you can use the server  ${ENDCOLOR}"
+echo -e " ${GREENB}##${ENDCOLOR} ${GRAY}Some additional things you might want to do now:  ${ENDCOLOR}"
+echo -e " ${GREENB}##>${ENDCOLOR}"
 echo ""
-echo -e " add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}"
-echo ""
-echo -e " backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}"
-echo ""
-echo ""
-echo ""
-echo " Now it takes a time befor dnscrypt-proxy is ready. You can check the logfile with : cat /var/log/dnscrypt-proxy.log "
-echo ""
-echo ""
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}You can only connect to this nextcloud, if you have wireguard on ......  ${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-
+echo -e " ${GRAYB}###>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Wireguard options: ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}  ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}2 extra client configs with QR Codes created in folder : ${YELLOW}/etc/wireguard/${ENDCOLOR}${ENDCOLOR}"
+echo -e " ${GRAYB}###${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Nectcloud options: ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}also only over wireguard available ${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
