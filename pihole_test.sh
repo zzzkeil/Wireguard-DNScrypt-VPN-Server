@@ -24,9 +24,9 @@ echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo ""
 echo ""
 echo ""
-echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
+echo  -e "${RED}To EXIT this script press any key${ENDCOLOR}"
 echo ""
-echo  -e "                            ${GREEN}Press [Y] to begin${ENDCOLOR}"
+echo  -e "${GREEN}Press [Y] to begin${ENDCOLOR}"
 read -p "" -n 1 -r
 echo ""
 echo ""
@@ -422,7 +422,7 @@ echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}WebUI access is only over wireguard possi
 echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}After pressing enter, Pi-hole setup starts with source from https://install.pi-hole.net ${ENDCOLOR}"
 echo -e " ${GRAYB}##>${ENDCOLOR}" 
 echo ""
-read -e -p "${GREEN}Press Enter to continue...${GREEN}"
+read -p "Press Enter to continue..."
 
 wget -O pihole-install.sh https://install.pi-hole.net
 chmod +x pihole-install.sh
@@ -433,7 +433,7 @@ echo ""
 echo -e "${GRAYB}${ENDCOLOR} ${YELLOW}Store your pihole PASSWORD somewhere and, ${ENDCOLOR}"
 echo ""
 echo ""
-read -e -p "  ${GREEN}Press Enter to continue...${GREEN}"
+read -p "  Press Enter to continue..."
 
 echo " Add more list to block "
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt', 1, 'MultiPRO-Extended')"
