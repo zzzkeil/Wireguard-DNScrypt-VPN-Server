@@ -223,7 +223,7 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
-apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) openresolv -y
+apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) resolvconf -y
 apt-get install wireguard wireguard-tools -y
 fi
 
