@@ -24,17 +24,20 @@ major changes :
 # How to install Debian 13 and Ubuntu 24.04 (optional: nextcloud):  
 ###### Server x86_64 and ARM64 - 
 ###### Pi-Hole or Nextcloud can only accessed with wireguard, it´s not puplic available.   hope so .... ;)
-```
-WIP
-#wget -O  wireguard_dnscrypt_debian13_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/wireguard_dnscrypt_debian13_setup.sh
-#chmod +x wireguard_dnscrypt_debian13_setup.sh
-#./wireguard_dnscrypt_debian13_setup.sh
 
-Ready:
+Working:
+```
 wget -O  pihole_dnscrypt_debian13_ubuntu24.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/pihole_dnscrypt_debian13_ubuntu24.sh
 chmod +x pihole_dnscrypt_debian13_ubuntu24.sh
 ./pihole_dnscrypt_debian13_ubuntu24.sh
 
+```
+
+Not ready now:
+```
+#wget -O  wireguard_dnscrypt_debian13_setup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/wireguard_dnscrypt_debian13_setup.sh
+#chmod +x wireguard_dnscrypt_debian13_setup.sh
+#./wireguard_dnscrypt_debian13_setup.sh
 ```
 * Copy the lines above, execute and follow the instructions  
 * Use a fresh / clean **server** os > Debian 13 or Ubuntu 24.04:
