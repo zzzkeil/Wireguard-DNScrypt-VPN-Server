@@ -455,7 +455,7 @@ read -p "Press Enter to continue..."
 #M3
 wget -O pihole-install.sh https://install.pi-hole.net
 chmod +x pihole-install.sh
-. bash pihole-install.sh
+. pihole-install.sh
 
 
 
