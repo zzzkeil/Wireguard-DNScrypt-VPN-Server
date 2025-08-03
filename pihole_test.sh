@@ -12,14 +12,14 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 clear
-echo -e " ${GRAYB}######${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Version 2025.08.03${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Wireguard DNScrypt Pi-hole Server  Setup for Debian 13 and Ubuntu 24.04 ${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}My base_setup script is needed to setup this script correctly!!${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}addon for nextcloud behind wireguard is ready, manual run after setup${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
-echo -e " ${GRAYB}######${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 
 echo ""
 echo ""
@@ -411,11 +411,6 @@ curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.co
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 
-### create crontabs
-(crontab -l ; echo "59 23 * * 4,5 /bin/systemctl restart dnscrypt-proxy.service") | sort - | uniq - | crontab -
-(crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
-
-
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
@@ -423,16 +418,16 @@ systemctl start wg-quick@wg0.service
 
 clear
 
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}pihole setup  ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}!! Important steps, make sure to setup pihole with this settings ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set Interface to wg0 ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set DNS to custom : 127.0.0.1#5335 (dnscrypt) ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}WebUI access is only over wireguard possible ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Store your pihole PASSWORD somewhere !!!!! ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}After pressing enter, we start the setup from https://install.pi-hole.net ${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}" 
-read -p "Press Enter to continue..."
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole setup part  ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${RED}Important steps, > make sure to setup pihole with these settings: ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Set Interface to ${GREEN}wg0${ENDCOLOR} ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Set DNS to ${GREEN}Custom${ENDCOLOR} and insert: ${GREEN}127.0.0.1#5335${ENDCOLOR} ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}WebUI access is only over wireguard possible ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}After pressing enter, Pi-hole setup starts with source from https://install.pi-hole.net ${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}" 
+echo ""
+read -e -p "${GREEN}Press Enter to continue...${GREEN}"
 
 wget -O pihole-install.sh https://install.pi-hole.net
 chmod +x pihole-install.sh
@@ -443,7 +438,7 @@ echo ""
 echo -e "${GRAYB}${ENDCOLOR} ${YELLOW}Store your pihole PASSWORD somewhere and, ${ENDCOLOR}"
 echo ""
 echo ""
-read -p "  press Enter to continue..."
+read -e -p "  ${GREEN}Press Enter to continue...${GREEN}"
 
 echo " Add more list to block "
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt', 1, 'MultiPRO-Extended')"
@@ -455,6 +450,10 @@ sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) V
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://secure.fanboy.co.nz/fanboy-cookiemonster.txt', 1, 'fanboy-cookiemonster')"
 pihole -g
 
+
+### create crontabs to update dnscrypt and pihole
+(crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
+(crontab -l ; echo "0 23 * * 3 pihole -up") | sort - | uniq - | crontab -
 
 ### finish
 echo ""
@@ -470,29 +469,24 @@ qrencode -o /etc/wireguard/client3.png < /etc/wireguard/client3.conf
 echo ""
 echo " 2 extra client configs with QR Codes created in folder : /etc/wireguard/"
 echo ""
-echo -e " add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}"
-echo ""
-echo -e " backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}"
-echo ""
+echo -e " Add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}"
+echo -e " Backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}"
 echo ""
 echo ""
-echo " Now it takes a time befor dnscrypt-proxy is ready. You can check the logfile with : cat /var/log/dnscrypt-proxy.log "
+echo -e " ${GREENB}##>${ENDCOLOR}"
+echo -e " ${GREENB}##${ENDCOLOR} ${GREEN}Almost done, now you can use the server  ${ENDCOLOR}"
+echo -e " ${GREENB}##${ENDCOLOR} ${GRAY}Some additional things you might want to do now:  ${ENDCOLOR}"
+echo -e " ${GREENB}##>${ENDCOLOR}"
 echo ""
-echo ""
-echo -e " ${GREENB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GREENB}#${ENDCOLOR} ${GREEN}Almost done, now you can use the server  ${ENDCOLOR}"
-echo -e " ${GREENB}#${ENDCOLOR} ${GRAY}Some additional things you might want to do now:  ${ENDCOLOR}"
-echo -e " ${GREENB}#######################################################################################################################################${ENDCOLOR}"
-echo ""
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${YELLOW}pihole options: ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GRAY}Make changes, add blocklist, ... over the WebUI  https://10.$wg0networkv4.1/admin  (only over wireguard available)  ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GRAY}If needed, change pihole WebUI password with:${ENDCOLOR} ${YELLOW}pihole setpassword${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${YELLOW}Nectcloud options: ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GRAY}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GRAY}also only over wireguard available ${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}###>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole options: ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Make changes, add blocklist, ... over the WebUI  https://10.$wg0networkv4.1/admin  (only over wireguard available)  ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}If needed, change pihole WebUI password with:${ENDCOLOR} ${YELLOW}pihole setpassword${ENDCOLOR}"
+echo -e " ${GRAYB}###${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Nectcloud options: ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}also only over wireguard available ${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
