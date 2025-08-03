@@ -428,6 +428,7 @@ systemctl start wg-quick@wg0.service
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 
+clear
 
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}pihole setup  ${ENDCOLOR}"
@@ -436,31 +437,19 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set Interface to wg0 ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set DNS to custom : 127.0.0.1#5335 (dnscrypt) ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}WebUI access is only over wireguard possible ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Store your pihole PASSWORD somewhere !!!!! ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}After pressing enter, we start the command: curl -sSL https://install.pi-hole.net | bash ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}After pressing enter, we start the setup from https://install.pi-hole.net ${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}" 
 read -p "Press Enter to continue..."
 
-
-#M1
-#. curl -sSL https://install.pi-hole.net | bash
-#source curl -sSL https://install.pi-hole.net | bash
-
-#M2
-#git clone --depth 1 https://github.com/pi-hole/pi-hole.git Pi-hole
-#cd "Pi-hole/automated install/"
-#bash basic-install.sh
-#cd
-
-
-#M3
 wget -O pihole-install.sh https://install.pi-hole.net
 chmod +x pihole-install.sh
 . pihole-install.sh
 
-
-
-
+echo ""
+echo ""
 echo -e " ${GRAYB}#${ENDCOLOR} ${YELLOW}Store your pihole PASSWORD somewhere and, ${ENDCOLOR}"
+echo ""
+echo ""
 read -p "press Enter to continue..."
 
 ### finish
