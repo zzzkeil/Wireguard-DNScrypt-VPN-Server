@@ -12,11 +12,14 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 clear
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}test -- run pihole as adblocker with dnscrypt ${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}######${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Version 2025.08.03${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Wireguard DNScrypt Pi-hole Server  Setup for Debian 13 and Ubuntu 24.04 ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}My base_setup script is needed to setup this script correctly!!${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}If not installed, a automatic download starts, then follow the instructions${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}addon for nextcloud behind wireguard is ready, manual run after setup${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
+echo -e " ${GRAYB}######${ENDCOLOR}"
 
 echo ""
 echo ""
@@ -146,8 +149,8 @@ read -p "" -n 1 -r
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
 wg0port=51820
-wg0networkv4=66.66
-wg0networkv6=66:66:66
+wg0networkv4=11.12
+wg0networkv6=10:11:12
 wg0servermtu="#MTU = 1420"
 wg0mtu="#MTU = 1420"
 wg0keepalive="#PersistentKeepalive = 25"
@@ -159,18 +162,18 @@ read -p "Port: " -e -i 51820 wg0port
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard ipv4 settings :"
-echo -e " Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}66.66${ENDCOLOR}.1"
+echo -e " Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}11.12${ENDCOLOR}.1"
 echo " If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER]."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "clients ipv4 network: " -e -i 66.66 wg0networkv4
+read -p "clients ipv4 network: " -e -i 11.12 wg0networkv4
 echo "--------------------------------------------------------------------------------------------------------"
 echo " Wireguard ipv6 settings :"
-echo -e " Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}66:66:66${ENDCOLOR}::1"
+echo -e " Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}10:11:12${ENDCOLOR}::1"
 echo " If you not familiar with ipv6 address scheme, do not change the defaults and press [ENTER]."
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
-read -p "clients ipv6 network: " -e -i 66:66:66 wg0networkv6
+read -p "clients ipv6 network: " -e -i 10:11:12 wg0networkv6
 echo "--------------------------------------------------------------------------------------------------------"
 echo "--------------------------------------------------------------------------------------------------------"
 echo -e " Wireguard ${GREEN} CLIENTS ${ENDCOLOR} MTU settings :"
@@ -203,7 +206,6 @@ if [[ ! $REPLY =~ ^[Aa]$ ]]
 then
 allownet="0.0.0.0/0, ::/0"
 else
-#allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$ipv4network.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$ipv6network::/64, fe00::/9, fec0::/10, ff00::/8"
 allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$wg0networkv4.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$wg0networkv6::/64, fe00::/9, fec0::/10, ff00::/8"
 fi
 
