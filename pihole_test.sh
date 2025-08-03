@@ -185,8 +185,8 @@ read -p " PersistentKeepalive =  : " -e -i 0 wg0keepalive02
 echo -e " ${GRAYB}##>${ENDCOLOR}"
 wg0mtu="MTU = $wg0mtu02"
 wg0keepalive="PersistentKeepalive = $wg0keepalive02"
-
 fi
+echo ""
 ### AllowedIPs options - local ips in testing... maybe not a perfect solution !!!
 echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} AllowedIPs handling for the first 3 preset client configs -- "
