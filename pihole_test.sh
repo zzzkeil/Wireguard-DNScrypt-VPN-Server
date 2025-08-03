@@ -440,8 +440,22 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}After pressing enter, we start the comman
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}" 
 read -p "Press Enter to continue..."
 
+
+#M1
 #. curl -sSL https://install.pi-hole.net | bash
 source curl -sSL https://install.pi-hole.net | bash
+
+#M2
+#git clone --depth 1 https://github.com/pi-hole/pi-hole.git Pi-hole
+#cd "Pi-hole/automated install/"
+#sudo bash basic-install.sh
+
+#M3
+#wget -O basic-install.sh https://install.pi-hole.net
+#sudo bash basic-install.sh
+
+
+
 
 echo -e " ${GRAYB}#${ENDCOLOR} ${YELLOW}Store your pihole PASSWORD somewhere and, ${ENDCOLOR}"
 read -p "press Enter to continue..."
