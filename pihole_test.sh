@@ -463,6 +463,7 @@ ln -s /var/log /root/system-log_folder
 
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}TEST - install now pihole manualy and set  ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}run    curl -sSL https://install.pi-hole.net | bash${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set Interface to wg0 ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set DNS to 127.0.0.1:5353 (dnscrypt) ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}good luck :P ${ENDCOLOR}"
