@@ -443,16 +443,19 @@ read -p "Press Enter to continue..."
 
 #M1
 #. curl -sSL https://install.pi-hole.net | bash
-source curl -sSL https://install.pi-hole.net | bash
+#source curl -sSL https://install.pi-hole.net | bash
 
 #M2
 #git clone --depth 1 https://github.com/pi-hole/pi-hole.git Pi-hole
 #cd "Pi-hole/automated install/"
-#sudo bash basic-install.sh
+#bash basic-install.sh
+#cd
+
 
 #M3
-#wget -O basic-install.sh https://install.pi-hole.net
-#sudo bash basic-install.sh
+wget -O pihole-install.sh https://install.pi-hole.net
+chmod +x pihole-install.sh
+. bash pihole-install.sh
 
 
 
