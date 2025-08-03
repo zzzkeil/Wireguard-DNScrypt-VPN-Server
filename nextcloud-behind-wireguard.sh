@@ -17,7 +17,7 @@ echo -e " ${GRAYB}#${ENDCOLOR} ${GRAYB} !!! This addon is for Debian 13 only !!!
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2025.07.05 -  no changelog now  9                                                                      ${GRAYB}#${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2025.08.03 -  no changelog now                                                                        ${GRAYB}#${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 echo ""
 echo ""
@@ -92,7 +92,7 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]]; then
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
-apt-get install apache2 libapache2-mod-php mariadb-server php-xml php-cli php-cgi php-mysql php-mbstring php-gd php-curl php-intl php-gmp php-bcmath php-imagick php-zip php-bz2 php-opcache php-common php-redis php-igbinary php-apcu memcached php-memcached unzip libmagickcore-7.q16-10-extra -y
+apt-get install apache2 libapache2-mod-php mariadb-server php8.4-xml php8.4-cli php8.4-cgi php8.4-mysql php8.4-mbstring php8.4-gd php8.4-curl php8.4-intl php8.4-gmp php8.4-bcmath php8.4-imagick php8.4-zip php8.4-bz2 php8.4-opcache php8.4-common php8.4-redis php8.4-igbinary php8.4-apcu memcached php8.4-memcached unzip libmagickcore-7.q16-10-extra -y
 fi
 
 
