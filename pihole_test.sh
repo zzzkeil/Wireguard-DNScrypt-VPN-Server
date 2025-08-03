@@ -418,19 +418,6 @@ curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.co
 curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 
-### pihole section
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-
-
 ### create crontabs
 (crontab -l ; echo "59 23 * * 4,5 /bin/systemctl restart dnscrypt-proxy.service") | sort - | uniq - | crontab -
 (crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
@@ -473,6 +460,13 @@ echo -e " ${GRAYB}##############################################################
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
+
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}TEST - install now pihole manualy and set  ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set Interface to wg0 ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set DNS to 127.0.0.1:5353 (dnscrypt) ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}good luck :P ${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}" 
 
 systemctl restart firewalld
 exit
