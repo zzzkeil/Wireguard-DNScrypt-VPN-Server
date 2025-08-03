@@ -429,6 +429,23 @@ systemctl start wg-quick@wg0.service
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 
 
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}pihole setup  ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}!! Important steps, make sure to setup pihole with this settings ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set Interface to wg0 ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set DNS to custom : 127.0.0.1#5335 (dnscrypt) ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}WebUI access is only over wireguard possible ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Store your pihole PASSWORD somewhere !!!!! ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}After pressing enter, we start the command: curl -sSL https://install.pi-hole.net | bash ${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}" 
+read -p "Press Enter to continue..."
+
+. curl -sSL https://install.pi-hole.net | bash
+#source curl -sSL https://install.pi-hole.net | bash
+
+echo -e " ${GRAYB}#${ENDCOLOR} ${YELLOW}Store your pihole PASSWORD somewhere and, ${ENDCOLOR}"
+read -p "press Enter to continue..."
+
 ### finish
 echo ""
 echo ""
@@ -456,18 +473,15 @@ echo -e " ${GRAYB}##############################################################
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
 echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}You can only connect to this nextcloud, if you have wireguard on ......  ${ENDCOLOR}"
 echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-
+echo ""
+echo ""
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${YELLOW}pihole to do  for  you ${ENDCOLOR}"
+echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}add blocklist as you like${ENDCOLOR}"
+echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
-
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}TEST - install now pihole manualy and set  ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}run    curl -sSL https://install.pi-hole.net | bash${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set Interface to wg0 ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Set DNS to custom : 127.0.0.1#5353 (dnscrypt) ${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}webui access  only over wireguard  ${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}" 
 
 systemctl restart firewalld
 exit
