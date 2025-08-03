@@ -34,9 +34,9 @@ chmod +x pihole_dnscrypt_debian13_ubuntu24.sh
 ```
 DNScrypt with adblock only :
 ```
-#wget -O  dnscrypt_adblock_debian13_ubuntu24.04.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/dnscrypt_adblock_debian13_ubuntu24.04.sh
-#chmod +x dnscrypt_adblock_debian13_ubuntu24.04.sh
-#./dnscrypt_adblock_debian13_ubuntu24.04.sh
+wget -O  dnscrypt_adblock_debian13_ubuntu24.04.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/dnscrypt_adblock_debian13_ubuntu24.04.sh
+chmod +x dnscrypt_adblock_debian13_ubuntu24.04.sh
+./dnscrypt_adblock_debian13_ubuntu24.04.sh
 ```
 
 * Copy the lines above, execute and follow the instructions  
