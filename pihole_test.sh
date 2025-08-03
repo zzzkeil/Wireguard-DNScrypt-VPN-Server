@@ -20,13 +20,14 @@ echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}If not installed, a automatic download s
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}addon for nextcloud behind wireguard is ready, manual run after setup${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}More info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
 echo -e " ${GRAYB}##>${ENDCOLOR}"
-
 echo ""
 echo ""
 echo ""
-echo  -e "${RED}To EXIT this script press any key${ENDCOLOR}"
-echo ""
-echo  -e "${GREEN}Press [Y] to begin${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${RED}To EXIT this script press any key${ENDCOLOR}"
+echo -e " ${GRAYB}###${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Press [Y] to begin${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 read -p "" -n 1 -r
 echo ""
 echo ""
@@ -135,14 +136,13 @@ fi
 
 ### options
 echo ""
-echo ""
-echo -e " -- Your turn, make a decision -- "
-echo ""
-echo ""
-echo ""
-echo -e "${GREEN}Press any key for default port and ip and settings ${ENDCOLOR}"
-echo "or"
-echo -e "${RED}Press [Y] to change default port; ip; MTU; keepalive (advanced user)${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR}  -- Your turn, make a decision -- ${ENDCOLOR}"
+echo -e " ${GRAYB}###${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Press any key for default port and ip and settings ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} or"
+echo -e " ${GRAYB}##${ENDCOLOR} ${RED}Press [Y] to change default port; ip; MTU; keepalive (advanced user)${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo ""
 read -p "" -n 1 -r
 
@@ -214,7 +214,7 @@ echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
 if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 apt-get update && apt-get upgrade -y && apt-get autoremove -y
-apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) resolvconf -y
+apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf -y
 apt-get install wireguard wireguard-tools -y
 fi
 
