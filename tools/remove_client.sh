@@ -7,15 +7,17 @@ echo "."
 echo "."
 ###
 echo "Client Name to remove"
-echo "Choose the # clientname above the line [Peer] in wg0.conf"
-echo "for example: to remove one of the default clients type: client5"
-read -p "client name: " -e -i removeclient clientname
+echo "List Names"
+grep "# Name = " /etc/wireguard/wg0.conf
+echo "Type clientname you want to remove"
+echo "for example: to remove client5 type client5"
+read -p "client name: " -e -i client5 clientname
 echo "------"
 
 rm /etc/wireguard/keys/$clientname
 rm /etc/wireguard/keys/$clientname.pub
 rm /etc/wireguard/$clientname.conf
 rm /etc/wireguard/$clientname.png
-sed -i "/# $clientname/,+3 d" /etc/wireguard/wg0.conf
+sed -i "/# Name = $clientname/,+3 d" /etc/wireguard/wg0.conf
 systemctl restart wg-quick@wg0.service
 echo "Client $clientname removed, wireguard restarted"
