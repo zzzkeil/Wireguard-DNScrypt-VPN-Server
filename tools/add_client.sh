@@ -101,7 +101,7 @@ echo "
 # $clientname
 [Peer]
 PublicKey = NEWPK
-AllowedIPs = $clientipv4/32, $clientipv6/128
+AllowedIPs = $checkipv4/32, $checkipv6/128
 " >> /etc/wireguard/wg0.conf
 sed -i "s@NEWPK@$(cat /etc/wireguard/keys/$clientname.pub)@" /etc/wireguard/wg0.conf
 
