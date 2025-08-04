@@ -98,7 +98,7 @@ wg genkey > /etc/wireguard/keys/$clientname
 wg pubkey < /etc/wireguard/keys/$clientname > /etc/wireguard/keys/$clientname.pub
 
 echo "
-# $clientname
+# Name = $clientname
 [Peer]
 PublicKey = NEWPK
 AllowedIPs = $checkipv4/32, $checkipv6/128
