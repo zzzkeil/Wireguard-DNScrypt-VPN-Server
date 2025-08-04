@@ -9,11 +9,20 @@ echo "."
 echo "Client Name to remove"
 echo "List clients:"
 echo ""
-grep "# Name = " /etc/wireguard/wg0.conf | awk '{print substr($0, 8)}' | tr '\n' ',  '
+grep "# Name = " /etc/wireguard/wg0.conf | awk '{print substr($0, 9)}'
+echo ""
 echo ""
 echo "Type clientname you want to remove"
 echo "Example: to remove client5 type client5"
-read -p "client name: " -e -i client5 clientname
+while true; do
+    read -p "Client name: " -e -i "$clientname" clientname
+    if [[ -n "$clientname" ]]; then
+        break
+    else
+        echo "Client name cannot be empty. Please enter a valid name."
+    fi
+done
+
 echo "------"
 
 rm /etc/wireguard/keys/$clientname
