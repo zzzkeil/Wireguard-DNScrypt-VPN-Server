@@ -34,20 +34,20 @@ read -p "client name: " -e -i newclient clientname
 echo ""
 echo "" 
 echo "Client IPv4"
-echo "do not use an ipv4 address below 10.$ipv4network.14"
-echo "Enter a free number from 14 to 254 only"
-read -p "client IPv4: " -e -i 14 ipv4last
+echo "do not use an ipv4 address below 10.$ipv4network.11"
+echo "Enter a free number from 11 to 254 only"
+read -p "client IPv4: " -e -i 11 ipv4last
 if ! [[ "$ipv4last" =~ ^[0-9]+$ ]]; then
     echo "Invalid input: Not a number."
-    echo "Exit script now ! Run again and try a number (14 - 254)"
+    echo "Exit script now ! Run again and try a number (11 - 254)"
     exit 1
 fi
 
-if [ "$ipv4last" -ge 14 ] && [ "$ipv4last" -le 254 ]; then
+if [ "$ipv4last" -ge 11 ] && [ "$ipv4last" -le 254 ]; then
     echo ""
 else
-    echo "$ipv4last is outside the range 14 to 254."
-    echo "Exit script now ! Run again chosse a number between 14 - 254"
+    echo "$ipv4last is outside the range 11 to 254."
+    echo "Exit script now ! Run again chosse a number between 11 - 254"
     exit 1
 fi
 
@@ -65,19 +65,19 @@ echo ""
 echo ""
 echo "Client IPv6"
 echo "do not use an ipv6 address below fd42:$ipv6network::14"
-echo "Enter a free number from 14 to 9999 only"
-read -p "client IPv6: " -e -i 14 ipv6last
+echo "Enter a free number from 11 to 9999 only"
+read -p "client IPv6: " -e -i 11 ipv6last
 if ! [[ "$ipv6last" =~ ^[0-9]+$ ]]; then
     echo "Invalid input: Not a number."
-    echo "Exit script now ! Run again and try a number (14 - 9999)"
+    echo "Exit script now ! Run again and try a number (11 - 9999)"
     exit 1
 fi
 
-if [ "$ipv6last" -ge 14 ] && [ "$ipv6last" -le 9999 ]; then
+if [ "$ipv6last" -ge 11 ] && [ "$ipv6last" -le 9999 ]; then
     echo ""
 else
-    echo "$ipv6last is outside the range 14 to 9999."
-    echo "Exit script now ! Run again chosse a number between 14 - 9999"
+    echo "$ipv6last is outside the range 11 to 9999."
+    echo "Exit script now ! Run again chosse a number between 11 - 9999"
     exit 1
 fi
 
