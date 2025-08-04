@@ -368,7 +368,7 @@ echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo ""
 read -p "Press Enter to continue..."
 
-# --unattended test
+# --unattended 
 mkdir /etc/pihole
 curl -o /etc/pihole/pihole.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/tools/pihole.toml
 
@@ -386,26 +386,6 @@ read -p "Press Enter to continue..."
 pihole setpassword
 
 echo ""
-#echo -e " ${GRAYB}##>${ENDCOLOR}"
-#echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole setup part  ${ENDCOLOR}"
-#echo -e " ${GRAYB}##${ENDCOLOR} ${RED}Important steps, > make sure to setup pihole with these settings: ${ENDCOLOR}"
-#echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Set Interface to ${GREEN}wg0${ENDCOLOR} ${ENDCOLOR}"
-#echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Set DNS to ${GREEN}Custom${ENDCOLOR} and insert: ${GREEN}127.0.0.1#5335${ENDCOLOR} ${ENDCOLOR}"
-#echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}WebUI access is only over wireguard possible ${ENDCOLOR}"
-#echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}After pressing enter, Pi-hole setup starts with source from https://install.pi-hole.net ${ENDCOLOR}"
-#echo -e " ${GRAYB}##>${ENDCOLOR}" 
-#echo ""
-#read -p "Press Enter to continue..."
-#wget -O pihole-install.sh https://install.pi-hole.net
-#chmod +x pihole-install.sh
-#. pihole-install.sh
-
-#echo ""
-#echo ""
-#echo -e "${GRAYB}${ENDCOLOR} ${YELLOW}Store your pihole PASSWORD somewhere and, ${ENDCOLOR}"
-#echo ""
-#echo ""
-#read -p "  Press Enter to continue..."
 
 echo " Add more list to block "
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt', 1, 'MultiPRO-Extended')"
