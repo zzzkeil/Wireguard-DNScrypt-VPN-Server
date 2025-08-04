@@ -8,7 +8,7 @@ echo "."
 ###
 echo "Client Name to remove"
 echo "List Names"
-grep "# Name = " /etc/wireguard/wg0.conf
+grep "# Name = " /etc/wireguard/wg0.conf | awk '{print substr($0, 9)}'
 echo "Type clientname you want to remove"
 echo "for example: to remove client5 type client5"
 read -p "client name: " -e -i client5 clientname
