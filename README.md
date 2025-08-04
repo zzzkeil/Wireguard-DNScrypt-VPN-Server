@@ -5,18 +5,18 @@
 
 [![https://hetzner.cloud/?ref=iP0i3O1wRcHu](https://img.shields.io/badge/maybe_you_can_support_me_-_my_VPS_hoster_hetzner_(referral_link)_thanks-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA)](https://hetzner.cloud/?ref=iP0i3O1wRcHu) 
 
-### Version WIP
+### Version 2025.08.04
 major changes : 
  - Debian and Ubuntu only for the future, to much work for the others, less time ....
  - Pi-Hole as option 
  - Nextcloud as option
- - add Threat Intelligence Feeds to Blocklist
- - all other things i forgot :)
+ - add and remove of clients now with "checks"
+
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
 * on X86_64 or ARM64 systems
 * DNScrypt with anonymized_dns / DNSSEC
-* Ad-, Maleware-, ..., Blocking
+* Ad-, Maleware-, Threat Intelligence Feeds, ..., blocking
 * add or remove clients with add_client.sh / remove_client.sh 
 * backup, restore and unistall options
 
