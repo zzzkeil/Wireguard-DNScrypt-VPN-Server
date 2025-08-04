@@ -27,20 +27,18 @@ fi
 
 ###
 echo "Client Name"
-echo "don´use a clientname from client1 to client5 !"
 echo "only one word - no space in names !"
-echo "these clientnames exsist/reserved by the setupscript!"
 read -p "client name: " -e -i newclient clientname
 echo "------"
 echo "Client IPv4"
-echo "do not use an ipv4 address below 10.$ipv4network.20"
+echo "do not use an ipv4 address below 10.$ipv4network.14"
 echo "do not use an address that is already in use"
-read -p "client IPv4: " -e -i 10.$ipv4network.20 clientipv4
+read -p "client IPv4: " -e -i 10.$ipv4network.14 clientipv4
 echo "------"
 echo "Client IPv6"
-echo "do not use an ipv6 address below fd42:$ipv6network::20"
+echo "do not use an ipv6 address below fd42:$ipv6network::14"
 echo "do not use an address that is already in use"
-read -p "client IPv6: " -e -i fd42:$ipv6network::20 clientipv6
+read -p "client IPv6: " -e -i fd42:$ipv6network::14 clientipv6
 echo "------"
   
 ### server side config
