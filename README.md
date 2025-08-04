@@ -11,6 +11,7 @@ major changes :
  - Pi-Hole as option 
  - Nextcloud as option
  - add and remove of clients now with "checks"
+ - only one client after install, so you can add and name yours  
 
 
 ## **Setup Wireguard VPN Server fast and easy  - with ** 
