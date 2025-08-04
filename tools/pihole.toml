@@ -142,7 +142,7 @@
   bogusPriv = true
 
   # Validate DNS replies using DNSSEC?
-  dnssec = false
+  dnssec = true
 
   # Interface to use for DNS (see also dnsmasq.listening.mode) and DHCP (if enabled)
   #
@@ -663,7 +663,7 @@
   #
   # Possible values are:
   #     comma-separated list of <[ip_address:]port>
-  port = "80o,443os,[::]:80o,[::]:443os"
+  port = "80or,443os,[::]:80or,[::]:443os"
 
   # Maximum number of worker threads allowed.
   # The Pi-hole web server handles each incoming connection in a separate thread.
