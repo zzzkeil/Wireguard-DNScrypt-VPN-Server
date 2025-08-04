@@ -25,7 +25,7 @@ else
 allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$ipv4network.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$ipv6network::/64, fe00::/9, fec0::/10, ff00::/8"
 fi
 
-wgipcheck=/etc/wireguard/wg0.conf
+wgipcheck="/etc/wireguard/wg0.conf"
 ###
 echo "Client Name"
 echo "only one word - no space in names !"
@@ -50,7 +50,7 @@ else
     exit 1
 fi
 
-checkipv4=10.$ipv4network.$ipv4last
+checkipv4="10.$ipv4network.$ipv4last"
 
 if grep -q "$checkipv4" "$wgipcheck"; then
     echo "The IP $checkipv4 already exists."
@@ -80,7 +80,15 @@ else
     exit 1
 
 
-checkipv6=fd42:$ipv6network::$ipv6last
+checkipv6="fd42:$ipv6network::$ipv6last"
+
+if grep -q "$checkipv6" "$wgipcheck"; then
+    echo "The IP $checkipv6 already exists."
+    echo "Exit script now ! Run again and try a different number"
+    exit 1
+else
+    echo ""
+fi
   
 ### server side config
 touch /etc/wireguard/keys/$clientname
@@ -99,7 +107,7 @@ sed -i "s@NEWPK@$(cat /etc/wireguard/keys/$clientname.pub)@" /etc/wireguard/wg0.
 ### client side config
 echo "[Interface]
 Address = $checkipv4/32
-Address = $clientipv6/128
+Address = $checkipv6/128
 PrivateKey = NEWCLKEY
 DNS = 10.$ipv4network.1, fd42:$ipv6network::1
 [Peer]
