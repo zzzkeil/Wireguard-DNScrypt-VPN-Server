@@ -371,6 +371,10 @@ echo -e " ${GRAYB}##>${ENDCOLOR}"
 echo ""
 read -p "Press Enter to continue..."
 
+# --unattended 
+#mkdir /etc/pihole
+# curl oder wget file pihole.toml vom repo
+
 wget -O pihole-install.sh https://install.pi-hole.net
 chmod +x pihole-install.sh
 . pihole-install.sh
