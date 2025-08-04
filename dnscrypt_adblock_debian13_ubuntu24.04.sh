@@ -306,15 +306,6 @@ chmod 600 /etc/wireguard/keys/client1
 wg genkey > /etc/wireguard/keys/client1
 wg pubkey < /etc/wireguard/keys/client1 > /etc/wireguard/keys/client1.pub
 
-touch /etc/wireguard/keys/client2
-chmod 600 /etc/wireguard/keys/client2
-wg genkey > /etc/wireguard/keys/client2
-wg pubkey < /etc/wireguard/keys/client2 > /etc/wireguard/keys/client2.pub
-
-touch /etc/wireguard/keys/client3
-chmod 600 /etc/wireguard/keys/client3
-wg genkey > /etc/wireguard/keys/client3
-wg pubkey < /etc/wireguard/keys/client3 > /etc/wireguard/keys/client3.pub
 
 echo "[Interface]
 Address = 10.$wg0networkv4.1/24
@@ -327,28 +318,18 @@ PrivateKey = SK01
 # client1
 [Peer]
 PublicKey = PK01
-AllowedIPs = 10.$wg0networkv4.11/32, fd42:$wg0networkv6::11/128
-# client2
-[Peer]
-PublicKey = PK02
-AllowedIPs = 10.$wg0networkv4.12/32, fd42:$wg0networkv6::12/128
-# client3
-[Peer]
-PublicKey = PK03
-AllowedIPs = 10.$wg0networkv4.13/32, fd42:$wg0networkv6::13/128
+AllowedIPs = 10.$wg0networkv4.10/32, fd42:$wg0networkv6::10/128
 # -end of default clients
 
 " > /etc/wireguard/wg0.conf
 
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0)@" /etc/wireguard/wg0.conf
 sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
-sed -i "s@PK02@$(cat /etc/wireguard/keys/client2.pub)@" /etc/wireguard/wg0.conf
-sed -i "s@PK03@$(cat /etc/wireguard/keys/client3.pub)@" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
 echo "[Interface]
-Address = 10.$wg0networkv4.11/32
-Address = fd42:$wg0networkv6::11/128
+Address = 10.$wg0networkv4.10/32
+Address = fd42:$wg0networkv6::10/128
 PrivateKey = CK01
 DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
 $wg0mtu
@@ -362,40 +343,6 @@ sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/client1.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client1.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
 chmod 600 /etc/wireguard/client1.conf
-
-echo "[Interface]
-Address = 10.$wg0networkv4.12/32
-Address = fd42:$wg0networkv6::12/128
-PrivateKey = CK02
-DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
-$wg0mtu
-[Peer]
-Endpoint = IP01:$wg0port
-PublicKey = SK01
-AllowedIPs = $allownet
-$wg0keepalive
-" > /etc/wireguard/client2.conf
-sed -i "s@CK02@$(cat /etc/wireguard/keys/client2)@" /etc/wireguard/client2.conf
-sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client2.conf
-sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client2.conf
-chmod 600 /etc/wireguard/client2.conf
-
-echo "[Interface]
-Address = 10.$wg0networkv4.13/32
-Address = fd42:$wg0networkv6::13/128
-PrivateKey = CK03
-DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
-$wg0mtu
-[Peer]
-Endpoint = IP01:$wg0port
-PublicKey = SK01
-AllowedIPs = $allownet
-$wg0keepalive
-" > /etc/wireguard/client3.conf
-sed -i "s@CK03@$(cat /etc/wireguard/keys/client3)@" /etc/wireguard/client3.conf
-sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client3.conf
-sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client3.conf
-chmod 600 /etc/wireguard/client3.conf
 
 
 ###setup DNSCrypt
@@ -473,7 +420,6 @@ echo -e " ${GRAYB}###>${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Wireguard options: ${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}  ${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}2 extra client configs with QR Codes created in folder : ${YELLOW}/etc/wireguard/${ENDCOLOR}${ENDCOLOR}"
 echo -e " ${GRAYB}###${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Nectcloud options: ${ENDCOLOR}"
 echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
