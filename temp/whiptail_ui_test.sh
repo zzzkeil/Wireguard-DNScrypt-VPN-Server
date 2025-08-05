@@ -14,7 +14,7 @@ ENDCOLOR="\e[0m"
 
 
 
-if whiptail --title "Wireguard-DNScrypt-VPN-Server" --yesno "Version 2025.08.03\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\nRun script now ?\n" 8 80; then
+if whiptail --title "Wireguard-DNScrypt-VPN-Server" --yesno "Version 2025.08.03\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\nRun script now ?\n" 15 80; then
     echo "User selected Yes, exit status was $?."
 else
     echo "User selected No, exit status was $?."
@@ -132,13 +132,13 @@ is_valid_port() {
 }
 
 while true; do
-    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1-65535)\nDo not use a used port!" 8 80 "54234" 3>&1 1>&2 2>&3)
+    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1-65535)\nDo not use a used port!" 15 80 "54234" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0port"; then
             echo "Valid port: $wg0port"
             break  # Exit loop if valid
         else
-            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1 and 65535." 8 80
+            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1 and 65535." 15 80
         fi
     else
         echo "User canceled the port input."
@@ -160,13 +160,13 @@ is_private_ipv4_ending_with_1() {
 }
 
 while true; do
-    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Enter a private IP address ending with .1\n10.0.0.0/8\nor\n172.16.0.0/12\nor\n192.168.0.0/16" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
+    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Enter a private IP address ending with .1\n10.0.0.0/8\nor\n172.16.0.0/12\nor\n192.168.0.0/16" 15 80 "10.11.12.1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv4_ending_with_1 "$wg0networkv4"; then
             echo "Valid private IP address ending with .1: $wg0networkv4"
             break  
         else
-            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IP address ending with .1" 8 80
+            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IP address ending with .1" 15 80
         fi
     else
         echo "User canceled the input."
@@ -185,13 +185,13 @@ is_private_ipv6_ending_with_1() {
 }
 
 while true; do
-    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IPv6 address ending with ::1\nfd00::/8" 8 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
+    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IPv6 address ending with ::1\nfd00::/8" 15 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv6_ending_with_1 "$wg0networkv6"; then
             echo "Valid private IPv6 address ending with ::1: $wg0networkv6"
             break 
         else
-            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IPv6 address ending with ::1" 8 80
+            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IPv6 address ending with ::1" 15 80
         fi
     else
         echo "User canceled the input."
@@ -210,13 +210,13 @@ is_valid_keepalive() {
 }
 
 while true; do
-    wg0keepalive=$(whiptail --title "Wireguard keepalive settings :" --inputbox "Enter number in secconds (0-999)\n Default is 0 (off)" 8 80 "0" 3>&1 1>&2 2>&3)
+    wg0keepalive=$(whiptail --title "Wireguard keepalive settings :" --inputbox "Enter number in secconds (0-999)\n Default is 0 (off)" 15 80 "0" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_keepalive "$wg0keepalive"; then
             echo "Valid number: $wg0keepalive"
             break  # Exit loop if valid
         else
-            whiptail --title "Invalid input" --msgbox "Invalid number. Please enter a number between 0 and 999." 8 80
+            whiptail --title "Invalid input" --msgbox "Invalid number. Please enter a number between 0 and 999." 15 80
         fi
     else
         echo "User canceled the time input."
@@ -234,13 +234,13 @@ is_valid_mtu() {
 }
 
 while true; do
-    wg0mtu=$(whiptail --title "Clients MTU settings :" --inputbox "Enter MTU size from 1280 to 1500\nDefault is 1420 (is a common value.)\n1380 is reasonable size, too" 8 80 "1420" 3>&1 1>&2 2>&3)
+    wg0mtu=$(whiptail --title "Clients MTU settings :" --inputbox "Enter MTU size from 1280 to 1500\nDefault is 1420 (is a common value.)\n1380 is reasonable size, too" 15 80 "1420" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0mtu"; then
             echo "Valid number: $wg0mtu"
             break  # Exit loop if valid
         else
-            whiptail --title "Invalid MTU" --msgbox "Invalid MTU. Please enter a number between 1280 and 1500." 8 80
+            whiptail --title "Invalid MTU" --msgbox "Invalid MTU. Please enter a number between 1280 and 1500." 15 80
         fi
     else
         echo "User canceled the MTU input."
