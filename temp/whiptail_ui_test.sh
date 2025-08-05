@@ -75,49 +75,49 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 
 ### base_setup check
-if [[ -e /root/base_setup.README ]]; then
-     echo -e "base_setup script installed = ${GREEN}ok${ENDCOLOR}"
-	 else
-	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
-	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
-	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
-	 echo ""
-	 echo ""
-	 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
-         chmod +x base_setup_2025.sh
-	 echo ""
-	 echo ""
-         echo -e " Now run ${YELLOW}./base_setup_2025.sh${ENDCOLOR} manualy and reboot, then run this script again."
-	 echo ""
-	 echo ""
-	 exit 1
-fi
+#if [[ -e /root/base_setup.README ]]; then
+#     echo -e "base_setup script installed = ${GREEN}ok${ENDCOLOR}"
+#	 else
+#	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
+#	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
+#	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
+#	 echo ""
+#	 echo ""
+#	 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
+ #        chmod +x base_setup_2025.sh
+#	 echo ""
+#	 echo ""
+ #        echo -e " Now run ${YELLOW}./base_setup_2025.sh${ENDCOLOR} manualy and reboot, then run this script again."
+#	 echo ""
+#	 echo ""
+#	 exit 1
+#fi
 
 
 ### script already installed check
-if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
-     echo
-	 echo
-         echo -e "${YELLOW}Looks like this script is already installed${ENDCOLOR}"
-	 echo -e "${YELLOW}This script is only need for the first install${ENDCOLOR}"
-	 echo ""
-	 echo "To add or remove clients run"
-         echo -e " ${YELLOW}./add_client.sh${ENDCOLOR} to add clients"
-         echo -e " ${YELLOW}./remove_client.sh${ENDCOLOR} to remove clients"
-	 echo ""
-	 echo  "To backup or restore your settings run"
-	 echo -e " ${YELLOW}./wg_config_backup.sh${ENDCOLOR} "
-	 echo -e " ${YELLOW}./wg_config_restore.sh${ENDCOLOR}"
-	 echo ""
-	 echo  "To uninstall run"
-	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
-	 echo ""
-	 echo "For - News / Updates / Issues - check my github site"
-	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
-	 echo
-	 echo
-	 exit 1
-fi
+#if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
+ #    echo
+#	 echo
+ #        echo -e "${YELLOW}Looks like this script is already installed${ENDCOLOR}"
+#	 echo -e "${YELLOW}This script is only need for the first install${ENDCOLOR}"
+#	 echo ""
+#	 echo "To add or remove clients run"
+ #        echo -e " ${YELLOW}./add_client.sh${ENDCOLOR} to add clients"
+  #       echo -e " ${YELLOW}./remove_client.sh${ENDCOLOR} to remove clients"
+##	 echo ""
+#	 echo  "To backup or restore your settings run"
+#	 echo -e " ${YELLOW}./wg_config_backup.sh${ENDCOLOR} "
+#	 echo -e " ${YELLOW}./wg_config_restore.sh${ENDCOLOR}"
+#	 echo ""
+#	 echo  "To uninstall run"
+#	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
+##	 echo ""
+#	 echo "For - News / Updates / Issues - check my github site"
+#	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
+#	 echo
+#	 echo
+#	 exit 1
+#fi
 
 
 ### options
