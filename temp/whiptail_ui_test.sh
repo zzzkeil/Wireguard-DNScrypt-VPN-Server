@@ -124,7 +124,29 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 if whiptail --title "Custom port and ip or default settings?" --yesno "Yes = custom settings\n No = default settings\n" 8 80; then
 
-wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "Chosse a free port 1-65535" 8 80 3>&1 1>&2 2>&3)
+is_valid_port() {
+    local wgport="$1"
+    if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1 ] && [ "$wgport" -le 65535 ]; then
+        return 0  # Valid port
+    else
+        return 1  # Invalid port
+    fi
+}
+while true; do
+    wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "hosse a free port 1-65535" 8 80 "54234" 3>&1 1>&2 2>&3)
+    if [ $? -eq 0 ]; then
+        if is_valid_port "$wg0port"; then
+            echo "Valid port: $wg0port"
+            break  
+        else
+           whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1 and 65535." 8 80
+        fi
+    else
+        echo "User canceled the port input"
+        exit 1
+    fi
+done
+
 
 is_private_ipv4_ending_with_1() {
     local ipv4="$1"
@@ -140,7 +162,7 @@ is_private_ipv4_ending_with_1() {
 }
 
 while true; do
-    wg0networkv4=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IP address ending with .1:" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
+    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Enter a private IP address ending with .1:" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv4_ending_with_1 "$wg0networkv4"; then
             echo "Valid private IP address ending with .1: $wg0networkv4"
@@ -155,6 +177,29 @@ while true; do
 done
 
 
+is_private_ipv6_ending_with_1() {
+    local ipv6="$1"
+     if [[ "$ipv6" =~ ^fd[0-9a-fA-F]{2}::1$ ]] ||  # Matches IPv6 Unique Local Address (ULA) ending with ::1 (fd00::1)
+        return 0  # Valid private IPv6 address ending with ::1
+    else
+        return 1  # Invalid private IPv6 address or doesn't end with ::1
+    fi
+}
+
+while true; do
+    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IPv6 address ending with ::1:" 8 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
+    if [ $? -eq 0 ]; then
+        if is_private_ipv6_ending_with_1 "$wg0networkv6"; then
+            echo "Valid private IPv6 address ending with ::1: $wg0networkv6"
+            break 
+        else
+            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IPv6 address ending with ::1." 8 80
+        fi
+    else
+        echo "User canceled the input."
+        exit 1
+    fi
+done
 
 
 
@@ -163,7 +208,6 @@ done
 
 
 
-wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:10:11:12::1\n If you not familiar with ipv6 address scheme, do not change the defaults and press [ENTER].\n " 8 80 "10:11:12" 3>&1 1>&2 2>&3)
 wg0keepalive02=$(whiptail --title "Wireguard keepalive settings :" --inputbox "If you not familiar with keepalive settings, do not change the defaults and press [ENTER] [default = 0].\n " 8 80 "0" 3>&1 1>&2 2>&3)
 wg0mtu02=$(whiptail --title "Clients MTU settings :" --inputbox "If you not familiar with MTU settings, change to the default value 1420 and press [ENTER].\n " 8 80 "1380" 3>&1 1>&2 2>&3)
 wg0mtu="MTU = $wg0mtu02"
