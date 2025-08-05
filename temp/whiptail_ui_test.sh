@@ -113,12 +113,10 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 
 ### wireguard options with input checks
-
+    ### lets take care of your ssh port 
+ssh_port=$(grep -i "^Port" /etc/ssh/sshd_config | awk '{print $2}')
 is_valid_port() {
     local wgport="$1"
-    ### lets take care of your ssh port 
-    local ssh_port
-    ssh_port=$(grep -i "^Port" /etc/ssh/sshd_config | awk '{print $2}')
     if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1025 ] && [ "$wgport" -le 65535 ] && [ "$wgport" -ne 5335 ] && [ "$wgport" -ne $ssh_port ]; then
         return 0
     else
@@ -127,7 +125,7 @@ is_valid_port() {
 }
 
 while true; do
-    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1025-65535)\nDo not use port ($ssh_port ssh) and (5335 dnscrypt)\nDo not use a used port!\nTo list all currently activ ports, cancel now and you see a list\nThen start this script again" 15 80 "54234" 3>&1 1>&2 2>&3)
+    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port 1025-65535\nDo not use port $ssh_port ssh and 5335 dnscrypt\nDo not use a used port!\nTo list all currently activ ports, cancel now and you see a list\nThen start this script again" 15 80 "54234" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0port"; then
             break
