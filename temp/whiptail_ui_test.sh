@@ -126,9 +126,7 @@ if whiptail --title "Custom port and ip or default settings?" --yesno "Yes = cus
 
 wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "Chosse a free port 1-65535" 8 80 3>&1 1>&2 2>&3)
 
-
-=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Format prefix=10. suffix=.1\\n Change only the \\n " 8 80 "11.12" 3>&1 1>&2 2>&3)
-is_private_ip_ending_with_1() {
+is_private_ipv4_ending_with_1() {
     local ipv4="$1"
     if [[ "$ipv4" =~ ^10\.[0-9]{1,3}\.[0-9]{1,3}\.1$ ]]; then
         return 0  # (10.0.0.0 to 10.255.255.255) and ends with .1
@@ -141,20 +139,20 @@ is_private_ip_ending_with_1() {
     fi
 }
 
-wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Enter a private IP address ending with .1:" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
-
-# Check if the user clicked OK or Cancel
-if [ $? -eq 0 ]; then
-    # Check if the input is a valid private IP address ending with .1
-    if is_private_ip_ending_with_1 "$wg0networkv4"; then
-        echo "Valid private IP address ending with .1: $wg0networkv4"
+while true; do
+    wg0networkv4=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IP address ending with .1:" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
+    if [ $? -eq 0 ]; then
+        if is_private_ipv4_ending_with_1 "$wg0networkv4"; then
+            echo "Valid private IP address ending with .1: $wg0networkv4"
+            break  
+        else
+            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IP address ending with .1." 8 80
+        fi
     else
-        echo "Invalid input. Please enter a private IP address ending with .1."
+        echo "User canceled the input."
+        exit 1
     fi
-else
-    echo "User canceled the input."
-    exit 1
-fi
+done
 
 
 
