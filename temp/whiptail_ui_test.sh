@@ -130,7 +130,7 @@ while true; do
         if is_valid_port "$wg0port"; then
             break
         else
-            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1025 and 65535. Do not use port 5335" 15 80
+            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1025 and 65535. Do not use port $ssh_port, 5335" 15 80
         fi
     else
         echo "Ok, cancel. No changes to system was made. Maybe try it again?"
