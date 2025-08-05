@@ -177,7 +177,7 @@ done
 
 is_private_ipv6_ending_with_1() {
     local ipv6="$1"
-     if [[ "$ipv6" =~ ^fd[0-9a-fA-F]{2}::1$ ]] then # Matches IPv6 Unique Local Address (ULA) ending with ::1 (fd00::1)
+     if [[ "$ipv6" =~ ^fd[0-9a-fA-F]{2}(:[0-9a-fA-F]{1,4})*::1$ ]] then # Matches IPv6 Unique Local Address (ULA) ending with ::1 (fd00::1)
         return 0  # Valid private IPv6 address ending with ::1
     else
         return 1  # Invalid private IPv6 address or doesn't end with ::1
