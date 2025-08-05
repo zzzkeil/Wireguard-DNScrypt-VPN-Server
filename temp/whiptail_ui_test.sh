@@ -122,8 +122,6 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 ### options
 
-if whiptail --title "Custom port and ip or default settings?" --yesno "Yes = custom settings\n No = default settings\n" 8 80; then
-
 is_valid_port() {
     local wgport="$1"
     if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1 ] && [ "$wgport" -le 65535 ]; then
@@ -204,23 +202,17 @@ done
 
 
 
-
-
-
-
 wg0keepalive02=$(whiptail --title "Wireguard keepalive settings :" --inputbox "If you not familiar with keepalive settings, do not change the defaults and press [ENTER] [default = 0].\n " 8 80 "0" 3>&1 1>&2 2>&3)
 wg0mtu02=$(whiptail --title "Clients MTU settings :" --inputbox "If you not familiar with MTU settings, change to the default value 1420 and press [ENTER].\n " 8 80 "1380" 3>&1 1>&2 2>&3)
 wg0mtu="MTU = $wg0mtu02"
 wg0keepalive="PersistentKeepalive = $wg0keepalive02"
 
-else
-wg0port=51820
-wg0networkv4=11.12
-wg0networkv6=10:11:12
+
+
 wg0servermtu="#MTU = 1420"
 wg0mtu="#MTU = 1420"
 wg0keepalive="#PersistentKeepalive = 25"
-fi   
+  
 
 
 echo "
