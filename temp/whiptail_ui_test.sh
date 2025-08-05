@@ -200,29 +200,62 @@ while true; do
 done
 
 
+is_valid_keepalive() {
+    local keepalive="$1"
+    if [[ "$keepalive" =~ ^[0-9]+$ ]] && [ "$keepalive" -ge 0 ] && [ "$keepalive" -le 999 ]; then
+        return 0  # Valid port
+    else
+        return 1  # Invalid port
+    fi
+}
 
+while true; do
+    wg0keepalive=$(whiptail --title "Wireguard keepalive settings :" --inputbox "Enter number in secconds (1-999)\n Default is 0 (off)" 8 80 "0" 3>&1 1>&2 2>&3)
+    if [ $? -eq 0 ]; then
+        if is_valid_port "$wg0keepalive"; then
+            echo "Valid number: $wg0keepalive"
+            break  # Exit loop if valid
+        else
+            whiptail --title "Invalid input" --msgbox "Invalid number. Please enter a number between 0 and 999." 8 80
+        fi
+    else
+        echo "User canceled the time input."
+        exit 1
+    fi
+done
 
-wg0keepalive02=$(whiptail --title "Wireguard keepalive settings :" --inputbox "If you not familiar with keepalive settings, do not change the defaults and press [ENTER] [default = 0].\n " 8 80 "0" 3>&1 1>&2 2>&3)
-wg0mtu02=$(whiptail --title "Clients MTU settings :" --inputbox "If you not familiar with MTU settings, change to the default value 1420 and press [ENTER].\n " 8 80 "1380" 3>&1 1>&2 2>&3)
-wg0mtu="MTU = $wg0mtu02"
-wg0keepalive="PersistentKeepalive = $wg0keepalive02"
+is_valid_mtu() {
+    local mtu="$1"
+    if [[ "$mtu" =~ ^[0-9]+$ ]] && [ "$mtu" -ge 1280 ] && [ "$mtu" -le 1500 ]; then
+        return 0  # Valid mtu
+    else
+        return 1  # Invalid mtu
+    fi
+}
 
+while true; do
+    wg0mtu=$(whiptail --title "Clients MTU settings :" --inputbox "Enter MTU size from 1280 to 1500\n Default is 1420 (is a common value.)\n 1380 is reasonable size, too" 8 80 "1420" 3>&1 1>&2 2>&3)
+    if [ $? -eq 0 ]; then
+        if is_valid_port "$wg0mtu"; then
+            echo "Valid number: $wg0mtu"
+            break  # Exit loop if valid
+        else
+            whiptail --title "Invalid MTU" --msgbox "Invalid MTU. Please enter a number between 1280 and 1500." 8 80
+        fi
+    else
+        echo "User canceled the MTU input."
+        exit 1
+    fi
+done
 
-
-wg0servermtu="#MTU = 1420"
-wg0mtu="#MTU = 1420"
-wg0keepalive="#PersistentKeepalive = 25"
-  
 
 
 echo "
-$wg0port
-$wg0networkv4
-$wg0networkv6
-$wg0keepalive02
-$wg0mtu02
-$wg0mtu
-$wg0keepalive
+port $wg0port
+ipv4 $wg0networkv4
+ipv6 $wg0networkv6
+mtu  $wg0mtu
+keep $wg0keepalive
 "
 
 
