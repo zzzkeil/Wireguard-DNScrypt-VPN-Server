@@ -132,21 +132,21 @@ is_valid_port() {
         return 1  # Invalid port
     fi
 }
+
 while true; do
-    wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "hosse a free port 1-65535" 8 80 "54234" 3>&1 1>&2 2>&3)
+    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1-65535):" 8 80 "54234" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0port"; then
             echo "Valid port: $wg0port"
-            break  
+            break  # Exit loop if valid
         else
-           whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1 and 65535." 8 80
+            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1 and 65535." 8 80
         fi
     else
-        echo "User canceled the port input"
+        echo "User canceled the port input."
         exit 1
     fi
 done
-
 
 is_private_ipv4_ending_with_1() {
     local ipv4="$1"
