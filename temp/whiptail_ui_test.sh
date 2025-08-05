@@ -244,8 +244,8 @@ while true; do
     fi
 done
 
-$wg0networkv4_24=$(echo "$wg0networkv4" | sed 's/\([0-9]*\)\([.][0-9]*\)$/0/')
-$wg0networkv6_24=$(echo "$wg0networkv6" | sed 's/1\([^1]*\)$/\1/')
+wg0networkv4_24=$(echo "$wg0networkv4" | sed 's/\([0-9]*\)\([.][0-9]*\)$/0/')
+wg0networkv6_24=$(echo "$wg0networkv6" | sed 's/1\([^1]*\)$/\1/')
 
 
 echo "
