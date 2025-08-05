@@ -122,8 +122,7 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 ### options
 
-if whiptail --title "Custom port and ip or default settings?" --yesno 
-"Yes = custom settings\n No = default settings\n" 8 78; then
+if whiptail --title "Custom port and ip or default settings?" --yesno "Yes = custom settings\n No = default settings\n" 8 78; then
 
 wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "Chosse a free port 1-65535" 8 50 3>&1 1>&2 2>&3)
 wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}11.12${ENDCOLOR}.1\n If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER].\n " 8 5 "11.12" 3>&1 1>&2 2>&3)
