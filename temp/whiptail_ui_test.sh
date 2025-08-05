@@ -12,6 +12,7 @@ GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
 if whiptail --title "Hi, lets start" --yesno "Bulid date of this scriptfile: 2025.08.03\nThis script install and configure:\nwireguard, dnscrypt, pihole\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\n\nRun script now ?\n" 15 80; then
+echo ""
 else
     echo "Ok, no install right now. cu have a nice day."
     exit 1
