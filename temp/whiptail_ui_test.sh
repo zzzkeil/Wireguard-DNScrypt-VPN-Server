@@ -14,7 +14,7 @@ ENDCOLOR="\e[0m"
 
 
 
-if whiptail --title "Wireguard-DNScrypt-VPN-Server" --yesno "Version 2025.08.03\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\nRun script now ?\n" 8 200; then
+if whiptail --title "Wireguard-DNScrypt-VPN-Server" --yesno "Version 2025.08.03\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\nRun script now ?\n" 8 80; then
     echo "User selected Yes, exit status was $?."
 else
     echo "User selected No, exit status was $?."
@@ -122,13 +122,13 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 ### options
 
-if whiptail --title "Custom port and ip or default settings?" --yesno "Yes = custom settings\n No = default settings\n" 8 200; then
+if whiptail --title "Custom port and ip or default settings?" --yesno "Yes = custom settings\n No = default settings\n" 8 80; then
 
-wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "Chosse a free port 1-65535" 8 200 3>&1 1>&2 2>&3)
-wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Format prefix=10. suffix=.1 you can change the green value. eg. 10.${GREEN}11.12${ENDCOLOR}.1\n If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER].\n " 8 200 "11.12" 3>&1 1>&2 2>&3)
-wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:${GREEN}10:11:12${ENDCOLOR}::1\n If you not familiar with ipv6 address scheme, do not change the defaults and press [ENTER].\n " 8 200 "10:11:12" 3>&1 1>&2 2>&3)
-wg0keepalive02=$(whiptail --title "Wireguard keepalive settings :" --inputbox "If you not familiar with keepalive settings, do not change the defaults and press [ENTER] ${GREEN}[default = 0]${ENDCOLOR}.\n " 8 200 "0" 3>&1 1>&2 2>&3)
-wg0mtu02=$(whiptail --title "Clients MTU settings :" --inputbox "If you not familiar with MTU settings, change to the default value ${GREEN} 1420 ${ENDCOLOR} and press [ENTER].\n " 8 200 "1380" 3>&1 1>&2 2>&3)
+wg0port=$(whiptail --title "Wireguard port settings :" --inputbox "Chosse a free port 1-65535" 8 80 3>&1 1>&2 2>&3)
+wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Format prefix=10. suffix=.1 you can change the green value. eg. 10.11.12.1\n If you not familiar with ipv4 address scheme, do not change the defaults and press [ENTER].\n " 8 80 "11.12" 3>&1 1>&2 2>&3)
+wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Format prefix=fd42: suffix=::1 you can change the green value. eg. fd42:10:11:12::1\n If you not familiar with ipv6 address scheme, do not change the defaults and press [ENTER].\n " 8 80 "10:11:12" 3>&1 1>&2 2>&3)
+wg0keepalive02=$(whiptail --title "Wireguard keepalive settings :" --inputbox "If you not familiar with keepalive settings, do not change the defaults and press [ENTER] [default = 0].\n " 8 80 "0" 3>&1 1>&2 2>&3)
+wg0mtu02=$(whiptail --title "Clients MTU settings :" --inputbox "If you not familiar with MTU settings, change to the default value 1420 and press [ENTER].\n " 8 80 "1380" 3>&1 1>&2 2>&3)
 wg0mtu="MTU = $wg0mtu02"
 wg0keepalive="PersistentKeepalive = $wg0keepalive02"
 
