@@ -210,9 +210,9 @@ is_valid_keepalive() {
 }
 
 while true; do
-    wg0keepalive=$(whiptail --title "Wireguard keepalive settings :" --inputbox "Enter number in secconds (1-999)\n Default is 0 (off)" 8 80 "0" 3>&1 1>&2 2>&3)
+    wg0keepalive=$(whiptail --title "Wireguard keepalive settings :" --inputbox "Enter number in secconds (0-999)\n Default is 0 (off)" 8 80 "0" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
-        if is_valid_port "$wg0keepalive"; then
+        if is_valid_keepalive "$wg0keepalive"; then
             echo "Valid number: $wg0keepalive"
             break  # Exit loop if valid
         else
