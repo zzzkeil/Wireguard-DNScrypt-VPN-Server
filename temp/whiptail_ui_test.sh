@@ -14,7 +14,7 @@ ENDCOLOR="\e[0m"
 
 
 
-if whiptail --title "Wireguard-DNScrypt-VPN-Server" --yesno "Version 2025.08.03\nWireguard DNScrypt Pi-hole Server  Setup for Debian 13 and Ubuntu 24.04\nMy base_setup script is needed to setup this script correctly!!\nIf not installed, a automatic download starts, then follow the instructions\naddon for nextcloud behind wireguard is ready, manual run after setup\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\nRun script now ?\n" 8 78; then
+if whiptail --title "Wireguard-DNScrypt-VPN-Server" --yesno "Version 2025.08.03\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\nRun script now ?\n" 8 78; then
     echo "User selected Yes, exit status was $?."
 else
     echo "User selected No, exit status was $?."
