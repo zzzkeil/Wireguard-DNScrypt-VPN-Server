@@ -132,7 +132,7 @@ is_valid_port() {
 }
 
 while true; do
-    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1-65535):" 8 80 "54234" 3>&1 1>&2 2>&3)
+    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1-65535)\nDo not use a used port!" 8 80 "54234" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0port"; then
             echo "Valid port: $wg0port"
@@ -160,13 +160,13 @@ is_private_ipv4_ending_with_1() {
 }
 
 while true; do
-    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Enter a private IP address ending with .1:" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
+    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings :" --inputbox "Enter a private IP address ending with .1\n10.0.0.0/8\nor\n172.16.0.0/12\nor\n192.168.0.0/16" 8 80 "10.11.12.1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv4_ending_with_1 "$wg0networkv4"; then
             echo "Valid private IP address ending with .1: $wg0networkv4"
             break  
         else
-            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IP address ending with .1." 8 80
+            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IP address ending with .1" 8 80
         fi
     else
         echo "User canceled the input."
@@ -185,13 +185,13 @@ is_private_ipv6_ending_with_1() {
 }
 
 while true; do
-    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IPv6 address ending with ::1:" 8 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
+    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings :" --inputbox "Enter a private IPv6 address ending with ::1\nfd00::/8" 8 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv6_ending_with_1 "$wg0networkv6"; then
             echo "Valid private IPv6 address ending with ::1: $wg0networkv6"
             break 
         else
-            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IPv6 address ending with ::1." 8 80
+            whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IPv6 address ending with ::1" 8 80
         fi
     else
         echo "User canceled the input."
@@ -234,7 +234,7 @@ is_valid_mtu() {
 }
 
 while true; do
-    wg0mtu=$(whiptail --title "Clients MTU settings :" --inputbox "Enter MTU size from 1280 to 1500\n Default is 1420 (is a common value.)\n 1380 is reasonable size, too" 8 80 "1420" 3>&1 1>&2 2>&3)
+    wg0mtu=$(whiptail --title "Clients MTU settings :" --inputbox "Enter MTU size from 1280 to 1500\nDefault is 1420 (is a common value.)\n1380 is reasonable size, too" 8 80 "1420" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0mtu"; then
             echo "Valid number: $wg0mtu"
