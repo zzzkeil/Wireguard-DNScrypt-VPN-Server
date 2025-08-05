@@ -113,9 +113,13 @@ echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 
 ### wireguard options with input checks
+
 is_valid_port() {
     local wgport="$1"
-    if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1025 ] && [ "$wgport" -le 65535 ]; then
+    ### lets take care of your ssh port 
+    local ssh_port
+    ssh_port=$(grep -i "^Port" /etc/ssh/sshd_config | awk '{print $2}')
+    if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1025 ] && [ "$wgport" -le 65535 ] && [ "$wgport" -ne 5335 ] && [ "$wgport" -ne $ssh_port ]; then
         return 0
     else
         return 1
@@ -123,16 +127,21 @@ is_valid_port() {
 }
 
 while true; do
-    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1025-65535)\nDo not use port 5335\nDo not use a used port!\nTo list all currently activ ports, cancel now\nand you see a list\nthen start this script again" 15 80 "54234" 3>&1 1>&2 2>&3)
+    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port (1025-65535)\nDo not use port ($ssh_port ssh) and (5335 dnscrypt)\nDo not use a used port!\nTo list all currently activ ports, cancel now and you see a list\nThen start this script again" 15 80 "54234" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0port"; then
             break
         else
-            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1 and 65535." 15 80
+            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1025 and 65535. Do not use port 5335" 15 80
         fi
     else
         echo "Ok, cancel. No changes to system was made. Maybe try it again?"
+	echo "here is your list of currently open ports:"
 	ss -tuln | awk '{print $5}' | cut -d':' -f2 | sort -n | uniq
+        echo ""
+        echo "Now run the script again, and aviod useing a port from above"
+	echo ""
+        echo ""
         exit 1
     fi
 done
