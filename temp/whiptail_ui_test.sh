@@ -255,8 +255,10 @@ ipv6 $wg0networkv6
 mtu  $wg0mtu
 keep $wg0keepalive
 
-/24  $wg0networkv4_24
-/64  $wg0networkv6_24
+/24  $wg0networkv4_0
+/64  $wg0networkv6_0
+
+($wg0networkv4)0/32, ($wg0networkv6)0/128
 
 "
 
@@ -284,7 +286,7 @@ if [[ ! $REPLY =~ ^[Aa]$ ]]
 then
 allownet="0.0.0.0/0, ::/0"
 else
-allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_24/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $wg0networkv6_24/64, fe00::/9, fec0::/10, ff00::/8"
+allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $wg0networkv6_0/64, fe00::/9, fec0::/10, ff00::/8"
 fi
 
 
@@ -358,12 +360,12 @@ hostipv6=$(hostname -I | awk '{print $2}')
 
 firewall-cmd --zone=public --add-port="$wg0port"/udp
 
-firewall-cmd --zone=trusted --add-source=10.$wg0networkv4.0/24
-firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s 10.$wg0networkv4.0/24 ! -d 10.$wg0networkv4.0/24 -j SNAT --to "$hostipv4"
+firewall-cmd --zone=trusted --add-source=$wg0networkv4_0/24
+firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s $wg0networkv4_0/24 ! -d $wg0networkv4_0/24 -j SNAT --to "$hostipv4"
 
 if [[ -n "$hostipv6" ]]; then
-firewall-cmd --zone=trusted --add-source=fd42:$wg0networkv6::/64
-firewall-cmd --direct --add-rule ipv6 nat POSTROUTING 0 -s fd42:$wg0networkv6::/64 ! -d fd42:$wg0networkv6::/64 -j SNAT --to "$hostipv6"
+firewall-cmd --zone=trusted --add-source=$wg0networkv6_0/64
+firewall-cmd --direct --add-rule ipv6 nat POSTROUTING 0 -s $wg0networkv6_0/64 ! -d $wg0networkv6_0/64 -j SNAT --to "$hostipv6"
 fi
 
 # maybe wrong....
@@ -395,8 +397,8 @@ wg pubkey < /etc/wireguard/keys/client1 > /etc/wireguard/keys/client1.pub
 
 
 echo "[Interface]
-Address = 10.$wg0networkv4.1/24
-Address = fd42:$wg0networkv6::1/112
+Address = $wg0networkv4/24
+Address = $wg0networkv6/112
 ListenPort = $wg0port
 #MTU = $wg0servermtu
 PrivateKey = SK01
@@ -405,7 +407,7 @@ PrivateKey = SK01
 # client1
 [Peer]
 PublicKey = PK01
-AllowedIPs = 10.$wg0networkv4.10/32, fd42:$wg0networkv6::10/128
+AllowedIPs = $($wg0networkv4)0/32, $($wg0networkv6)0/128
 # -end of default clients
 
 " > /etc/wireguard/wg0.conf
@@ -415,10 +417,10 @@ sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
 echo "[Interface]
-Address = 10.$wg0networkv4.10/32
-Address = fd42:$wg0networkv6::10/128
+Address = $($wg0networkv4)0/32
+Address = $($wg0networkv6)0/128
 PrivateKey = CK01
-DNS = 10.$wg0networkv4.1, fd42:$wg0networkv6::1
+DNS = $wg0networkv4, $wg0networkv6
 $wg0mtu
 [Peer]
 Endpoint = IP01:$wg0port
