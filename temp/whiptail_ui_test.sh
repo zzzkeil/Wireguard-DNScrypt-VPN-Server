@@ -256,26 +256,27 @@ allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0
 fi  
 
 whiptail --title "OS Updates and install packages" --msgbox "Let's check for updates and install tools." 15 80
+echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
+
 # Update package lists
 echo "Updating package lists..."
-apt update -qq --show-progress
+apt update -qq 
 
 # Upgrade packages
 echo "Upgrading packages..."
-apt upgrade -y -qq --show-progress
-
+apt upgrade -y -qq 
 # Remove unnecessary packages
 echo "Removing unnecessary packages..."
-apt autoremove -y -qq --show-progress
+apt autoremove -y -qq 
 
 packages1="qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf"
 packages2="wireguard wireguard-tools"
 
 # Install packages
 echo "Installing packages..."
-apt install -y $packages1 -qq --show-progress
+apt install -y $packages1 -qq 
 echo "Installing wireguard..."
-apt install -y $packages2 -qq --show-progress
+apt install -y $packages2 -qq 
 
 
 
@@ -497,7 +498,7 @@ $wg0mtu
 Endpoint = IP01:$wg0port
 PublicKey = SK01
 AllowedIPs = $allownet
-$wg0keepalive
+PersistentKeepalive = $wg0keepalive
 " > /etc/wireguard/client1.conf
 sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/client1.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client1.conf
@@ -512,22 +513,20 @@ ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
 systemctl restart firewalld
-clear
 
 
-msg="Almost done, now you can use the server.\n\n
-Some additional things you might want to do now:\n\n
+msg="Almost done, now you can use the server.\n
+Some additional things you might want to do now:\n
 Wireguard options:\n
-- Add or remove clients with ./add_client.sh / ./remove_client.sh\n
-- Backup and restore options with ./wg_config_backup.sh / ./wg_config_restore.sh\n
-- to view the QR-Code for client one copy past run :\n
+- Add or remove clients  ./add_client.sh / ./remove_client.sh\n
+- Backup and restore  ./wg_config_backup.sh / ./wg_config_restore.sh\n
+- View QR-Code for client1 - copy past run :\n
   qrencode -t ansiutf8 < /etc/wireguard/client1.conf\n\n
 Pi-hole options:\n
-- Make changes, add blocklist, etc. over the WebUI https://$wg0networkv4/admin (only over WireGuard available)\n
+- WebUI https://$wg0networkv4/admin  only over WireGuard available\n
 - If needed, change Pi-hole WebUI password with: pihole setpassword\n\n
 Nextcloud options:\n
-- Need a Nextcloud instance behind WireGuard? Run ./nextcloud-behind-wireguard.sh\n
-- Also, only available over WireGuard."
+- Nextcloud instance only over WireGuard? Run ./nextcloud-behind-wireguard.sh\n
 
 whiptail --title "Server Setup Complete" --msgbox "$msg" 33 99
 exit
