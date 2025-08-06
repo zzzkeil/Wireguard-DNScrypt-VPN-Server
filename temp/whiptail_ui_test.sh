@@ -307,7 +307,7 @@ run_autoremove
 
 
 packages1="qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf"
-packages1="wireguard wireguard-tools"
+packages2="wireguard wireguard-tools"
 whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
 
 install_packages1() {
