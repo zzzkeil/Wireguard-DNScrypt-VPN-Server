@@ -244,23 +244,11 @@ while true; do
     fi
 done
 
-wg0networkv4_24=$(echo "$wg0networkv4" | sed 's/\([0-9]*\.[0-9]*\.[0-9]*\.\)1$/\10/')
-wg0networkv6_24=$(echo "$wg0networkv6" | sed 's/1\([^1]*\)$/\1/')
+wg0networkv4_0=$(echo "$wg0networkv4" | sed 's/\([0-9]*\.[0-9]*\.[0-9]*\.\)1$/\10/')
+wg0networkv6_0=$(echo "$wg0networkv6" | sed 's/1\([^1]*\)$/\1/')
 
 
-echo "
-port $wg0port
-ipv4 $wg0networkv4
-ipv6 $wg0networkv6
-mtu  $wg0mtu
-keep $wg0keepalive
 
-/24  $wg0networkv4_0
-/64  $wg0networkv6_0
-
-($wg0networkv4)0/32, ($wg0networkv6)0/128
-
-"
 
 
 #mal schaun wie das aussieht
@@ -407,7 +395,7 @@ PrivateKey = SK01
 # client1
 [Peer]
 PublicKey = PK01
-AllowedIPs = $($wg0networkv4)0/32, $($wg0networkv6)0/128
+AllowedIPs = ${wg0networkv4}0/32, ${wg0networkv6}0/128
 # -end of default clients
 
 " > /etc/wireguard/wg0.conf
@@ -417,8 +405,8 @@ sed -i "s@PK01@$(cat /etc/wireguard/keys/client1.pub)@" /etc/wireguard/wg0.conf
 chmod 600 /etc/wireguard/wg0.conf
 
 echo "[Interface]
-Address = $($wg0networkv4)0/32
-Address = $($wg0networkv6)0/128
+Address = ${wg0networkv4}0/32
+Address = ${wg0networkv6}0/128
 PrivateKey = CK01
 DNS = $wg0networkv4, $wg0networkv6
 $wg0mtu
