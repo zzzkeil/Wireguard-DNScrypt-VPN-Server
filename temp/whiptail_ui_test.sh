@@ -262,14 +262,14 @@ APT::Color "1";
 
 
 
-whiptail --title "OS Updates" --infobox "Let's check for updates and upgrade." 15 80
+whiptail --title "OS Updates" --msgbox "Let's check for updates and upgrade." 15 80
 
 run_update() {
     whiptail --title "APT UPDATE" --backtitle "Checking Updates" --infobox "Updating package list..." 10 80
     apt-get update --show-progress 2>&1 | \
     whiptail --title "APT UPDATE" --backtitle "Waiting" --gauge "Updating package lists..." 10 80 0
     if [ $? -eq 0 ]; then
-        whiptail --title "APT UPDATE" --msgbox "Package list updated successfully!" 10 60
+        echo ""
     else
         whiptail --title "APT UPDATE" --msgbox "Package list update failed. Please check your network connection." 10 60
         exit 1
@@ -281,7 +281,7 @@ run_upgrade() {
     apt-get upgrade --show-progress -y 2>&1 | \
     whiptail --title "APT UPGRADE" --backtitle "Waiting" --gauge "Upgrading system packages..." 10 80 0
     if [ $? -eq 0 ]; then
-        whiptail --title "APT UPGRADE" --msgbox "Packages upgraded successfully!" 10 60
+        echo ""
     else
         whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 60
         exit 1
@@ -293,7 +293,7 @@ run_autoremove() {
     apt-get autoremove -y 2>&1 | \
     whiptail --title "APT AUTOREMOVE" --backtitle "Waiting" --gauge "Removing unnecessary packages..." 10 80 0
     if [ $? -eq 0 ]; then
-        whiptail --title "APT AUTOREMOVE" --msgbox "Unnecessary packages removed successfully!" 10 60
+        echo ""
     else
         whiptail --title "APT AUTOREMOVE" --msgbox "Autoremove failed. Please check your system." 10 60
         exit 1
@@ -336,22 +336,79 @@ else
     exit 1
 fi
 
+# List of URLs to download
+urls=(
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/nextcloud-behind-wireguard.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-pihole.toml"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh"
+)
+
+# Function to download files in the background
+download_files() {
+    total_files=${#urls[@]}  # Total number of files
+    current_file=0  # Starting file counter
+
+    # Loop through each URL and download the file
+    for url in "${urls[@]}"; do
+        filename=$(basename "$url")
+
+        # Check if file already exists, and prompt for overwrite if needed
+        if [ -f "$filename" ]; then
+            echo "File $filename already exists. Overwriting..."
+        fi
+
+        # Start download in background
+        curl -s -o "$filename" "$url" &  # -s silences curl's output
+    done
+
+    # Wait for all background downloads to complete
+    wait
+}
+
+# Show info box before starting
+whiptail --title "File Download" --msgbox "Downloading required files from:\n - My github repo /tools an so on\n - " 15 80
+
+# Start the download process
+download_files
+clear
+
+chmod +x add_client.sh
+chmod +x remove_client.sh
+chmod +x wg_config_backup.sh
+chmod +x wg_config_restore.sh
+chmod +x uninstaller_back_to_base.sh
+chmod +x nextcloud-behind-wireguard.sh
+
+mkdir /etc/dnscrypt-proxy/
+mv dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+mv dnscrypt-proxy-update.sh /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
+chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
+
+
+whiptail --title "Downloading DNSCrypt Proxy" --msgbox "Downloading DNSCrypt Proxy for architecture: $dnsscrpt_arch" 15 80
+curl -L -o /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.12/dnscrypt-proxy-linux_${dnsscrpt_arch}-2.1.12.tar.gz"
+if [ $? -eq 0 ]; then
+echo ""
+else
+    whiptail --title "Download Failed" --msgbox "Failed to download DNSCrypt Proxy. Please check your network connection." 15 80
+    exit 1
+fi
+
+tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
+mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
+cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
+
 
 exit 1
-
-
-
 ################################################## 
 #################################################
 
-
-
-apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf -y
-apt-get install wireguard wireguard-tools -y
-
-
-
-### create and download files for configs  wg0servermtu später noch einpflegen 
+#### create and download files for configs  
 echo "
 !!! do not delete or modify this file
 !!  This file contains values line by line, used for config, backups and restores
@@ -371,21 +428,6 @@ $wg0keepalive
 For - News / Updates / Issues - check my gitlab site
 https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
-
-
-curl -o add_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh
-curl -o remove_client.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh
-curl -o wg_config_backup.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh
-curl -o wg_config_restore.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh
-curl -o uninstaller_back_to_base.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh
-curl -o nextcloud-behind-wireguard.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/nextcloud-behind-wireguard.sh
-
-chmod +x add_client.sh
-chmod +x remove_client.sh
-chmod +x wg_config_backup.sh
-chmod +x wg_config_restore.sh
-chmod +x uninstaller_back_to_base.sh
-chmod +x nextcloud-behind-wireguard.sh
 
 
 firewalldstatus="$(systemctl is-active firewalld)"
@@ -475,15 +517,7 @@ sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
 chmod 600 /etc/wireguard/client1.conf
 
 
-###setup DNSCrypt
-mkdir /etc/dnscrypt-proxy/
-wget -O /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.12/dnscrypt-proxy-linux_$dnsscrpt_arch-2.1.12.tar.gz
-tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
-mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
-cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
-curl -o /etc/dnscrypt-proxy/dnscrypt-proxy.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-pihole.toml
-curl -o /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh
-chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
+
 
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
