@@ -255,121 +255,28 @@ else
 allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $wg0networkv6_0/64, fe00::/9, fec0::/10, ff00::/8"
 fi  
 
+whiptail --title "OS Updates and install packages" --msgbox "Let's check for updates and install tools." 15 80
+# Update package lists
+echo "Updating package lists..."
+apt update -qq --show-progress
 
-echo 'Dpkg::Progress-Fancy "1";
-APT::Color "1";
-'> /etc/apt/apt.conf.d/99progressbar
+# Upgrade packages
+echo "Upgrading packages..."
+apt upgrade -y -qq --show-progress
 
-
-
-whiptail --title "OS Updates" --msgbox "Let's check for updates and upgrade." 15 80
-
-run_update() {
-    whiptail --title "APT UPDATE" --backtitle "Checking Updates" --infobox "Updating package list..." 10 80
-    apt-get update --show-progress 2>&1 | \
-    whiptail --title "APT UPDATE" --backtitle "Waiting" --gauge "Updating package lists..." 10 80 0
-    if [ $? -eq 0 ]; then
-        echo ""
-    else
-        whiptail --title "APT UPDATE" --msgbox "Package list update failed. Please check your network connection." 10 60
-        exit 1
-    fi
-}
-
-run_upgrade() {
-    whiptail --title "APT UPGRADE" --backtitle "Upgrading System" --infobox "Upgrading system packages..." 10 80
-    apt-get upgrade --show-progress -y 2>&1 | \
-    whiptail --title "APT UPGRADE" --backtitle "Waiting" --gauge "Upgrading system packages..." 10 80 0
-    if [ $? -eq 0 ]; then
-        echo ""
-    else
-        whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 80
-        exit 1
-    fi
-}
-
-run_upgrade() {
-    whiptail --title "APT UPGRADE" --backtitle "Upgrading System" --infobox "Upgrading system packages..." 10 80
-    progress=0
-    total=$(apt list --upgradable 2>/dev/null | wc -l)
-    apt-get upgrade --show-progress -y 2>&1 | while IFS= read -r line; do
-        if [[ "$line" =~ ([0-9]+)% ]]; then
-            progress=${BASH_REMATCH[1]}
-            whiptail --title "APT UPGRADE" --backtitle "Upgrading System" --gauge "Upgrading system packages..." 10 80 "$progress"
-        fi
-    done
-    if [ $? -eq 0 ]; then
-        echo ""
-    else
-        whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 80
-        exit 1
-    fi
-}
-
-run_autoremove() {
-    whiptail --title "APT AUTOREMOVE" --backtitle "Cleanup" --infobox "Removing unnecessary packages..." 10 80
-    apt-get autoremove -y 2>&1 | \
-    whiptail --title "APT AUTOREMOVE" --backtitle "Waiting" --gauge "Removing unnecessary packages..." 10 80 0
-    if [ $? -eq 0 ]; then
-        echo ""
-    else
-        whiptail --title "APT AUTOREMOVE" --msgbox "Autoremove failed. Please check your system." 10 60
-        exit 1
-    fi
-}
-
-# Run all functions
-run_update
-run_upgrade
-run_autoremove
-
+# Remove unnecessary packages
+echo "Removing unnecessary packages..."
+apt autoremove -y -qq --show-progress
 
 packages1="qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf"
 packages2="wireguard wireguard-tools"
 
-install_packages1() {
-    total_packages=$(echo $packages1 | wc -w)
-    current_package=0
-    apt-get install -y $packages1 --quiet | while IFS= read -r line; do
-        current_package=$((current_package + 1))
-        progress=$(( (current_package * 100) / total_packages ))
-        whiptail --title "Installing OS packages" --backtitle "Please Wait" \
-                 --gauge "Installing OS packages..." 10 80 $progress
-    done
-}
+# Install packages
+echo "Installing packages..."
+apt install -y $packages1 -qq --show-progress
+echo "Installing wireguard..."
+apt install -y $packages2 -qq --show-progress
 
-whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
-
-install_packages1
-if [ $? -eq 0 ]; then
-    echo ""
-else
-    whiptail --title "Installation Failed" --msgbox "OS package installation failed. Please check the error messages." 15 80
-    exit 1
-fi
-
-
-
-
-install_packages2() {
-    total_packages=$(echo $packages2 | wc -w)
-    current_package=0
-    apt-get install -y $packages2 --quiet | while IFS= read -r line; do
-        current_package=$((current_package + 1))
-        progress=$(( (current_package * 100) / total_packages ))
-        whiptail --title "Installing OS packages" --backtitle "Please Wait" \
-                 --gauge "Installing OS packages..." 10 80 $progress
-    done
-}
-
-whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
-install_packages2
-if [ $? -eq 0 ]; then
-    echo ""
-else
-    whiptail --title "Installation Failed" --msgbox "Wireguard package installation failed. Please check the error messages." 15 80
-    exit 1
-fi
 
 
 
@@ -622,5 +529,5 @@ Nextcloud options:\n
 - Need a Nextcloud instance behind WireGuard? Run ./nextcloud-behind-wireguard.sh\n
 - Also, only available over WireGuard."
 
-whiptail --title "Server Setup Complete" --msgbox "$msg" 60 100
+whiptail --title "Server Setup Complete" --msgbox "$msg" 33 99
 exit
