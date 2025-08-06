@@ -249,43 +249,25 @@ wg0networkv6_0=$(echo "$wg0networkv6" | sed 's/1\([^1]*\)$/\1/')
 
 
 
-
-
-#mal schaun wie das aussieht
-exit 1
-
-
-
-
-
-
 echo ""
-### AllowedIPs options - local ips in testing... maybe not a perfect solution !!!
-echo -e " ${GRAYB}##>${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} AllowedIPs handling for the first 3 preset client configs -- "
-echo -e " ${GRAYB}##${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GREEN}Press any key to tunnel all trafic over wireguard ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} or"
-echo -e " ${GRAYB}##${ENDCOLOR} ${RED}Press [A] to exclude local ips > Class A: 10. Class B: 172.16. Class C: 192.168. (advanced user)${ENDCOLOR}"
-echo -e " ${GRAYB}##>${ENDCOLOR}"
-echo ""
-read -p "" -n 1 -r
-if [[ ! $REPLY =~ ^[Aa]$ ]]
-then
+
+if whiptail --title "Client traffic over wireguard" --yesno "Yes =  Tunnel all traffic over wireguard\n       0.0.0.0/0, ::/0\n\nNo  =  Exclude private network ip's\n       10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 not over wireguard\n" 15 80; then
 allownet="0.0.0.0/0, ::/0"
 else
 allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $wg0networkv6_0/64, fe00::/9, fec0::/10, ff00::/8"
-fi
+fi  
+
+
+
+
+exit 1
+
+echo ""
+
 
 
 ################################################## 
 #################################################
-
-
-
-clear
-echo ""
-
 #
 # OS updates
 #
