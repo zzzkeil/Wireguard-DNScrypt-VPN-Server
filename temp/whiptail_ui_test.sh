@@ -493,7 +493,7 @@ Address = ${wg0networkv4}0/32
 Address = ${wg0networkv6}0/128
 PrivateKey = CK01
 DNS = $wg0networkv4, $wg0networkv6
-$wg0mtu
+MTU = $wg0mtu
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
@@ -526,7 +526,7 @@ Pi-hole options:\n
 - WebUI https://$wg0networkv4/admin  only over WireGuard available\n
 - If needed, change Pi-hole WebUI password with: pihole setpassword\n\n
 Nextcloud options:\n
-- Nextcloud instance only over WireGuard? Run ./nextcloud-behind-wireguard.sh\n
+- Nextcloud instance only over WireGuard? Run ./nextcloud-behind-wireguard.sh\n"
 
 whiptail --title "Server Setup Complete" --msgbox "$msg" 33 99
 exit
