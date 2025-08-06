@@ -306,6 +306,35 @@ run_upgrade
 run_autoremove
 
 
+packages1="qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf"
+packages1="wireguard wireguard-tools"
+whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
+
+install_packages1() {
+    apt-get install -y $packages1 --quiet | \
+    whiptail --title "Installing OS packages" --backtitle "Please Wait" --gauge "Installing OS packages..." 10 80 0 2>/dev/tty
+}
+
+install_packages1
+if [ $? -eq 0 ]; then
+    echo ""
+else
+    whiptail --title "Installation Failed" --msgbox "OS package installation failed. Please check the error messages." 15 80
+    exit 1
+fi
+
+install_packages2() {
+    apt-get install -y $packages2 --quiet | \
+    whiptail --title "Installing wireguard-tools" --backtitle "Please Wait" --gauge "Installing wireguard..." 10 80 0 2>/dev/tty
+}
+
+install_packages2
+if [ $? -eq 0 ]; then
+    echo ""
+else
+    whiptail --title "Installation Failed" --msgbox "Wireguard installation failed. Please check the error messages." 15 80
+    exit 1
+fi
 
 
 exit 1
