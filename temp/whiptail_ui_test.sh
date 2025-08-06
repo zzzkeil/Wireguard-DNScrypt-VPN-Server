@@ -283,7 +283,25 @@ run_upgrade() {
     if [ $? -eq 0 ]; then
         echo ""
     else
-        whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 60
+        whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 80
+        exit 1
+    fi
+}
+
+run_upgrade() {
+    whiptail --title "APT UPGRADE" --backtitle "Upgrading System" --infobox "Upgrading system packages..." 10 80
+    progress=0
+    total=$(apt list --upgradable 2>/dev/null | wc -l)
+    apt-get upgrade --show-progress -y 2>&1 | while IFS= read -r line; do
+        if [[ "$line" =~ ([0-9]+)% ]]; then
+            progress=${BASH_REMATCH[1]}
+            whiptail --title "APT UPGRADE" --backtitle "Upgrading System" --gauge "Upgrading system packages..." 10 80 "$progress"
+        fi
+    done
+    if [ $? -eq 0 ]; then
+        echo ""
+    else
+        whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 80
         exit 1
     fi
 }
@@ -308,12 +326,19 @@ run_autoremove
 
 packages1="qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf"
 packages2="wireguard wireguard-tools"
-whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
 
 install_packages1() {
-    apt-get install -y $packages1 --quiet | \
-    whiptail --title "Installing OS packages" --backtitle "Please Wait" --gauge "Installing OS packages..." 10 80 0 2>/dev/tty
+    total_packages=$(echo $packages1 | wc -w)
+    current_package=0
+    apt-get install -y $packages1 --quiet | while IFS= read -r line; do
+        current_package=$((current_package + 1))
+        progress=$(( (current_package * 100) / total_packages ))
+        whiptail --title "Installing OS packages" --backtitle "Please Wait" \
+                 --gauge "Installing OS packages..." 10 80 $progress
+    done
 }
+
+whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
 
 install_packages1
 if [ $? -eq 0 ]; then
@@ -323,21 +348,28 @@ else
     exit 1
 fi
 
+
+
+
 install_packages2() {
-    apt-get install -y $packages2 --quiet | \
-    whiptail --title "Installing wireguard-tools" --backtitle "Please Wait" --gauge "Installing wireguard..." 10 80 0 2>/dev/tty
+    total_packages=$(echo $packages2 | wc -w)
+    current_package=0
+    apt-get install -y $packages2 --quiet | while IFS= read -r line; do
+        current_package=$((current_package + 1))
+        progress=$(( (current_package * 100) / total_packages ))
+        whiptail --title "Installing OS packages" --backtitle "Please Wait" \
+                 --gauge "Installing OS packages..." 10 80 $progress
+    done
 }
 
+whiptail --title "Package Installation" --infobox "Installing required packages. Please wait..." 15 80
 install_packages2
 if [ $? -eq 0 ]; then
     echo ""
 else
-    whiptail --title "Installation Failed" --msgbox "Wireguard installation failed. Please check the error messages." 15 80
+    whiptail --title "Installation Failed" --msgbox "Wireguard package installation failed. Please check the error messages." 15 80
     exit 1
 fi
-
-
-
 
 
 
@@ -590,5 +622,5 @@ Nextcloud options:\n
 - Need a Nextcloud instance behind WireGuard? Run ./nextcloud-behind-wireguard.sh\n
 - Also, only available over WireGuard."
 
-whiptail --title "Server Setup Complete" --msgbox "$msg" 20 80
+whiptail --title "Server Setup Complete" --msgbox "$msg" 60 100
 exit
