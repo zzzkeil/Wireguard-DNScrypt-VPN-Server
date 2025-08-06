@@ -427,9 +427,9 @@ chmod +x pihole-install.sh
 
 while true; do
     whiptail --title "Pi-hole Password Setup" --infobox "Please enter a password for your Pi-hole admin interface." 15 80
-    pihole_password=$(whiptail --title "Pi-hole Password" --inputbox "Enter your Pi-hole admin password (at least 8 characters):" 15 60 3>&1 1>&2 2>&3)
+    pihole_password=$(whiptail --title "Pi-hole Password" --inputbox "Enter your Pi-hole admin password (at least 8 characters):" 15 80 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
-        whiptail --title "Cancelled" --msgbox "Password setup was cancelled.\n WARNING NO PASSWORD IS SET\n  Take care" 15 60
+        whiptail --title "Cancelled" --msgbox "Password setup was cancelled.\n WARNING NO PASSWORD IS SET\n  Take care" 15 80
     fi
     if [ ${#pihole_password} -ge 8 ]; then
 	whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
