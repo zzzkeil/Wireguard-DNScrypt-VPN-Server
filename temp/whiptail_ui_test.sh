@@ -158,7 +158,7 @@ is_private_ipv4_ending_with_1() {
 }
 
 while true; do
-    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings" --inputbox "Enter a private IP address ending with .1\nPrivate ip ranges:\n10.0.0.0/8\nor\n172.16.0.0/12\nor\n192.168.0.0/16" 15 80 "10.11.12.1" 3>&1 1>&2 2>&3)
+    wg0networkv4=$(whiptail --title "Wireguard ipv4 settings" --inputbox "Enter a private IP address ending with .1\nPrivate ip ranges:\n10.0.0.1 to 10.255.255.254\nor\n172.16.0.1 to 172.31.255.254\nor\n192.168.0.1 to 192.168.255.254" 15 80 "10.11.12.1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv4_ending_with_1 "$wg0networkv4"; then
             break  
@@ -182,7 +182,7 @@ is_private_ipv6_ending_with_1() {
 }
 
 while true; do
-    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings" --inputbox "Enter a private IPv6 address ending with ::1\nPrivate ip ranges:\nfd00::/8" 15 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
+    wg0networkv6=$(whiptail --title "Wireguard ipv6 settings" --inputbox "Enter a private IPv6 address ending with ::1\nPrivate ip ranges:\nfd00:: to fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff" 15 80 "fd42:10:11:12::1" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_private_ipv6_ending_with_1 "$wg0networkv6"; then
             break 
@@ -209,7 +209,6 @@ while true; do
     wg0keepalive=$(whiptail --title "Wireguard keepalive settings" --inputbox "Enter number in secconds (0-999)\n Default is 0 (off)" 15 80 "0" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_keepalive "$wg0keepalive"; then
-            echo "Valid number: $wg0keepalive"
             break
         else
             whiptail --title "Invalid input" --msgbox "Invalid number. Please enter a number between 0 and 999." 15 80
@@ -233,7 +232,6 @@ while true; do
     wg0mtu=$(whiptail --title "Clients MTU settings" --inputbox "Enter MTU size from 1280 to 1500\nDefault is 1420 - a common value.\n1380 is reasonable size, too" 15 80 "1420" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_mtu "$wg0mtu"; then
-            echo "Valid number: $wg0mtu"
             break 
         else
             whiptail --title "Invalid MTU" --msgbox "Invalid MTU. Please enter a number between 1280 and 1500." 15 80
@@ -258,26 +256,70 @@ allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0
 fi  
 
 
+echo 'Dpkg::Progress-Fancy "1";
+APT::Color "1";
+'> /etc/apt/apt.conf.d/99progressbar
+
+
+
+whiptail --title "OS Updates" --infobox "Let's check for updates and upgrade." 15 80
+
+run_update() {
+    whiptail --title "APT UPDATE" --backtitle "Checking Updates" --infobox "Updating package list..." 10 80
+    apt-get update --show-progress 2>&1 | \
+    whiptail --title "APT UPDATE" --backtitle "Waiting" --gauge "Updating package lists..." 10 80 0
+    if [ $? -eq 0 ]; then
+        whiptail --title "APT UPDATE" --msgbox "Package list updated successfully!" 10 60
+    else
+        whiptail --title "APT UPDATE" --msgbox "Package list update failed. Please check your network connection." 10 60
+        exit 1
+    fi
+}
+
+run_upgrade() {
+    whiptail --title "APT UPGRADE" --backtitle "Upgrading System" --infobox "Upgrading system packages..." 10 80
+    apt-get upgrade --show-progress -y 2>&1 | \
+    whiptail --title "APT UPGRADE" --backtitle "Waiting" --gauge "Upgrading system packages..." 10 80 0
+    if [ $? -eq 0 ]; then
+        whiptail --title "APT UPGRADE" --msgbox "Packages upgraded successfully!" 10 60
+    else
+        whiptail --title "APT UPGRADE" --msgbox "Package upgrade failed. Please check your system." 10 60
+        exit 1
+    fi
+}
+
+run_autoremove() {
+    whiptail --title "APT AUTOREMOVE" --backtitle "Cleanup" --infobox "Removing unnecessary packages..." 10 80
+    apt-get autoremove -y 2>&1 | \
+    whiptail --title "APT AUTOREMOVE" --backtitle "Waiting" --gauge "Removing unnecessary packages..." 10 80 0
+    if [ $? -eq 0 ]; then
+        whiptail --title "APT AUTOREMOVE" --msgbox "Unnecessary packages removed successfully!" 10 60
+    else
+        whiptail --title "APT AUTOREMOVE" --msgbox "Autoremove failed. Please check your system." 10 60
+        exit 1
+    fi
+}
+
+# Run all functions
+run_update
+run_upgrade
+run_autoremove
+
+
 
 
 exit 1
-
-echo ""
 
 
 
 ################################################## 
 #################################################
-#
-# OS updates
-#
-echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
 
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
-apt-get update && apt-get upgrade -y && apt-get autoremove -y
+
+
 apt-get install qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf -y
 apt-get install wireguard wireguard-tools -y
-fi
+
 
 
 ### create and download files for configs  wg0servermtu später noch einpflegen 
