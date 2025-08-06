@@ -381,7 +381,6 @@ whiptail --title "File Download" --msgbox "Downloading required files from:\n - 
 
 # Start the download process
 download_files
-clear
 
 chmod +x add_client.sh
 chmod +x remove_client.sh
@@ -391,7 +390,7 @@ chmod +x uninstaller_back_to_base.sh
 chmod +x nextcloud-behind-wireguard.sh
 
 mkdir /etc/dnscrypt-proxy/
-mv dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+mv dnscrypt-proxy-pihole.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 mv dnscrypt-proxy-update.sh /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 
@@ -412,21 +411,9 @@ tar -xvzf /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz -C /etc/dnscrypt-proxy/
 mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
 
-
-systemctl enable wg-quick@wg0.service
-systemctl start wg-quick@wg0.service
 /etc/dnscrypt-proxy/dnscrypt-proxy -service install
 /etc/dnscrypt-proxy/dnscrypt-proxy -service start
 
-
-
-
-echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole setup part  ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}WebUI access is only over wireguard possible ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Press enter, Pi-hole setup starts with source from https://install.pi-hole.net --unattended mode ${ENDCOLOR}"
-echo -e " ${GRAYB}##>${ENDCOLOR}" 
-echo ""
-read -p "Press Enter to continue..."
 whiptail --title "Downloading Pihole" --msgbox "Download source from https://install.pi-hole.net\nand runing pihole-install.sh --unattended  mode" 15 80
 curl -L -o pihole-install.sh https://install.pi-hole.net
 if [ $? -eq 0 ]; then
@@ -580,6 +567,8 @@ chmod 600 /etc/wireguard/client1.conf
 qrencode -o /etc/wireguard/client1.png < /etc/wireguard/client1.conf
 
 
+systemctl enable wg-quick@wg0.service
+systemctl start wg-quick@wg0.service
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
