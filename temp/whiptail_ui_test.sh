@@ -66,50 +66,50 @@ fi
 echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
 
 
-### base_setup check
-#if [[ -e /root/base_setup.README ]]; then
-#     echo -e "base_setup script installed = ${GREEN}ok${ENDCOLOR}"
-#	 else
-#	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
-#	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
-#	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
-#	 echo ""
-#	 echo ""
-#	 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
- #        chmod +x base_setup_2025.sh
-#	 echo ""
-#	 echo ""
- #        echo -e " Now run ${YELLOW}./base_setup_2025.sh${ENDCOLOR} manualy and reboot, then run this script again."
-#	 echo ""
-#	 echo ""
-#	 exit 1
-#fi
+### base_setup check  whiptail later
+if [[ -e /root/base_setup.README ]]; then
+    echo -e "base_setup script installed = ${GREEN}ok${ENDCOLOR}"
+	 else
+	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
+	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
+	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
+	 echo ""
+	 echo ""
+	 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
+         chmod +x base_setup_2025.sh
+	 echo ""
+	 echo ""
+         echo -e " Now run ${YELLOW}./base_setup_2025.sh${ENDCOLOR} manualy and reboot, then run this script again."
+	 echo ""
+	 echo ""
+	 exit 1
+fi
 
 
-### script already installed check
-#if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
- #    echo
-#	 echo
- #        echo -e "${YELLOW}Looks like this script is already installed${ENDCOLOR}"
-#	 echo -e "${YELLOW}This script is only need for the first install${ENDCOLOR}"
-#	 echo ""
-#	 echo "To add or remove clients run"
- #        echo -e " ${YELLOW}./add_client.sh${ENDCOLOR} to add clients"
-  #       echo -e " ${YELLOW}./remove_client.sh${ENDCOLOR} to remove clients"
-##	 echo ""
-#	 echo  "To backup or restore your settings run"
-#	 echo -e " ${YELLOW}./wg_config_backup.sh${ENDCOLOR} "
-#	 echo -e " ${YELLOW}./wg_config_restore.sh${ENDCOLOR}"
-#	 echo ""
-#	 echo  "To uninstall run"
-#	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
-##	 echo ""
-#	 echo "For - News / Updates / Issues - check my github site"
-#	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
-#	 echo
-#	 echo
-#	 exit 1
-#fi
+### script already  whiptail later
+if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
+     echo
+	 echo
+         echo -e "${YELLOW}Looks like this script is already installed${ENDCOLOR}"
+	 echo -e "${YELLOW}This script is only need for the first install${ENDCOLOR}"
+	 echo ""
+	 echo "To add or remove clients run"
+         echo -e " ${YELLOW}./add_client.sh${ENDCOLOR} to add clients"
+         echo -e " ${YELLOW}./remove_client.sh${ENDCOLOR} to remove clients"
+	 echo ""
+	 echo  "To backup or restore your settings run"
+	 echo -e " ${YELLOW}./wg_config_backup.sh${ENDCOLOR} "
+	 echo -e " ${YELLOW}./wg_config_restore.sh${ENDCOLOR}"
+	 echo ""
+	 echo  "To uninstall run"
+	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
+	 echo ""
+	 echo "For - News / Updates / Issues - check my github site"
+	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
+	 echo
+	 echo
+	 exit 1
+fi
 
 
 ### wireguard options with input checks
@@ -577,45 +577,29 @@ sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/client1.conf
 sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client1.conf
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
 chmod 600 /etc/wireguard/client1.conf
-
-clear
-
-
-exit 1
-################################################## 
-#################################################
-
-### finish
-echo ""
-echo ""
-echo -e "${YELLOW}QR Code for client1.conf${ENDCOLOR}"
-echo ""
-qrencode -t ansiutf8 < /etc/wireguard/client1.conf
-echo ""
-echo -e "${YELLOW}Scan the QR Code with your Wiregard App${ENDCOLOR}"
 qrencode -o /etc/wireguard/client1.png < /etc/wireguard/client1.conf
-echo ""
-echo -e " ${GREENB}##>${ENDCOLOR}"
-echo -e " ${GREENB}##${ENDCOLOR} ${GREEN}Almost done, now you can use the server  ${ENDCOLOR}"
-echo -e " ${GREENB}##${ENDCOLOR} ${GRAY}Some additional things you might want to do now:  ${ENDCOLOR}"
-echo -e " ${GREENB}##>${ENDCOLOR}"
-echo ""
-echo -e " ${GRAYB}###>${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Wireguard options: ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Add or remove clients with ${YELLOW}./add_client.sh / remove_client.sh${ENDCOLOR}  ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Backup and restore options with ${YELLOW}./wg_config_backup.sh / ./wg_config_restore.sh${ENDCOLOR}${ENDCOLOR}"
-echo -e " ${GRAYB}###${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole options: ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Make changes, add blocklist, ... over the WebUI  https://10.$wg0networkv4.1/admin  (only over wireguard available)  ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}If needed, change pihole WebUI password with:${ENDCOLOR} ${YELLOW}pihole setpassword${ENDCOLOR}"
-echo -e " ${GRAYB}###${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Nectcloud options: ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Need a nextcloud instance behind wireguard ? - run ./nextcloud-behind-wireguard.sh ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}also only over wireguard available ${ENDCOLOR}"
-echo -e " ${GRAYB}##>${ENDCOLOR}"
+
+
 ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
-
 systemctl restart firewalld
+clear
+
+
+msg="Almost done, now you can use the server.\n\n
+Some additional things you might want to do now:\n\n
+Wireguard options:\n
+- Add or remove clients with ./add_client.sh / ./remove_client.sh\n
+- Backup and restore options with ./wg_config_backup.sh / ./wg_config_restore.sh\n
+- to view the QR-Code for client one copy past run :\n
+  qrencode -t ansiutf8 < /etc/wireguard/client1.conf\n\n
+Pi-hole options:\n
+- Make changes, add blocklist, etc. over the WebUI https://$wg0networkv4/admin (only over WireGuard available)\n
+- If needed, change Pi-hole WebUI password with: pihole setpassword\n\n
+Nextcloud options:\n
+- Need a Nextcloud instance behind WireGuard? Run ./nextcloud-behind-wireguard.sh\n
+- Also, only available over WireGuard."
+
+whiptail --title "Server Setup Complete" --msgbox "$msg" 20 80
 exit
