@@ -336,6 +336,11 @@ else
     exit 1
 fi
 
+
+
+
+
+
 # List of URLs to download
 urls=(
     "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh"
@@ -346,6 +351,7 @@ urls=(
     "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/nextcloud-behind-wireguard.sh"
     "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-pihole.toml"
     "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/tools/pihole.toml"
 )
 
 # Function to download files in the background
@@ -389,6 +395,9 @@ mv dnscrypt-proxy.toml /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 mv dnscrypt-proxy-update.sh /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 
+mkdir /etc/pihole
+mv pihole.toml /etc/pihole/pihole.toml
+
 
 whiptail --title "Downloading DNSCrypt Proxy" --msgbox "Downloading DNSCrypt Proxy for architecture: $dnsscrpt_arch" 15 80
 curl -L -o /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.12/dnscrypt-proxy-linux_${dnsscrpt_arch}-2.1.12.tar.gz"
@@ -404,11 +413,64 @@ mv -f /etc/dnscrypt-proxy/linux-$dnsscrpt_arch/* /etc/dnscrypt-proxy/
 cp /etc/dnscrypt-proxy/example-blocked-names.txt /etc/dnscrypt-proxy/blocklist.txt
 
 
-exit 1
-################################################## 
-#################################################
+systemctl enable wg-quick@wg0.service
+systemctl start wg-quick@wg0.service
+/etc/dnscrypt-proxy/dnscrypt-proxy -service install
+/etc/dnscrypt-proxy/dnscrypt-proxy -service start
 
-#### create and download files for configs  
+
+
+
+echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole setup part  ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}WebUI access is only over wireguard possible ${ENDCOLOR}"
+echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Press enter, Pi-hole setup starts with source from https://install.pi-hole.net --unattended mode ${ENDCOLOR}"
+echo -e " ${GRAYB}##>${ENDCOLOR}" 
+echo ""
+read -p "Press Enter to continue..."
+whiptail --title "Downloading Pihole" --msgbox "Download source from https://install.pi-hole.net\nand runing pihole-install.sh --unattended  mode" 15 80
+curl -L -o pihole-install.sh https://install.pi-hole.net
+if [ $? -eq 0 ]; then
+echo ""
+else
+    whiptail --title "Download Failed" --msgbox "Failed to download Pihole. Please check your network connection." 15 80
+    exit 1
+fi
+chmod +x pihole-install.sh
+. pihole-install.sh --unattended 
+
+while true; do
+    whiptail --title "Pi-hole Password Setup" --infobox "Please enter a password for your Pi-hole admin interface." 15 80
+    pihole_password=$(whiptail --title "Pi-hole Password" --inputbox "Enter your Pi-hole admin password (at least 8 characters):" 15 60 3>&1 1>&2 2>&3)
+    if [ $? -ne 0 ]; then
+        whiptail --title "Cancelled" --msgbox "Password setup was cancelled.\n WARNING NO PASSWORD IS SET\n  Take care" 15 60
+    fi
+    if [ ${#pihole_password} -ge 8 ]; then
+	whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
+        break 
+    else
+        whiptail --title "Invalid Password" --msgbox "Password must be at least 8 characters long. Please try again." 15 60
+    fi
+done
+
+
+echo " Add more list to block "
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt', 1, 'MultiPRO-Extended')"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/tif.txt', 1, 'ThreatIntelligenceFeeds')"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://easylist.to/easylist/easylist.txt', 1, 'Easylist')"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://easylist.to/easylist/easyprivacy.txt', 1, 'Easyprivacy')"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://secure.fanboy.co.nz/fanboy-annoyance.txt', 1, 'fanboy-annoyance')"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://easylist.to/easylist/fanboy-social.txt', 1, 'fanboy-social')"
+sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://secure.fanboy.co.nz/fanboy-cookiemonster.txt', 1, 'fanboy-cookiemonster')"
+pihole -g
+
+clear
+### create crontabs to update dnscrypt and pihole
+(crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
+(crontab -l ; echo "0 23 * * 3 pihole -up") | sort - | uniq - | crontab -
+
+
+
+#### create files for configs  
 echo "
 !!! do not delete or modify this file
 !!  This file contains values line by line, used for config, backups and restores
@@ -516,57 +578,12 @@ sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client1.c
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
 chmod 600 /etc/wireguard/client1.conf
 
-
-
-
-systemctl enable wg-quick@wg0.service
-systemctl start wg-quick@wg0.service
-/etc/dnscrypt-proxy/dnscrypt-proxy -service install
-/etc/dnscrypt-proxy/dnscrypt-proxy -service start
-
 clear
 
-echo -e " ${GRAYB}##>${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}pihole setup part  ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}WebUI access is only over wireguard possible ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Press enter, Pi-hole setup starts with source from https://install.pi-hole.net --unattended mode ${ENDCOLOR}"
-echo -e " ${GRAYB}##>${ENDCOLOR}" 
-echo ""
-read -p "Press Enter to continue..."
 
-# --unattended 
-mkdir /etc/pihole
-curl -o /etc/pihole/pihole.toml https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/tools/pihole.toml
-
-wget -O pihole-install.sh https://install.pi-hole.net
-chmod +x pihole-install.sh
-. pihole-install.sh --unattended 
-
-
-echo -e " ${GRAYB}##>${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${YELLOW}Set your pihole password ${ENDCOLOR}"
-echo -e " ${GRAYB}##${ENDCOLOR} ${GRAY}Press enter and set your WebUI password ${ENDCOLOR}"
-echo -e " ${GRAYB}##>${ENDCOLOR}" 
-echo ""
-read -p "Press Enter to continue..."
-pihole setpassword
-
-echo ""
-
-echo " Add more list to block "
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt', 1, 'MultiPRO-Extended')"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/tif.txt', 1, 'ThreatIntelligenceFeeds')"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://easylist.to/easylist/easylist.txt', 1, 'Easylist')"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://easylist.to/easylist/easyprivacy.txt', 1, 'Easyprivacy')"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://secure.fanboy.co.nz/fanboy-annoyance.txt', 1, 'fanboy-annoyance')"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://easylist.to/easylist/fanboy-social.txt', 1, 'fanboy-social')"
-sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://secure.fanboy.co.nz/fanboy-cookiemonster.txt', 1, 'fanboy-cookiemonster')"
-pihole -g
-
-
-### create crontabs to update dnscrypt and pihole
-(crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
-(crontab -l ; echo "0 23 * * 3 pihole -up") | sort - | uniq - | crontab -
+exit 1
+################################################## 
+#################################################
 
 ### finish
 echo ""
