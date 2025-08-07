@@ -283,7 +283,7 @@ update_upgrade_with_gauge() {
     } | whiptail --title "System Update and Upgrade" --gauge "Please wait while updating and upgrading the system..." 15 80 0
 
     if [ $? -eq 0 ]; then
-        whiptail --title "Success" --msgbox "System update and upgrade completed successfully." 15 80
+       echo ""
     else
         whiptail --title "Error" --msgbox "The update/upgrade process was interrupted." 15 80
     fi
@@ -315,7 +315,7 @@ install_multiple_packages_with_gauge1() {
     } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\nqrencode, python-is-python3, curl\nlinux-headers-......, sqlite3, resolvconf" 15 80 0
 
     if [ $? -eq 0 ]; then
-        whiptail --title "Success" --msgbox "All packages installed successfully." 15 80
+        echo ""
     else
         whiptail --title "Error" --msgbox "Installation process interrupted or failed." 15 80
 		exit 1
@@ -345,7 +345,7 @@ install_multiple_packages_with_gauge2() {
     } | whiptail --title "Installing wireguard" --gauge "Please wait while installing wireguard, wireguard-tools..." 15 80 0
 
     if [ $? -eq 0 ]; then
-        whiptail --title "Success" --msgbox "wireguard installed successfully." 15 80
+        echo ""
     else
         whiptail --title "Error" --msgbox "Installation process interrupted or failed." 15 80
 		exit 1
