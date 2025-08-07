@@ -312,7 +312,7 @@ install_multiple_packages_with_gauge1() {
         done
         echo 100
         echo "All packages installed successfully."
-    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\qrencode, python-is-python3, curl, ,linux-headers-......, sqlite3, resolvconf" 15 80 0
+    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\nqrencode, python-is-python3, curl\nlinux-headers-......, sqlite3, resolvconf" 15 80 0
 
     if [ $? -eq 0 ]; then
         whiptail --title "Success" --msgbox "All packages installed successfully." 15 80
@@ -439,10 +439,10 @@ chmod +x pihole-install.sh
 . pihole-install.sh --unattended 
 
 while true; do
-    whiptail --title "Pi-hole Password Setup" --infobox "Please enter a password for your Pi-hole admin interface." 15 80
-    pihole_password=$(whiptail --title "Pi-hole Password" --inputbox "Enter your Pi-hole admin password (at least 8 characters):" 15 80 3>&1 1>&2 2>&3)
+    whiptail --title "Pi-hole Password Setup" --infobox --nocancel "Please enter a password for your Pi-hole admin interface." 15 80
+    pihole_password=$(whiptail --title "Pi-hole Password" --inputbox --nocancel "Enter your Pi-hole admin password\nmin. 8 characters" 15 80 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
-        whiptail --title "Cancelled" --msgbox "Password setup was cancelled.\n WARNING NO PASSWORD IS SET\n  Take care" 15 80
+       echo ""
     fi
     if [ ${#pihole_password} -ge 8 ]; then
 	whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
@@ -599,7 +599,7 @@ Pi-hole options:\n
 - WebUI https://$wg0networkv4/admin  only over WireGuard available\n
 - If needed, change Pi-hole WebUI password with: pihole setpassword\n\n
 Nextcloud options:\n
-- Nextcloud instance only over WireGuard? Run ./nextcloud-behind-wireguard.sh\n"
+- Nextcloud instance only over WireGuard isnstall - run ./nextcloud-behind-wireguard.sh\n"
 
 whiptail --title "Server Setup Complete" --msgbox "$msg" 33 99
 exit
