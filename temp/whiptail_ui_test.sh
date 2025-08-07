@@ -255,31 +255,104 @@ else
 allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $wg0networkv6_0/64, fe00::/9, fec0::/10, ff00::/8"
 fi  
 
-whiptail --title "OS Updates and install packages" --msgbox "Let's check for updates and install tools." 15 80
+
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 
-# Update package lists
-echo "Updating package lists..."
-apt update -qq 
+update_upgrade_with_gauge() {
+    {
+        echo 10
+        echo "Starting apt-get update..."
+        apt-get update -y &> /dev/null
+        if [ $? -ne 0 ]; then
+            echo 100
+            echo "Error: apt-get update failed."
+            exit 1
+        fi
 
-# Upgrade packages
-echo "Upgrading packages..."
-apt upgrade -y -qq 
-# Remove unnecessary packages
-echo "Removing unnecessary packages..."
-apt autoremove -y -qq 
+        echo 50
+        echo "Starting apt-get upgrade..."
+        apt-get upgrade -y &> /dev/null
+        if [ $? -ne 0 ]; then
+            echo 100
+            echo "Error: apt-get upgrade failed."
+            exit 1
+        fi
 
-packages1="qrencode python-is-python3 curl linux-headers-$(uname -r) sqlite3 resolvconf"
-packages2="wireguard wireguard-tools"
+        echo 100
+        echo "Update and Upgrade completed successfully."
+    } | whiptail --title "System Update and Upgrade" --gauge "Please wait while updating and upgrading the system..." 15 80 0
 
-# Install packages
-echo "Installing packages..."
-apt install -y $packages1 -qq 
-echo "Installing wireguard..."
-apt install -y $packages2 -qq 
+    if [ $? -eq 0 ]; then
+        whiptail --title "Success" --msgbox "System update and upgrade completed successfully." 15 80
+    else
+        whiptail --title "Error" --msgbox "The update/upgrade process was interrupted." 15 80
+    fi
+}
 
+update_upgrade_with_gauge
 
+packages1=("qrencode" "python-is-python3" "curl" "linux-headers-$(uname -r)" "sqlite3" "resolvconf")
+packages2=("wireguard" "wireguard-tools")
+install_multiple_packages_with_gauge1() {
+    total=${#packages1[@]}
+    step=0
 
+    {
+        for pkg in "${packages1[@]}"; do
+            percent=$(( (step * 100) / total ))
+            echo $percent
+            echo "Installing package: $pkg..."
+            sudo apt-get install -y "$pkg" &> /dev/null
+            if [ $? -ne 0 ]; then
+                echo 100
+                echo "Error: Installation of package $pkg failed."
+                exit 1
+            fi
+            step=$((step + 1))
+        done
+        echo 100
+        echo "All packages installed successfully."
+    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\qrencode, python-is-python3, curl, ,linux-headers-......, sqlite3, resolvconf" 15 80 0
+
+    if [ $? -eq 0 ]; then
+        whiptail --title "Success" --msgbox "All packages installed successfully." 15 80
+    else
+        whiptail --title "Error" --msgbox "Installation process interrupted or failed." 15 80
+		exit 1
+    fi
+}
+
+install_multiple_packages_with_gauge1
+install_multiple_packages_with_gauge2() {
+    total=${#packages2[@]}
+    step=0
+
+    {
+        for pkg in "${packages2[@]}"; do
+            percent=$(( (step * 100) / total ))
+            echo $percent
+            echo "Installing package: $pkg..."
+            sudo apt-get install -y "$pkg" &> /dev/null
+            if [ $? -ne 0 ]; then
+                echo 100
+                echo "Error: Installation of package $pkg failed."
+                exit 1
+            fi
+            step=$((step + 1))
+        done
+        echo 100
+        echo "All packages installed successfully."
+    } | whiptail --title "Installing wireguard" --gauge "Please wait while installing wireguard, wireguard-tools..." 15 80 0
+
+    if [ $? -eq 0 ]; then
+        whiptail --title "Success" --msgbox "wireguard installed successfully." 15 80
+    else
+        whiptail --title "Error" --msgbox "Installation process interrupted or failed." 15 80
+		exit 1
+    fi
+}
+
+install_multiple_packages_with_gauge2
 
 # List of URLs to download
 urls=(
