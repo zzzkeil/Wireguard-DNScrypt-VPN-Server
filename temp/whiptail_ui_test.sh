@@ -43,12 +43,13 @@ whiptail --title "Aborted" --msgbox "This script is only for x86_64 or ARM64  Ar
 exit 1
 fi
 
-### base_setup check  whiptail later
+### base_setup check
 if [[ -e /root/base_setup.README ]]; then
 echo ""
 else
 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
 chmod +x base_setup_2025.sh
+echo  "tempfile" > /root/reminderfile.tmp
 msgbase="You need to install my base_setup script first!\n
 Run ./base_setup_2025.sh and reboot.\n
 Then run this script again !!\n\n
@@ -78,7 +79,7 @@ esac
 exit 1
 fi
 
-### script already  whiptail later
+### script already 
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
 msginst="Looks like this script is already installed\n
 This script is only need for the first install.\n\n
@@ -565,7 +566,7 @@ ln -s /etc/wireguard/ /root/wireguard_folder
 ln -s /etc/dnscrypt-proxy/ /root/dnscrypt-proxy_folder
 ln -s /var/log /root/system-log_folder
 systemctl restart firewalld
-
+rm /root/reminderfile.tmp
 
 msg="Almost done, now you can use the server.\n
 Some additional things you might want to do now:\n
