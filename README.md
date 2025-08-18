@@ -28,16 +28,16 @@ major changes :
 
 With Pi-Hole and DNScrypt :
 ```
-wget -O  pihole_dnscrypt_debian13_ubuntu24.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/pihole_dnscrypt_debian13_ubuntu24.sh
-chmod +x pihole_dnscrypt_debian13_ubuntu24.sh
-./pihole_dnscrypt_debian13_ubuntu24.sh
+wget -O  setup_wg_adblock.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/pihole_dnscrypt_debian13_ubuntu24.sh
+chmod +x setup_wg_adblock.sh
+./setup_wg_adblock.sh
 
 ```
 DNScrypt with adblock only :
 ```
-wget -O  dnscrypt_adblock_debian13_ubuntu24.04.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/dnscrypt_adblock_debian13_ubuntu24.04.sh
-chmod +x dnscrypt_adblock_debian13_ubuntu24.04.sh
-./dnscrypt_adblock_debian13_ubuntu24.04.sh
+wget -O  setup_wg_adblock.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/dnscrypt_adblock_debian13_ubuntu24.04.sh
+chmod +x setup_wg_adblock.sh
+./setup_wg_adblock.sh
 ```
 
 * Copy the lines above, execute and follow the instructions  
