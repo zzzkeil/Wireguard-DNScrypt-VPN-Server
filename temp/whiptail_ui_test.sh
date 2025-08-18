@@ -11,104 +11,76 @@ GREENB="\e[42m"
 GRAYB="\e[47m"
 ENDCOLOR="\e[0m"
 
-if whiptail --title "Hi, lets start" --yesno "Bulid date of this scriptfile: 2025.08.03\nThis script install and configure:\nwireguard, dnscrypt, pihole\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\n\nRun script now ?\n" 15 80; then
+if whiptail --title "Hi, lets start" --yesno "Bulid date of this testfile: 2025.08\nThis script install and configure:\nwireguard, dnscrypt, pihole\nMore info: https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server\n\nRun script now ?\n" 15 80; then
 echo ""
 else
-    echo "Ok, no install right now. cu have a nice day."
-    exit 1
+whiptail --title "Aborted" --msgbox "Ok, no install right now. cu have a nice day." 15 80
+exit 1
 fi   
 
 ### root check
 if [[ "$EUID" -ne 0 ]]; then
-	echo -e "${RED}Sorry, you need to run this as root${ENDCOLOR}"
-	exit 1
+whiptail --title "Aborted" --msgbox "Sorry, you need to run this as root!" 15 80
+exit 1
 fi
 
 ### OS check
-echo -e "${GREEN}OS check ${ENDCOLOR}"
-
 . /etc/os-release
-
 if [[ "$ID" = 'debian' ]]; then
  if [[ "$VERSION_ID" = '13' ]]; then
-   echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
-   systemos=debian
-   fi
+ systemos=debian
+ fi
 fi
 
 if [[ "$ID" = 'ubuntu' ]]; then
  if [[ "$VERSION_ID" = '24.04' ]]; then
-   echo -e "${GREEN}OS = Ubuntu ${ENDCOLOR}"
-   systemos=ubuntu
-   fi
+ systemos=ubuntu
+ fi
 fi
-
 
 if [[ "$systemos" = '' ]]; then
-   clear
-   echo ""
-   echo ""
-   echo -e "${RED}This script is only for Debian 13 and Ubuntu 24.04 !${ENDCOLOR}"
-   exit 1
+whiptail --title "Aborted" --msgbox "This script is only for Debian 13 and Ubuntu 24.04 !" 15 80
+exit 1
 fi
-
 
 ### Architecture check for dnsscrpt 
 ARCH=$(uname -m)
 if [[ "$ARCH" == x86_64* ]]; then
   dnsscrpt_arch=x86_64
 elif [[ "$ARCH" == aarch64* ]]; then
-    dnsscrpt_arch=arm64
+  dnsscrpt_arch=arm64
 else
-   echo -e "${RED}This script is only for x86_64 or ARM64  Architecture !${ENDCOLOR}"
-   exit 1
+whiptail --title "Aborted" --msgbox "This script is only for x86_64 or ARM64  Architecture !" 15 80
+exit 1
 fi
-echo -e "${GREEN}Arch = $dnsscrpt_arch ${ENDCOLOR}"
-
 
 ### base_setup check  whiptail later
 if [[ -e /root/base_setup.README ]]; then
-    echo -e "base_setup script installed = ${GREEN}ok${ENDCOLOR}"
-	 else
-	 echo -e " ${YELLOW}Warning:${ENDCOLOR}"
-	 echo -e " ${YELLOW}You need to install my base_setup script first!${ENDCOLOR}"
-	 echo -e " ${YELLOW}Starting download base_setup.sh from my repository${ENDCOLOR}"
-	 echo ""
-	 echo ""
-	 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
-         chmod +x base_setup_2025.sh
-	 echo ""
-	 echo ""
-         echo -e " Now run ${YELLOW}./base_setup_2025.sh${ENDCOLOR} manualy and reboot, then run this script again."
-	 echo ""
-	 echo ""
-	 exit 1
+echo ""
+else
+wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
+chmod +x base_setup_2025.sh
+msgbase="You need to install my base_setup script first!\n
+Starting download base_setup.sh from my repository.\n\n
+Now run ./base_setup_2025.sh manualy and reboot.\n
+Then run this script again\n\n
+cu later...\n"
+whiptail --title "Wait we need to install" --msgbox "$msgbase" 33 99
+exit 1
 fi
-
 
 ### script already  whiptail later
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
-     echo
-	 echo
-         echo -e "${YELLOW}Looks like this script is already installed${ENDCOLOR}"
-	 echo -e "${YELLOW}This script is only need for the first install${ENDCOLOR}"
-	 echo ""
-	 echo "To add or remove clients run"
-         echo -e " ${YELLOW}./add_client.sh${ENDCOLOR} to add clients"
-         echo -e " ${YELLOW}./remove_client.sh${ENDCOLOR} to remove clients"
-	 echo ""
-	 echo  "To backup or restore your settings run"
-	 echo -e " ${YELLOW}./wg_config_backup.sh${ENDCOLOR} "
-	 echo -e " ${YELLOW}./wg_config_restore.sh${ENDCOLOR}"
-	 echo ""
-	 echo  "To uninstall run"
-	 echo -e " ${RED}./uninstaller_back_to_base.sh${ENDCOLOR} "
-	 echo ""
-	 echo "For - News / Updates / Issues - check my github site"
-	 echo "https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server"
-	 echo
-	 echo
-	 exit 1
+msginst="Looks like this script is already installed\n
+This script is only need for the first install.\n\n
+To add or remove clients run:\n
+./add_client.sh  or ./remove_client.sh\n\n
+To backup or restore your settings run:\n
+./wg_config_backup.sh  or ./wg_config_restore.sh\n\n
+To add or remove clients run:\n
+./uninstaller_back_to_base.sh (not compl. ready)\n\n"
+whiptail --title "Wait we need to install" --msgbox "$msginst" 33 99
+exit 1
 fi
 
 
@@ -133,14 +105,15 @@ while true; do
             whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1025 and 65535. Do not use port $ssh_port, 5335" 15 80
         fi
     else
-        echo "Ok, cancel. No changes to system was made. Maybe try it again?"
-	echo "here is your list of currently open ports:"
+	whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
+    clear
+	echo "Here is your list of currently open ports:"
 	ss -tuln | awk '{print $5}' | cut -d':' -f2 | sort -n | uniq
-        echo ""
-        echo "Now run the script again, and aviod useing a port from above"
+    echo ""
+    echo "Now run the script again, and aviod useing a port from above"
 	echo ""
-        echo ""
-        exit 1
+    echo ""
+    exit 1
     fi
 done
 
@@ -166,7 +139,7 @@ while true; do
             whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IP address ending with .1" 15 80
         fi
     else
-         echo "Ok, cancel. No changes to system was made. Maybe try it again?"
+        whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
         exit 1
     fi
 done
@@ -190,7 +163,7 @@ while true; do
             whiptail --title "Invalid Input" --msgbox "Invalid input. Please enter a private IPv6 address ending with ::1" 15 80
         fi
     else
-         echo "Ok, cancel. No changes to system was made. Maybe try it again?"
+        whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
         exit 1
     fi
 done
@@ -214,7 +187,7 @@ while true; do
             whiptail --title "Invalid input" --msgbox "Invalid number. Please enter a number between 0 and 999." 15 80
         fi
     else
-         echo "Ok, cancel. No changes to system was made. Maybe try it again?"
+        whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
         exit 1
     fi
 done
@@ -237,15 +210,13 @@ while true; do
             whiptail --title "Invalid MTU" --msgbox "Invalid MTU. Please enter a number between 1280 and 1500." 15 80
         fi
     else
-         echo "Ok, cancel. No changes to system was made. Maybe try it again?"
+        whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
         exit 1
     fi
 done
 
 wg0networkv4_0=$(echo "$wg0networkv4" | sed 's/\([0-9]*\.[0-9]*\.[0-9]*\.\)1$/\10/')
 wg0networkv6_0=$(echo "$wg0networkv6" | sed 's/1\([^1]*\)$/\1/')
-
-
 
 echo ""
 
@@ -254,7 +225,6 @@ allownet="0.0.0.0/0, ::/0"
 else
 allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $wg0networkv4_0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $wg0networkv6_0/64, fe00::/9, fec0::/10, ff00::/8"
 fi  
-
 
 echo 'Dpkg::Progress-Fancy "1";' | sudo tee /etc/apt/apt.conf.d/99progressbar
 
