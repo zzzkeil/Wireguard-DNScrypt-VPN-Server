@@ -65,8 +65,8 @@ fi
 
 case $OPTION in
     1)
-        echo "Running base_setup_2025.sh..."
-        base_setup_2025.sh
+        echo "Run base_setup_2025.sh..."
+        ./base_setup_2025.sh
         ;;
     2)
         whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
