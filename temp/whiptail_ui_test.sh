@@ -47,15 +47,15 @@ fi
 if [[ -e /root/base_setup.README ]]; then
 echo ""
 else
-wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
-chmod +x base_setup_2025.sh
+wget -O  setup_base.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/setup_base.sh
+chmod +x setup_base.sh
 echo  "tempfile" > /root/reminderfile.tmp
 msgbase="You need to install my base_setup script first!\n
-Run ./base_setup_2025.sh and reboot.\n
+Run setup_base.sh and reboot.\n
 Then run this script again !!\n\n
 cu later...\n"
 OPTION=$(whiptail --title "Need to install first" --menu "$msgbase" 15 80 3 \
-"1" "Run base_setup_2025.sh" \
+"1" "Run setup_base.sh" \
 "2" "Exit" 3>&1 1>&2 2>&3)
 
 exitstatus=$?
@@ -66,8 +66,7 @@ fi
 
 case $OPTION in
     1)
-        echo "Run base_setup_2025.sh..."
-        ./base_setup_2025.sh
+        ./setup_base.sh
         ;;
     2)
         whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
