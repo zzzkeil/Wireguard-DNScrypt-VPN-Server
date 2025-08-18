@@ -50,11 +50,31 @@ else
 wget -O  base_setup_2025.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/base_setup_2025.sh
 chmod +x base_setup_2025.sh
 msgbase="You need to install my base_setup script first!\n
-Starting download base_setup.sh from my repository.\n\n
-Now run ./base_setup_2025.sh manualy and reboot.\n
-Then run this script again\n\n
+Run ./base_setup_2025.sh and reboot.\n
+Then run this script again !!\n\n
 cu later...\n"
-whiptail --title "Wait we need to install" --msgbox "$msgbase" 33 99
+OPTION=$(whiptail --title "Need to install first" --menu "$msgbase" 15 80 3 \
+"1" "Run base_setup_2025.sh" \
+"2" "Exit" 3>&1 1>&2 2>&3)
+
+exitstatus=$?
+if [ $exitstatus != 0 ]; then
+    echo "User cancelled."
+    exit
+fi
+
+case $OPTION in
+    1)
+        echo "Running base_setup_2025.sh..."
+        base_setup_2025.sh
+        ;;
+    2)
+        echo "Exiting..."
+        ;;
+    *)
+        echo "Invalid option."
+        ;;
+esac
 exit 1
 fi
 
