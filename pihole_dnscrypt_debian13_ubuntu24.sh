@@ -98,7 +98,7 @@ fi
 ssh_port=$(grep -i "^Port" /etc/ssh/sshd_config | awk '{print $2}')
 is_valid_port() {
     local wgport="$1"
-    if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1025 ] && [ "$wgport" -le 65535 ] && [ "$wgport" -ne 5335 ] && [ "$wgport" -ne $ssh_port ]; then
+    if [[ "$wgport" =~ ^[0-9]+$ ]] && [ "$wgport" -ge 1025 ] && [ "$wgport" -le 65535 ] && [ "$wgport" -ne 5335 ] && [ "$wgport" -ne 8443 ] && [ "$wgport" -ne $ssh_port ]; then
         return 0
     else
         return 1
@@ -106,12 +106,12 @@ is_valid_port() {
 }
 
 while true; do
-    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port 1025-65535\nDo not use port $ssh_port ssh and 5335 dnscrypt\nDo not use a used port!\nTo list all currently activ ports, cancel now and you see a list\nThen start this script again" 15 80 "54234" 3>&1 1>&2 2>&3)
+    wg0port=$(whiptail --title "Wireguard Port Settings" --inputbox "Choose a free port 1025-65535\nDo not use port $ssh_port, 5335, 8443\nDo not use a used port!\nTo list all currently activ ports, cancel now and you see a list\nThen start this script again" 15 80 "54234" 3>&1 1>&2 2>&3)
     if [ $? -eq 0 ]; then
         if is_valid_port "$wg0port"; then
             break
         else
-            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1025 and 65535. Do not use port $ssh_port, 5335" 15 80
+            whiptail --title "Invalid Port" --msgbox "Invalid port number. Please enter a port number between 1025 and 65535. Do not use port $ssh_port, 5335, 8443" 15 80
         fi
     else
 	whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
@@ -575,7 +575,7 @@ Wireguard options:\n
 - View QR-Code for client1 - copy past run :\n
   qrencode -t ansiutf8 < /etc/wireguard/client1.conf\n\n
 Pi-hole options:\n
-- WebUI https://$wg0networkv4/admin  only over WireGuard available\n
+- WebUI https://$wg0networkv4:8443/admin  only over WireGuard available\n
 - If needed, change Pi-hole WebUI password with: pihole setpassword\n\n
 Nextcloud options:\n
 - Nextcloud instance only over WireGuard isnstall - run ./nextcloud-behind-wireguard.sh\n"
