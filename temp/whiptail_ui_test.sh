@@ -69,10 +69,10 @@ case $OPTION in
         base_setup_2025.sh
         ;;
     2)
-        echo "Exiting..."
+        whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
         ;;
     *)
-        echo "Invalid option."
+        whiptail --title "?" --msgbox "Invalid option.......\n" 15 80
         ;;
 esac
 exit 1
