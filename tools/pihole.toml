@@ -663,7 +663,7 @@
   #
   # Possible values are:
   #     comma-separated list of <[ip_address:]port>
-  port = "80or,443os,[::]:80or,[::]:443os"
+  port = "8080or,8443os,[::]:8080or,[::]:8443os"
 
   # Maximum number of worker threads allowed.
   # The Pi-hole web server handles each incoming connection in a separate thread.
