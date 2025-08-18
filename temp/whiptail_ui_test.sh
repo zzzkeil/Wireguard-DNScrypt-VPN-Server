@@ -59,7 +59,7 @@ OPTION=$(whiptail --title "Need to install first" --menu "$msgbase" 15 80 3 \
 
 exitstatus=$?
 if [ $exitstatus != 0 ]; then
-    echo "User cancelled."
+    whiptail --title "Aborted" --msgbox "Ok, cancel. No changes to system was made.\n" 15 80
     exit
 fi
 
