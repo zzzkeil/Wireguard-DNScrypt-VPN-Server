@@ -1,12 +1,12 @@
 #!/bin/bash
 
 msghi="This script installs and configure wireguard, dnscrypt and pihole. \n
-With wireguard, you get a secure connection (VPN) and access to www :) \n
+With wireguard, you get a secure connection (VPN) and access to www :) \\n
 With DNScrypt your requests are anonymized / encrypted on your server \n
 With Pi-hole AD´s and ThreatIntelligenceFeeds and ... get BLOCKED \n
 With access to the Pi-hole WebUI (only over wireguard), you can customize everything \n\n
-Nextcloud can be installed also, with access only over wireguard \n
-More options / infos will be showed after the install is complete \n\n
+More options / infos will be showed after the install is complete \n
+Nextcloud can be installed also, with access only over wireguard \n\n
 Infos @ https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server \n
 Version 2025.08.xx \n\n
 Run script now ?"
