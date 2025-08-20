@@ -56,6 +56,7 @@ whiptail --title "Aborted" --msgbox "My wireguard script not installed\nDownload
 fi
 
 ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv4network2="${ipv4network%.*}"
 ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 
 update_upgrade_with_gauge() {
@@ -177,9 +178,9 @@ randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
 
 while true; do
-    httpsport=$(whiptail --title "Apache HTTPS Port" --inputbox "Your apache https port (don't use 8443):" 10 60 "4443" 3>&1 1>&2 2>&3)
+    httpsport=$(whiptail --title "Apache HTTPS Port" --inputbox "Your apache https port (don't use 8443):" 10 80 "4443" 3>&1 1>&2 2>&3)
     if ss -tuln | grep -q ":$httpsport"; then
-        whiptail --title "Port Check" --msgbox "Port $httpsport is already in use. Please choose another port." 10 60
+        whiptail --title "Port Check" --msgbox "Port $httpsport is already in use. Please choose another port." 10 80
     else
         break
     fi
@@ -187,47 +188,52 @@ done
 while true; do
     dbport=$(whiptail --title "MariaDB port:" --inputbox "Your MariaDB port:" 10 60 "3306" 3>&1 1>&2 2>&3)
     if ss -tuln | grep -q ":$dbport"; then
-        whiptail --title "Port Check" --msgbox "Port $dbport is already in use. Please choose another port." 10 60
+        whiptail --title "Port Check" --msgbox "Port $dbport is already in use. Please choose another port." 10 80
     else
         break
     fi
 done
 while true; do
-    ltz=$(whiptail --title "Nextcloud Log Timezone" --inputbox "Nextcloud log timezone (TZ identifier):" 10 60 "Europe/Berlin" 3>&1 1>&2 2>&3)
+    ltz=$(whiptail --title "Nextcloud Log Timezone" --inputbox "Nextcloud log timezone (TZ identifier):" 10 80 "Europe/Berlin" 3>&1 1>&2 2>&3)
     if timedatectl list-timezones | grep -q "^$ltz$"; then
         break
     else
-        whiptail --title "Timezone Check" --msgbox "Invalid timezone: $ltz. Please enter a valid TZ identifier." 10 60
+        whiptail --title "Timezone Check" --msgbox "Invalid timezone: $ltz. Please enter a valid TZ identifier." 10 80
     fi
 done
 
-dpr=$(whiptail --title "Nextcloud Default Phone Region" --inputbox "Nextcloud default phone region (Country code):" 10 60 "DE" 3>&1 1>&2 2>&3)
-databasename=$(whiptail --title "SQL Database Name" --inputbox "SQL database name:" 10 60 "db$randomkey1" 3>&1 1>&2 2>&3)
-databaseuser=$(whiptail --title "SQL Database User" --inputbox "SQL database user:" 10 60 "dbuser$randomkey1" 3>&1 1>&2 2>&3)
-databaseuserpasswd=$(whiptail --title "SQL Database User Password" --inputbox "SQL database user password:" 10 60 "$randomkey2" 3>&1 1>&2 2>&3)
-nextroot=$(whiptail --title "Nextcloud Admin Username" --inputbox "Nextcloud admin user name:" 10 60 "nextroot" 3>&1 1>&2 2>&3)
-nextpass=$(whiptail --title "Nextcloud Admin Password" --inputbox "Nextcloud admin password:" 10 60 "$randomkey3" 3>&1 1>&2 2>&3)
-ncdatafolder=$(whiptail --title "Nextcloud Data Folder" --inputbox "Nextcloud data folder:" 10 60 "/opt/nextcloud_data" 3>&1 1>&2 2>&3)
+dpr=$(whiptail --title "Nextcloud Default Phone Region" --inputbox "Nextcloud default phone region (Country code):" 10 80 "DE" 3>&1 1>&2 2>&3)
+databasename=$(whiptail --title "SQL Database Name" --inputbox "SQL database name:" 10 80 "db$randomkey1" 3>&1 1>&2 2>&3)
+databaseuser=$(whiptail --title "SQL Database User" --inputbox "SQL database user:" 10 80 "dbuser$randomkey1" 3>&1 1>&2 2>&3)
+databaseuserpasswd=$(whiptail --title "SQL Database User Password" --inputbox "SQL database user password:" 10 80 "$randomkey2" 3>&1 1>&2 2>&3)
+nextroot=$(whiptail --title "Nextcloud Admin Username" --inputbox "Nextcloud admin user name:" 10 80 "nextroot" 3>&1 1>&2 2>&3)
+nextpass=$(whiptail --title "Nextcloud Admin Password" --inputbox "Nextcloud admin password:" 10 80 "$randomkey3" 3>&1 1>&2 2>&3)
+ncdatafolder=$(whiptail --title "Nextcloud Data Folder" --inputbox "Nextcloud data folder:" 10 80 "/opt/nextcloud_data" 3>&1 1>&2 2>&3)
 
 
 
 ### self-signed  certificate
-openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
+key_path="/etc/ssl/private/nc-selfsigned.key"
+crt_path="/etc/ssl/certs/nc-selfsigned.crt"
+subj="/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
+(
+    for i in {1..100}; do
+        sleep 0.1  # Adjust progress speed
+        echo $i   # This simulates progress
+    done
+    openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes \
+    -keyout "$key_path" -out "$crt_path" -subj "$subj"
+) | whiptail --gauge "Generating SSL Certificate..." 10 80 0
+whiptail --title "Certificate Generated" --msgbox "The self-signed SSL certificate has been successfully generated!" 10 80
+#openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
 
 
 
 ### apache part
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
-fi
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl stop apache2.service
-fi
-
-
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 echo "
 Listen 89
@@ -253,7 +259,7 @@ cat <<EOF >> /etc/apache2/sites-available/nc.conf
 <Directory /var/www/nextcloud/>
   AllowOverride All
   Require host localhost
-  Require ip $ipv4network
+  Require ip $ipv4network2
 </Directory>
 
 <IfModule mod_headers.c>
@@ -315,10 +321,8 @@ sed -i '$amysql.trace_mode=Off' /etc/php/8.4/mods-available/mysqli.ini
 
 
 a2ensite nc.conf
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl start apache2.service
-fi
+
 
 ### DB part
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
@@ -333,6 +337,19 @@ log_slow_rate_limit    = 1000
 log_slow_verbosity     = query_plan
 log-queries-not-using-indexes
 " > /etc/mysql/my.cnf
+
+##############################
+##############################
+#############################
+#############################
+
+
+
+
+
+
+
+
 
 
 echo "--------------------------------------------------------------------------------------------------------"
