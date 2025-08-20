@@ -28,7 +28,7 @@ firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s $oldwg0networkv42/
 
 if [[ -n "$oldhostipv6" ]]; then
 firewall-cmd --zone=trusted --remove-source=$oldwg0networkv62/64
-firewall-cmd --direct --add-remove ipv6 nat POSTROUTING 0 -s $oldwg0networkv62/64 ! -d $oldwg0networkv62/64 -j SNAT --to "$oldhostipv6"
+firewall-cmd --direct --remove-rule ipv6 nat POSTROUTING 0 -s $oldwg0networkv62/64 ! -d $oldwg0networkv62/64 -j SNAT --to "$oldhostipv6"
 fi
 
 rm -rv /etc/wireguard/*
