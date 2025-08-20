@@ -32,7 +32,7 @@ while true; do
         whiptail --msgbox "Spaces are not allowed!" 8 40
     else
         if grep -q "$clientname" "$wgipcheck"; then
-            whiptail --msgbox "The IP $clientname already exists.\n\nRun the script again and choose a different number." 10 60
+            whiptail --msgbox "The name :  $clientname already exists.\n\nRun the script again and choose a different name." 10 60
             exit 1
         else
             break
