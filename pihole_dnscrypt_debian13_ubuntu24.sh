@@ -131,9 +131,27 @@ wireguard_menu() {
         2) ./remove_client.sh ;;
         3) ./wg_config_backup.sh ;;
         4) ./wg_config_restore.sh ;;
-        5) qrencode -t ansiutf8 < /etc/wireguard/client1.conf ; read -n 1 -s -r -p "Press any key to continue..."  ;;
+        5)  ;;
         6) return ;;
     esac
+}
+
+wgqrcodes_menu{
+wgqrcodes="/etc/wireguard/wg0.conf"
+clients=$(grep "# Name = " "$wgqrcodes" | awk '{print substr($0, 9)}')
+menu_items=()
+while read -r name; do
+    menu_items+=("$name" "")
+done <<< "$clients"
+clientname=$(whiptail --title "Shwo QRCode for WireGuard Client" \
+    --menu "Select a client:" 20 60 10 \
+    "${menu_items[@]}" \
+    3>&1 1>&2 2>&3)
+if [ $? -ne 0 ]; then
+    whiptail --msgbox "Cancelled by user." 8 40
+    exit 0
+fi
+qrencode -t ansiutf8 < /etc/wireguard/$clientname.conf ; read -n 1 -s -r -p "Press any key to continue..." 
 }
 
 pihole_menu() {
