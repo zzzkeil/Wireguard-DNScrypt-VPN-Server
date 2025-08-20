@@ -68,7 +68,7 @@ Run the setup_base.sh script and reboot after. \n
 After a reboot you will be automatically coming back here to continue. \n
 If not, just run this script again !! \n\n
 cu later...\n"
-OPTION=$(whiptail --title "Need to install first" --menu "$msgbase" 15 80 3 \
+OPTION=$(whiptail --title "System requirements" --menu "$msgbase" 15 80 3 \
 "1" "Run /root/setup_base.sh" \
 "2" "Exit" 3>&1 1>&2 2>&3)
 
