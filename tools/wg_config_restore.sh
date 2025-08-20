@@ -1,34 +1,14 @@
 #!/bin/bash
-clear
-echo " this script restore yours wireguard server config "
-echo " in case after you reinstalled your server with the same ip´s, ....."
-echo "."
-echo "."
-echo "."
-echo " make sure your backupfile is here : /root/backup_wg_config.tar "
-echo " ! ! this scrips delete your current files in /etc/wireguard/ ! ! "
-echo " they will be replaced with the backupfiles "
-echo "."
-echo "."
-echo "."
-echo "To EXIT this script press  [ENTER]"
-echo 
-read -p "To RUN this script press  [Y]" -n 1 -r
-echo
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit 1
-fi
-
+if whiptail --title "Restore wireguard config" --yesno "This script restores your wireguard server config, \nafter you reinstalled your server with the same ip´s,...\n\nmake sure your backupfile is here : /root/backup_wg_config.tar\n\nThis scrips delete your current files in /etc/wireguard/ \n\nRun script now ?\n" 15 80; then
+echo ""
+else
+whiptail --title "Aborted" --msgbox "Ok, not now. cu have a nice day." 15 80
+exit 0
+fi  
 if [[ -e /root/backup_wg_config.tar ]]; then
-     echo "backupfile found. ok lets go"
+    whiptail --title "Backup found" --msgbox "Backupfile found:  /root/backup_wg_config.tar.gz" 15 80
 	 else
-	 echo " !! No backupfile found !!"
-	 echo " Make sure you have placed your backupfile in:"
-         echo " /root/backup_wg_config.tar "
-	 echo ""
-	 echo ""
+	 whiptail --title "Backup not found" --msgbox "Backupfile not found in:  /root/backup_wg_config.tar.gz\nAborted" 15 80
 	 exit 1
 fi
 
@@ -74,7 +54,5 @@ fi
 firewall-cmd --runtime-to-permanent
 
 systemctl start wg-quick@wg0.service
-echo "."
-echo "."
-echo "."
-echo " ok check your connection :) "
+whiptail --title "Done" --msgbox "ok check your connection :)" 15 80
+exit 0
