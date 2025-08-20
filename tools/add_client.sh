@@ -3,6 +3,7 @@ if whiptail --title "New wireguard client" --yesno "Create a new wireguard clien
 echo ""
 else
 whiptail --title "Aborted" --msgbox "Ok, not right now. cu have a nice day." 15 80
+exit
 fi  
 
 ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
