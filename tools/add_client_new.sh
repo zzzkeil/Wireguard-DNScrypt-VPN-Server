@@ -1,96 +1,85 @@
 #!/bin/bash
-clear
-echo " To add a new client follow this steps"
-echo "."
-echo "."
-echo "."
-echo "."
+if whiptail --title "New wireguard client" --yesno "Create a new wg client ?\n" 15 80; then
+echo ""
+else
+whiptail --title "Aborted" --msgbox "Ok, not right now. cu have a nice day." 15 80
+exit 1
+fi  
 
 ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv4network2="${ipv4network%.*}."
 ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv6network2="${ipv6network%:*}:"
 wg0port=$(grep ListenPort /etc/wireguard/wg0.conf | tr -d 'ListenPort = ')
+wgipcheck="/etc/wireguard/wg0.conf"
 
-### AllowedIPs options
-echo -e " -- AllowedIPs handling - make your decision -- "
-echo ""
-echo -e "${GREEN}Press any key to tunnel all trafic over wireguard ${ENDCOLOR}"
-echo "or"
-echo -e "${RED}Press [A] to exclude local ips > Class A: 10. Class B: 172.16. Class C: 192.168. (advanced user)${ENDCOLOR}"
-echo ""
-read -p "" -n 1 -r
-if [[ ! $REPLY =~ ^[Aa]$ ]]
-then
+if whiptail --title "Client traffic over wireguard" --yesno "Yes =  Tunnel all traffic over wireguard\n       0.0.0.0/0, ::/0\n\nNo  =  Exclude private network ip's\n       10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 not over wireguard\n" 15 80; then
 allownet="0.0.0.0/0, ::/0"
 else
-allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, 10.$ipv4network.0/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, fd42:$ipv6network::/64, fe00::/9, fec0::/10, ff00::/8"
-fi
+allownet="1.0.0.0/8, 2.0.0.0/7, 4.0.0.0/6, 8.0.0.0/7, $ipv4network/24, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/3, 96.0.0.0/4, 112.0.0.0/5, 120.0.0.0/6, 124.0.0.0/7, 126.0.0.0/8, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/8, 169.0.0.0/9, 169.128.0.0/10, 169.192.0.0/11, 169.224.0.0/12, 169.240.0.0/13, 169.248.0.0/14, 169.252.0.0/15, 169.255.0.0/16, 170.0.0.0/7, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4, 224.0.0.0/4, ::/1, 8000::/2, c000::/3, e000::/4, f000::/5, f800::/6, $ipv6network/64, fe00::/9, fec0::/10, ff00::/8"
+fi  
 
-echo ""
-wgipcheck="/etc/wireguard/wg0.conf"
-###
-echo "Client Name"
-echo "only one word - no space in names !"
-read -p "client name: " -e -i newclient clientname
-echo ""
-echo "" 
-echo "Client IPv4"
-echo "do not use an ipv4 address below 10.$ipv4network.11"
-echo "Enter a free number from 11 to 254 only"
-read -p "client IPv4: " -e -i 11 ipv4last
-if ! [[ "$ipv4last" =~ ^[0-9]+$ ]]; then
-    echo "Invalid input: Not a number."
-    echo "Exit script now ! Run again and try a number (11 - 254)"
-    exit 1
-fi
 
-if [ "$ipv4last" -ge 11 ] && [ "$ipv4last" -le 254 ]; then
-    echo ""
-else
-    echo "$ipv4last is outside the range 11 to 254."
-    echo "Exit script now ! Run again chosse a number between 11 - 254"
-    exit 1
-fi
+while true; do
+    clientname=$(whiptail --inputbox "Enter a clientname (no spaces allowed):" 10 60 3>&1 1>&2 2>&3)
+    if [ $? -ne 0 ]; then
+        echo "User cancelled input."
+        exit 1
+    fi
+    if [[ -z "$clientname" ]]; then
+        whiptail --msgbox "Name cannot be empty!" 8 40
+    elif [[ "$clientname" == *" "* ]]; then
+        whiptail --msgbox "Spaces are not allowed!" 8 40
+    else
+        break
+    fi
+done
 
-checkipv4="10.$ipv4network.$ipv4last"
 
-if grep -q "$checkipv4" "$wgipcheck"; then
-    echo "The IP $checkipv4 already exists."
-    echo "Exit script now ! Run again and try a different number"
-    exit 1
-else
-    echo ""
-fi
+while true; do
+    ipv4end=$(whiptail --inputbox "Enter a number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
+    if [ $? -ne 0 ]; then
+        whiptail --msgbox "User cancelled input. Exiting..." 8 50
+        exit 1
+    fi
+    if [[ ! "$ipv4end" =~ ^[0-9]+$ ]]; then
+        whiptail --msgbox "Invalid input! Please enter numbers only." 8 50
+    elif [ "$ipv4end" -lt 11 ] || [ "$ipv4end" -gt 254 ]; then
+        whiptail --msgbox "Number must be between 11 and 254." 8 50
+    else
+        checkipv4="${ipv4network2}${ipv4end}"
+        
+        if grep -q "$checkipv4" "$wgipcheck"; then
+            whiptail --msgbox "The IP $checkipv4 already exists.\n\nRun the script again and choose a different number." 10 60
+            exit 1
+        else
+            break
+        fi
+    fi
+done
 
-echo ""
-echo ""
-echo "Client IPv6"
-echo "do not use an ipv6 address below fd42:$ipv6network::14"
-echo "Enter a free number from 11 to 9999 only"
-read -p "client IPv6: " -e -i 11 ipv6last
-if ! [[ "$ipv6last" =~ ^[0-9]+$ ]]; then
-    echo "Invalid input: Not a number."
-    echo "Exit script now ! Run again and try a number (11 - 9999)"
-    exit 1
-fi
+while true; do
+    ipv6end=$(whiptail --inputbox "Enter a number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
+    if [ $? -ne 0 ]; then
+        whiptail --msgbox "User cancelled input. Exiting..." 8 50
+        exit 1
+    fi
+    if [[ ! "$ipv6end" =~ ^[0-9]+$ ]]; then
+        whiptail --msgbox "Invalid input! Please enter numbers only." 8 50
+    elif [ "$ipv6end" -lt 11 ] || [ "$ipv6end" -gt 254 ]; then
+        whiptail --msgbox "Number must be between 11 and 254." 8 50
+    else
+        checkipv6="${ipv6network2}${ipv6end}"
+        
+        if grep -q "$checkipv6" "$wgipcheck"; then
+            whiptail --msgbox "The IP $checkipv6 already exists.\n\nRun the script again and choose a different number." 10 60
+            exit 1
+        else
+            break
+        fi
+    fi
+done
 
-if [ "$ipv6last" -ge 11 ] && [ "$ipv6last" -le 9999 ]; then
-    echo ""
-else
-    echo "$ipv6last is outside the range 11 to 9999."
-    echo "Exit script now ! Run again chosse a number between 11 - 9999"
-    exit 1
-fi
-
-checkipv6="fd42:$ipv6network::$ipv6last"
-
-if grep -q "$checkipv6" "$wgipcheck"; then
-    echo "The IP $checkipv6 already exists."
-    echo "Exit script now ! Run again and try a different number"
-    exit 1
-else
-    echo ""
-fi
-  
 ### server side config
 touch /etc/wireguard/keys/$clientname
 chmod 600 /etc/wireguard/keys/$clientname
@@ -110,7 +99,7 @@ echo "[Interface]
 Address = $checkipv4/32
 Address = $checkipv6/128
 PrivateKey = NEWCLKEY
-DNS = 10.$ipv4network.1, fd42:$ipv6network::1
+DNS = $ipv4network, $ipv6network
 [Peer]
 Endpoint = IP01:$wg0port
 PublicKey = SK01
