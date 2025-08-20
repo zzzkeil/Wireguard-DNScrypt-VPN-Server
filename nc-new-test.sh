@@ -175,46 +175,44 @@ clear
 randomkey1=$(date +%s | cut -c 3-)
 randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
-echo ""
-echo ""
-echo -e " ${GREEN}-- Your turn, make some decisions -- ${ENDCOLOR}"
-echo ""
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Your apache https port (dont use 443): " -e -i 23443 httpsport
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Your mariaDB port: " -e -i 3306 dbport
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "sql databasename: " -e -i db$randomkey1 databasename
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud logtimezone (TZ identifier): " -e -i Europe/Berlin ltz 
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud default phone region (Country code): " -e -i DE dpr
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud admin user name: " -e -i nextroot nextroot
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud data folder : " -e -i  /opt/nextcloud_data ncdatafolder
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
+
+while true; do
+    httpsport=$(whiptail --title "Apache HTTPS Port" --inputbox "Your apache https port (don't use 8443):" 10 60 "4443" 3>&1 1>&2 2>&3)
+    if ss -tuln | grep -q ":$httpsport"; then
+        whiptail --title "Port Check" --msgbox "Port $httpsport is already in use. Please choose another port." 10 60
+    else
+        break
+    fi
+done
+while true; do
+    dbport=$(whiptail --title "MariaDB port:" --inputbox "Your MariaDB port:" 10 60 "3306" 3>&1 1>&2 2>&3)
+    if ss -tuln | grep -q ":$dbport"; then
+        whiptail --title "Port Check" --msgbox "Port $dbport is already in use. Please choose another port." 10 60
+    else
+        break
+    fi
+done
+while true; do
+    ltz=$(whiptail --title "Nextcloud Log Timezone" --inputbox "Nextcloud log timezone (TZ identifier):" 10 60 "Europe/Berlin" 3>&1 1>&2 2>&3)
+    if timedatectl list-timezones | grep -q "^$ltz$"; then
+        break
+    else
+        whiptail --title "Timezone Check" --msgbox "Invalid timezone: $ltz. Please enter a valid TZ identifier." 10 60
+    fi
+done
+
+dpr=$(whiptail --title "Nextcloud Default Phone Region" --inputbox "Nextcloud default phone region (Country code):" 10 60 "DE" 3>&1 1>&2 2>&3)
+databasename=$(whiptail --title "SQL Database Name" --inputbox "SQL database name:" 10 60 "db$randomkey1" 3>&1 1>&2 2>&3)
+databaseuser=$(whiptail --title "SQL Database User" --inputbox "SQL database user:" 10 60 "dbuser$randomkey1" 3>&1 1>&2 2>&3)
+databaseuserpasswd=$(whiptail --title "SQL Database User Password" --inputbox "SQL database user password:" 10 60 "$randomkey2" 3>&1 1>&2 2>&3)
+nextroot=$(whiptail --title "Nextcloud Admin Username" --inputbox "Nextcloud admin user name:" 10 60 "nextroot" 3>&1 1>&2 2>&3)
+nextpass=$(whiptail --title "Nextcloud Admin Password" --inputbox "Nextcloud admin password:" 10 60 "$randomkey3" 3>&1 1>&2 2>&3)
+ncdatafolder=$(whiptail --title "Nextcloud Data Folder" --inputbox "Nextcloud data folder:" 10 60 "/opt/nextcloud_data" 3>&1 1>&2 2>&3)
+
 
 
 ### self-signed  certificate
-openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
+openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
 
 
 
@@ -232,7 +230,7 @@ fi
 
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 echo "
-Listen 2380
+Listen 89
 
 <IfModule ssl_module>
         Listen $httpsport
@@ -246,7 +244,7 @@ Listen 2380
 
 cat <<EOF >> /etc/apache2/sites-available/nc.conf
 <VirtualHost *:$httpsport>
-   ServerName 10.$ipv4network.1
+   ServerName $ipv4network
    DocumentRoot /var/www/nextcloud
    SSLEngine on
    SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
@@ -255,7 +253,7 @@ cat <<EOF >> /etc/apache2/sites-available/nc.conf
 <Directory /var/www/nextcloud/>
   AllowOverride All
   Require host localhost
-  Require ip 10.$ipv4network
+  Require ip $ipv4network
 </Directory>
 
 <IfModule mod_headers.c>
