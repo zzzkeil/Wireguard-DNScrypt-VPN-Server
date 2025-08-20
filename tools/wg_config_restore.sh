@@ -1,4 +1,4 @@
-fd42#!/bin/bash
+#!/bin/bash
 if whiptail --title "Restore wireguard config" --yesno "This script restores your wireguard server config, \nafter you reinstalled your server with the same ip´s,...\n\nmake sure your backupfile is here : /root/backup_wg_config.tar\n\nThis scrips delete your current files in /etc/wireguard/ \n\nRun script now ?\n" 15 80; then
 echo ""
 else
@@ -12,6 +12,7 @@ if [[ -e /root/backup_wg_config.tar ]]; then
 	 exit 1
 fi
 
+systemctl stop wg-quick@wg0.service
 ### remove existing firewalld rules from setup
 oldhostipv4=$(hostname -I | awk '{print $1}')
 oldhostipv6=$(hostname -I | awk '{print $2}')
@@ -26,11 +27,10 @@ firewall-cmd --zone=trusted --remove-source=$oldwg0networkv42/24
 firewall-cmd --direct --remove-rule ipv4 nat POSTROUTING 0 -s $oldwg0networkv42/24 ! -d $oldwg0networkv42/24 -j SNAT --to "$oldhostipv4"
 
 if [[ -n "$oldhostipv6" ]]; then
-firewall-cmd --zone=trusted --remove-source=fd42:$oldwg0networkv62::/64
+firewall-cmd --zone=trusted --remove-source=$oldwg0networkv62/64
 firewall-cmd --direct --add-remove ipv6 nat POSTROUTING 0 -s $oldwg0networkv62/64 ! -d $oldwg0networkv62/64 -j SNAT --to "$oldhostipv6"
 fi
 
-systemctl stop wg-quick@wg0.service
 rm -rv /etc/wireguard/*
 rm /root/Wireguard-DNScrypt-VPN-Server.README
 
