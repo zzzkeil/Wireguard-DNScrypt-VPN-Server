@@ -19,7 +19,7 @@ main_menu() {
             1) wireguard_menu ;;
             2) pihole_menu ;;
             3) nextcloud_menu ;;
-            3) break ;;
+            4) break ;;
         esac
     done
 }
@@ -59,11 +59,12 @@ pihole_menu() {
     fi
     if [ ${#pihole_password} -ge 8 ]; then
 	whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
+        echo "$pihole_password" | pihole -a -p
         break 
     else
         whiptail --title "Invalid Password" --msgbox "Password must be at least 8 characters long. Please try again." 15 60
     fi
-done;;
+done ;;
         3) return ;;
     esac
 }
