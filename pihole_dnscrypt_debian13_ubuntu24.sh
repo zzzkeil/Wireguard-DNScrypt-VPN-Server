@@ -61,12 +61,15 @@ else
 wget -O  setup_base.sh https://raw.githubusercontent.com/zzzkeil/base_setups/refs/heads/master/setup_base.sh
 chmod +x setup_base.sh
 echo  "tempfile" > /root/reminderfile.tmp
-msgbase="You need to install my base_setup script first!\n
-Run setup_base.sh and reboot.\n
-Then run this script again !!\n\n
+
+msgbase="Some system requirements and packages are missing. \n
+No problem, another script from me take care of that. \n
+Run the setup_base.sh script and reboot after. \n
+After a reboot you will be automatically coming back here to continue. \n
+If not, just run this script again !! \n\n
 cu later...\n"
 OPTION=$(whiptail --title "Need to install first" --menu "$msgbase" 15 80 3 \
-"1" "Run setup_base.sh" \
+"1" "Run /root/setup_base.sh" \
 "2" "Exit" 3>&1 1>&2 2>&3)
 
 exitstatus=$?
