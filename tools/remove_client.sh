@@ -18,6 +18,7 @@ clientname=$(whiptail --title "Remove WireGuard Client" \
     3>&1 1>&2 2>&3)
 if [ $? -ne 0 ]; then
     whiptail --msgbox "Cancelled by user." 8 40
+    exit 1
 fi
 
 #client_list=$(grep "# Name = " "$wgipcheck" | awk '{print substr($0, 9)}')
