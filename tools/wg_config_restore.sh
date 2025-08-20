@@ -51,7 +51,7 @@ firewall-cmd --zone=trusted --add-source=$wg0networkv42/24
 firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -s $wg0networkv42/24 ! -d $wg0networkv42/24 -j SNAT --to "$hostipv4"
 
 if [[ -n "$hostipv6" ]]; then
-firewall-cmd --zone=trusted --add-source=$wg0networkv62::/64
+firewall-cmd --zone=trusted --add-source=$wg0networkv62/64
 firewall-cmd --direct --add-rule ipv6 nat POSTROUTING 0 -s $wg0networkv62/64 ! -d $wg0networkv62/64 -j SNAT --to "$hostipv6"
 fi
 firewall-cmd --runtime-to-permanent
