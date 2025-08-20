@@ -10,7 +10,7 @@ wgipcheck="/etc/wireguard/wg0.conf"
 clients=$(grep "# Name = " "$wgipcheck" | awk '{print substr($0, 9)}')
 menu_items=()
 while read -r name; do
-    menu_items+=("$name" "WireGuard client")
+    menu_items+=("$name" "")
 done <<< "$clients"
 clientname=$(whiptail --title "Remove WireGuard Client" \
     --menu "Select a client to remove:" 20 60 10 \
@@ -42,4 +42,5 @@ rm /etc/wireguard/$clientname.conf
 rm /etc/wireguard/$clientname.png
 sed -i "/# Name = $clientname/,+3 d" /etc/wireguard/wg0.conf
 systemctl restart wg-quick@wg0.service
-echo "Client $clientname deleted if it existed, wireguard restarted"
+whiptail --title "Finish" --msgbox "Client $clientname deleted, wireguard restarted" 15 80
+exit 1
