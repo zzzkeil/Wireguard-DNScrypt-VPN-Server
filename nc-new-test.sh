@@ -14,12 +14,6 @@ whiptail --title "Aborted" --msgbox "Ok, no install right now. Have a nice day."
 exit 1
 fi  
 
-if [[ "$EUID" -ne 0 ]]; then
-	echo -e "${RED}Sorry, you need to run this as root${ENDCOLOR}"
-	exit 1
-fi
-
-
 ### root check
 if [[ "$EUID" -ne 0 ]]; then
 whiptail --title "Aborted" --msgbox "Sorry, you need to run this as root!" 15 80
@@ -338,27 +332,7 @@ log_slow_verbosity     = query_plan
 log-queries-not-using-indexes
 " > /etc/mysql/my.cnf
 
-##############################
-##############################
-#############################
-#############################
-
-
-
-
-
-
-
-
-
-
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your database server will now be hardened - just follow the instructions."
-echo " Keep in mind: your MariaDB root password is still NOT set !"
-echo -e "${YELLOW} You should set a root password, when asked${ENDCOLOR}"
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
+whiptail --title "mariadb-secure-installation" --msgbox "Your database server will now be hardened - just follow the instructions.\nKeep in mind: your MariaDB root password is still NOT set !\nYou should set a root password, when asked\n" 15 90
 mariadb-secure-installation
 mariadb -uroot <<EOF
 CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -366,11 +340,8 @@ CREATE USER '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
 GRANT ALL PRIVILEGES on $databasename.* to '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
 FLUSH privileges;
 EOF
-
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl restart mariadb.service
-fi
+
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
@@ -383,15 +354,16 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
    'skeletondirectory' => '',
 );
 EOF
-echo ""
-echo ""
-echo ""
-echo ""
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo -e "${GREEN}Wait please, nextcloud occ setup is in progress....${ENDCOLOR}"
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
+
+##############################
+##############################
+#############################
+#############################
+
+
+
+whiptail --title "nextcloud occ setup" --msgbox "Wait please, nextcloud occ setup is in progress after OK\n" 15 90
+
 cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
@@ -406,39 +378,20 @@ sudo -u www-data php occ maintenance:repair --include-expensive
 sudo -u www-data php occ db:add-missing-indices
 sudo -u www-data php occ background:cron
 
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl start apache2.service
-fi
 
-echo "--------------------------------------------------------------------------------------------------------"
-echo " E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08 "
-echo " Used serverside encryption for now, less secure but better than nothing ..... "
-echo " A cloud VPS server is not really your host, its just someone else system,storage,and so on ......"
-echo "--------------------------------------------------------------------------------------------------------"
-echo ""
-echo ""
-echo -e "${GREEN} Your settings, and passwords, maybe take a copy ..... ${ENDCOLOR}"
-echo ""
-echo ""
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your apache https port         :  $httpsport"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your mariaDB port              :  $dbport"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " sql databasename               :  $databasename"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " sql databaseuser               :  $databaseuser"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " sql databaseuserpasswd         :  $databaseuserpasswd"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your nextcloud data folder     :  $ncdatafolder"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your nextcloud admin user      :  $nextroot"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your nextcloud login password  :  $nextpass"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Now setup Nextcloud to your needs  :  https://10.$ipv4network.1:$httpsport"
-echo "--------------------------------------------------------------------------------------------------------"
-echo ""
-echo ""
+
+#whiptail --title "Info" --msgbox "E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08\nUsed serverside encryption for now, less secure but better than nothing .....\nA cloud VPS server is not really your host, its just someone else system,storage,and so on ......" 15 90
+
+
+whiptail --title "Settings Overview" --msgbox "\
+Your settings, and passwords, maybe take a copy ....\n\n\
+Your apache https port         :  $httpsport\n\
+Your mariaDB port              :  $dbport\n\
+SQL database name              :  $databasename\n\
+SQL database user              :  $databaseuser\n\
+SQL database user password     :  $databaseuserpasswd\n\
+Your nextcloud data folder     :  $ncdatafolder\n\
+Your nextcloud admin user      :  $nextroot\n\
+Your nextcloud login password  :  $nextpass\n\
+Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport" 10 80
