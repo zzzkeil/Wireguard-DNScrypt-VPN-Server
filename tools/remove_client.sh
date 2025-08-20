@@ -1,5 +1,5 @@
 #!/bin/bash
-if whiptail --title "Remove wireguard client" --yesno "Remove a new wireguard client ?\n" 15 80; then
+if whiptail --title "Remove wireguard client" --yesno "Remove a  wireguard client ?\n" 15 80; then
 echo ""
 else
 whiptail --title "Aborted" --msgbox "Ok, not right now. cu have a nice day." 15 80
