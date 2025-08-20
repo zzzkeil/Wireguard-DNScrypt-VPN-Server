@@ -3,7 +3,7 @@ if whiptail --title "Remove wireguard client" --yesno "Remove a  wireguard clien
 echo ""
 else
 whiptail --title "Aborted" --msgbox "Ok, not right now. cu have a nice day." 15 80
-exit 1
+exit 0
 fi  
 
 wgipcheck="/etc/wireguard/wg0.conf"
@@ -18,7 +18,7 @@ clientname=$(whiptail --title "Remove WireGuard Client" \
     3>&1 1>&2 2>&3)
 if [ $? -ne 0 ]; then
     whiptail --msgbox "Cancelled by user." 8 40
-    exit 1
+    exit 0
 fi
 
 rm /etc/wireguard/keys/$clientname
