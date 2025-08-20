@@ -59,7 +59,7 @@ pihole_menu() {
     fi
     if [ ${#pihole_password} -ge 8 ]; then
 	whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
-        echo "$pihole_password" | pihole -a -p
+        pihole setpassword $pihole_password
         break 
     else
         whiptail --title "Invalid Password" --msgbox "Password must be at least 8 characters long. Please try again." 15 60
