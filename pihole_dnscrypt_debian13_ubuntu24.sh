@@ -161,7 +161,10 @@ pihole_menu() {
     "3" "Back to Main Menu" 3>&1 1>&2 2>&3)
 
     case $CHOICE in
-        1) whiptail --title "Pihole URL" --msgbox "https://$wg0networkv4:8443/admin" 20 80 ;;
+        1) if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
+		   piurl=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+	       fi
+		   whiptail --title "Pihole URL" --msgbox "https://$piurl:8443/admin" 20 80 ;;
         2) while true; do
     whiptail --title "Pi-hole Password Setup" --infobox --nocancel "Please enter a password for your Pi-hole admin interface." 15 80
     pihole_password=$(whiptail --title "Pi-hole Password" --inputbox --nocancel "Enter your Pi-hole admin password\nmin. 8 characters" 15 80 3>&1 1>&2 2>&3)
