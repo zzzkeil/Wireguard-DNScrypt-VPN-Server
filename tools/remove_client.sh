@@ -7,21 +7,35 @@ exit 1
 fi  
 
 wgipcheck="/etc/wireguard/wg0.conf"
-client_list=$(grep "# Name = " "$wgipcheck" | awk '{print substr($0, 9)}')
+clients=$(grep "# Name = " "$wgipcheck" | awk '{print substr($0, 9)}')
+menu_items=()
+while read -r name; do
+    menu_items+=("$name" "WireGuard client")
+done <<< "$clients"
+clientname=$(whiptail --title "Remove WireGuard Client" \
+    --menu "Select a client to remove:" 20 60 10 \
+    "${menu_items[@]}" \
+    3>&1 1>&2 2>&3)
+if [ $? -ne 0 ]; then
+    whiptail --msgbox "Cancelled by user." 8 40
+    exit 1
+fi
 
-whiptail --title "Remove WireGuard Client" --msgbox "List of existing clients:\n\n$client_list\n\n" 20 60
-while true; do
-    clientname=$(whiptail --inputbox "Enter the name of the client to remove:" 10 60 "$clientname" 3>&1 1>&2 2>&3)
-    if [ $? -ne 0 ]; then
-        whiptail --msgbox "Cancelled by user." 8 40
-        exit 1
-    fi
-    if [[ -z "$clientname" ]]; then
-        whiptail --msgbox "Client name cannot be empty. Please try again." 8 50
-    else
-        break
-    fi
-done
+#client_list=$(grep "# Name = " "$wgipcheck" | awk '{print substr($0, 9)}')
+
+#whiptail --title "Remove WireGuard Client" --msgbox "List of existing clients:\n\n$client_list\n\n" 20 60
+#while true; do
+#    clientname=$(whiptail --inputbox "Enter the name of the client to remove:" 10 60 "$clientname" 3>&1 1>&2 2>&3)
+#    if [ $? -ne 0 ]; then
+#        whiptail --msgbox "Cancelled by user." 8 40
+#        exit 1
+#    fi
+#    if [[ -z "$clientname" ]]; then
+#        whiptail --msgbox "Client name cannot be empty. Please try again." 8 50
+#    else
+#        break
+#    fi
+#done
 rm /etc/wireguard/keys/$clientname
 rm /etc/wireguard/keys/$clientname.pub
 rm /etc/wireguard/$clientname.conf
