@@ -35,9 +35,10 @@ chmod +x setup_wg_adblock.sh
 ```
 DNScrypt with adblock only :
 ```
-wget -O  setup_wg_adblock.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/dnscrypt_adblock_debian13_ubuntu24.04.sh
-chmod +x setup_wg_adblock.sh
-./setup_wg_adblock.sh
+WIP  - not ready now
+#wget -O  setup_wg_adblock.sh https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/dnscrypt_adblock_debian13_ubuntu24.04.sh
+#chmod +x setup_wg_adblock.sh
+#./setup_wg_adblock.sh
 ```
 
 * Copy the lines above, execute and follow the instructions  
