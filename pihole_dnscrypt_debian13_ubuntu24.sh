@@ -123,7 +123,7 @@ wireguard_menu() {
     "2" "Remove wireguard client" \
     "3" "Backup wireguard config" \
     "4" "Restore wireguard config" \
-    "5" "Show QR Code for client 1" \
+    "5" "Show QR Code for clients" \
     "6" "Back to Main Menu" 3>&1 1>&2 2>&3)
 
     case $CHOICE in
@@ -131,12 +131,12 @@ wireguard_menu() {
         2) ./remove_client.sh ;;
         3) ./wg_config_backup.sh ;;
         4) ./wg_config_restore.sh ;;
-        5)  ;;
+        5)  wgqrcodes_menu;;
         6) return ;;
     esac
 }
 
-wgqrcodes_menu{
+wgqrcodes_menu() {
 wgqrcodes="/etc/wireguard/wg0.conf"
 clients=$(grep "# Name = " "$wgqrcodes" | awk '{print substr($0, 9)}')
 menu_items=()
