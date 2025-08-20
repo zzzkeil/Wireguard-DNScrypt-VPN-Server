@@ -25,7 +25,7 @@ main_menu() {
 }
 
 wireguard_menu() {
-    CHOICE=$(whiptail --title "Wireguard options" --menu "Choose" 20 60 4 \
+    CHOICE=$(whiptail --title "Wireguard options" --menu "Choose" 20 60 6 \
     "1" "Add wireguard client" \
     "2" "Remove wireguard client" \
     "3" "Backup wireguard config" \
@@ -38,7 +38,7 @@ wireguard_menu() {
         2) ./remove_client.sh ;;
         3) ./wg_config_backup.sh ;;
         4) ./wg_config_restore.sh ;;
-        5) qrencode -t ansiutf8 < /etc/wireguard/client1.conf ;;
+        5) qrencode -t ansiutf8 < /etc/wireguard/client1.conf ; read -n 1 -s -r -p "Press any key to continue..."  ;;
         6) return ;;
     esac
 }
