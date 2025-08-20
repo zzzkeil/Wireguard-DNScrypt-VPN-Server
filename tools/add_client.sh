@@ -3,7 +3,7 @@ if whiptail --title "New wireguard client" --yesno "Create a new wireguard clien
 echo ""
 else
 whiptail --title "Aborted" --msgbox "Ok, not right now. cu have a nice day." 15 80
-exit
+exit 0
 fi  
 
 ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
@@ -24,7 +24,7 @@ while true; do
     clientname=$(whiptail --inputbox "Enter a clientname (no spaces allowed):" 10 60 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
         echo "User cancelled input."
-        break
+        exit 0
     fi
     if [[ -z "$clientname" ]]; then
         whiptail --msgbox "Name cannot be empty!" 8 40
@@ -33,7 +33,7 @@ while true; do
     else
         if grep -q "$clientname" "$wgipcheck"; then
             whiptail --msgbox "The name :  $clientname already exists.\n\nRun the script again and choose a different name." 10 60
-            break
+            exit 0
         else
             break
         fi
@@ -45,7 +45,7 @@ while true; do
     ipv4end=$(whiptail --inputbox "IPv4 endnumber\nEnter a free number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
         whiptail --msgbox "User cancelled input. Exiting..." 8 50
-        break
+        exit 0
     fi
     if [[ ! "$ipv4end" =~ ^[0-9]+$ ]]; then
         whiptail --msgbox "Invalid input! Please enter numbers only." 8 50
@@ -56,7 +56,7 @@ while true; do
         
         if grep -q "$checkipv4" "$wgipcheck"; then
             whiptail --msgbox "The IP $checkipv4 already exists.\n\nRun the script again and choose a different number." 10 60
-            break
+            exit 0
         else
             break
         fi
@@ -67,7 +67,7 @@ while true; do
     ipv6end=$(whiptail --inputbox "IPv6 endnumber\nEnter a free number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
         whiptail --msgbox "User cancelled input. Exiting..." 8 50
-        break
+        exit 0
     fi
     if [[ ! "$ipv6end" =~ ^[0-9]+$ ]]; then
         whiptail --msgbox "Invalid input! Please enter numbers only." 8 50
@@ -78,7 +78,7 @@ while true; do
         
         if grep -q "$checkipv6" "$wgipcheck"; then
             whiptail --msgbox "The IP $checkipv6 already exists.\n\nRun the script again and choose a different number." 10 60
-            break
+            exit 0
         else
             break
         fi
