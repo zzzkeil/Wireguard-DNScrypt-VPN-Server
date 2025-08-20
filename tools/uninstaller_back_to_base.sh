@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "old script not working as of today .. 2025.08.20"
+exit
 clear
 echo " ###############################################################################"
 echo " # Wireguard-DNScrypt-VPN-Server uninstaller and back to base_setup            #"
