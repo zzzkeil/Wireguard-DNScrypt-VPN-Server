@@ -43,4 +43,5 @@ rm /etc/wireguard/$clientname.png
 sed -i "/# Name = $clientname/,+3 d" /etc/wireguard/wg0.conf
 systemctl restart wg-quick@wg0.service
 whiptail --title "Finish" --msgbox "Client $clientname deleted, wireguard restarted" 15 80
+clear
 exit 1
