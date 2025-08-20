@@ -37,7 +37,7 @@ done
 
 
 while true; do
-    ipv4end=$(whiptail --inputbox "Enter a number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
+    ipv4end=$(whiptail --inputbox "IPv4 endnumber\nEnter a free number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
         whiptail --msgbox "User cancelled input. Exiting..." 8 50
         exit 1
@@ -59,7 +59,7 @@ while true; do
 done
 
 while true; do
-    ipv6end=$(whiptail --inputbox "Enter a number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
+    ipv6end=$(whiptail --inputbox "IPv6 endnumber\nEnter a free number between 11 and 254:" 10 60 3>&1 1>&2 2>&3)
     if [ $? -ne 0 ]; then
         whiptail --msgbox "User cancelled input. Exiting..." 8 50
         exit 1
