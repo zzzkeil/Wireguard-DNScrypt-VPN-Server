@@ -1,171 +1,237 @@
 #!/bin/bash
-# visual text settings
-RED="\e[31m"
-GREEN="\e[32m"
-GRAY="\e[37m"
-YELLOW="\e[93m"
 
-REDB="\e[41m"
-GREENB="\e[42m"
-GRAYB="\e[47m"
-ENDCOLOR="\e[0m"
+msghi="This script installs and configure nextcloud \n
+Nextcloud access is only over wireguard active ! \n
+So no wiregard connection, no nextcloud connection \n\n
+Infos @ https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server \n
+Version 2025.08.xx \n\n
+Run script now ?"
 
-clear
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}Nextcloud addon to my wireguard_dnscrypt_setup.sh                                                                                   ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GRAYB} !!! This addon is for Debian 13 only !!! Ubuntu 24.04 maybe works - WIP - !!!                                                      ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}My target, a secure Nextcloud instance, behind wireguard.                                                                           ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR} ${GREEN}So no wiregard connection, no nextcloud connection                                                                                  ${ENDCOLOR}${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
-echo -e " ${GRAYB}#${ENDCOLOR}                      Version 2025.08.03 -  no changelog now                                                                        ${GRAYB}#${ENDCOLOR}"
-echo -e " ${GRAYB}#######################################################################################################################################${ENDCOLOR}"
+if whiptail --title "Hi, lets start" --yesno "$msghi" 25 90; then
 echo ""
-echo ""
-echo ""
-echo  -e "                    ${RED}To EXIT this script press any key${ENDCOLOR}"
-echo ""
-echo  -e "                            ${GREEN}Press [Y] to begin${ENDCOLOR}"
-read -p "" -n 1 -r
-echo ""
-echo ""
-if [[ ! $REPLY =~ ^[Yy]$ ]]
-then
-    exit 1
-fi
+else
+whiptail --title "Aborted" --msgbox "Ok, no install right now. Have a nice day." 15 80
+exit 1
+fi  
 
 ### root check
 if [[ "$EUID" -ne 0 ]]; then
-	echo -e "${RED}Sorry, you need to run this as root${ENDCOLOR}"
-	exit 1
+whiptail --title "Aborted" --msgbox "Sorry, you need to run this as root!" 15 80
+exit 1
 fi
 
-
-#
-# OS check
-#
-echo -e "${GREEN}OS check ${ENDCOLOR}"
-
+### OS check
 . /etc/os-release
-
 if [[ "$ID" = 'debian' ]]; then
  if [[ "$VERSION_ID" = '13' ]]; then
-   echo -e "${GREEN}OS = Debian ${ENDCOLOR}"
-   systemos=debian
-   fi
+ systemos=debian
+ fi
 fi
 
 if [[ "$ID" = 'ubuntu' ]]; then
  if [[ "$VERSION_ID" = '24.04' ]]; then
-   echo -e "${GREEN}OS = Ubuntu ${ENDCOLOR}"
-   systemos=ubuntu
-   fi
+ systemos=ubuntu
+ fi
 fi
-
 
 if [[ "$systemos" = '' ]]; then
-   clear
-   echo ""
-   echo ""
-   echo -e "${RED}This script is only for Debian 13 and Ubuntu 24.04 !${ENDCOLOR}"
-   exit 1
+whiptail --title "Aborted" --msgbox "This script is only for Debian 13 and Ubuntu 24.04 !" 15 80
+exit 1
 fi
-
 
 
 
 ### check if script installed
 if [[ -e /root/Wireguard-DNScrypt-VPN-Server.README ]]; then
-echo -e "${GREEN}OK = Wireguard-DNScrypt-VPN-Server is installed ${ENDCOLOR}"
+echo ""
 else
- echo -e "${RED} !!! my wireguard script is needed !!!${ENDCOLOR}"
- echo -e "${RED} Download here:  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server${ENDCOLOR}"
+whiptail --title "Aborted" --msgbox "My wireguard script not installed\nDownload here:  https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server" 15 80
  exit 1
 fi
 
 ipv4network=$(sed -n 7p /root/Wireguard-DNScrypt-VPN-Server.README)
+ipv4network2="${ipv4network%.*}"
 ipv6network=$(sed -n 9p /root/Wireguard-DNScrypt-VPN-Server.README)
 
-#
-# OS updates
-#
-echo -e "${GREEN}update upgrade and install ${ENDCOLOR}"
+update_upgrade_with_gauge() {
+    {
+        echo 10
+        echo "Starting apt-get update..."
+        apt-get update -y &> /dev/null
+        if [ $? -ne 0 ]; then
+            echo 100
+            echo "Error: apt-get update failed."
+            exit 1
+        fi
+
+        echo 50
+        echo "Starting apt-get upgrade..."
+        apt-get upgrade -y &> /dev/null
+        if [ $? -ne 0 ]; then
+            echo 100
+            echo "Error: apt-get upgrade failed."
+            exit 1
+        fi
+
+        echo 100
+        echo "Update and Upgrade completed successfully."
+    } | whiptail --title "System Update and Upgrade" --gauge "Please wait while updating and upgrading the system..." 15 80 0
+
+    if [ $? -eq 0 ]; then
+       echo ""
+    else
+        whiptail --title "Error" --msgbox "The update/upgrade process was interrupted." 15 80
+    fi
+}
 
 if [[ "$systemos" = 'debian' ]]; then
-apt-get update && apt-get upgrade -y && apt-get autoremove -y
-apt-get install apache2 libapache2-mod-php mariadb-server php8.4-xml php8.4-cli php8.4-cgi php8.4-mysql php8.4-mbstring php8.4-gd php8.4-curl php8.4-intl php8.4-gmp php8.4-bcmath php8.4-imagick php8.4-zip php8.4-bz2 php8.4-opcache php8.4-common php8.4-redis php8.4-igbinary php8.4-apcu memcached php8.4-memcached unzip libmagickcore-7.q16-10-extra -y
+update_upgrade_with_gauge
+if [ -f /var/run/reboot-required ]; then
+whiptail --title "reboot-required" --msgbox "Oh dammit :) - System upgrade required a reboot!\nreboot, and run this script again" 15 80
+exit 1
+fi
+packagesdebian=("apache2" "libapache2-mod-php" "mariadb-server" "php8.4-xml" "php8.4-cli" "php8.4-cgi" "php8.4-mysql" "php8.4-mbstring" "php8.4-gd" "php8.4-curl" "php8.4-intl" "php8.4-gmp" "php8.4-bcmath" "php8.4-imagick" "php8.4-zip" "php8.4-bz2" "php8.4-opcache" "php8.4-common" "php8.4-redis" "php8.4-igbinary" "php8.4-apcu" "memcached" "php8.4-memcached" "unzip" "libmagickcore-7.q16-10-extra")
+install_multiple_packages_with_gauge_debian() {
+    total=${#packagesdebian[@]}
+    step=0
+
+    {
+        for pkg in "${packagesdebian[@]}"; do
+            percent=$(( (step * 100) / total ))
+            echo $percent
+            echo "Installing package: $pkg..."
+            sudo apt-get install -y "$pkg" &> /dev/null
+            if [ $? -ne 0 ]; then
+                echo 100
+                echo "Error: Installation of package $pkg failed."
+                exit 1
+            fi
+            step=$((step + 1))
+        done
+        echo 100
+        echo "All packages installed successfully."
+    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\napache, php, ...." 15 90 0
+
+    if [ $? -eq 0 ]; then
+        echo ""
+    else
+        whiptail --title "Error" --msgbox "Installation process interrupted or failed." 15 80
+		exit 1
+    fi
+}
+
+install_multiple_packages_with_gauge_debian
 fi
 
 
 if [[ "$systemos" = 'ubuntu' ]]; then
 add-apt-repository ppa:ondrej/apache2 -y
 add-apt-repository ppa:ondrej/php -y
-apt-get update && apt-get upgrade -y && apt-get autoremove -y
-apt-get install apache2 libapache2-mod-php mariadb-server php8.4-xml php8.4-cli php8.4-cgi php8.4-mysql php8.4-mbstring php8.4-gd php8.4-curl php8.4-intl php8.4-gmp php8.4-bcmath php8.4-imagick php8.4-zip php8.4-bz2 php8.4-opcache php8.4-common php8.4-redis php8.4-igbinary php8.4-apcu memcached php8.4-memcached unzip libmagickcore-6.q16-7-extra -y
+update_upgrade_with_gauge
+if [ -f /var/run/reboot-required ]; then
+whiptail --title "reboot-required" --msgbox "Oh dammit :) - System upgrade required a reboot!\nreboot, and run this script again" 15 80
+exit 1
+fi
+packagesubuntu=("apache2" "libapache2-mod-php" "mariadb-server" "php8.4-xml" "php8.4-cli" "php8.4-cgi" "php8.4-mysql" "php8.4-mbstring" "php8.4-gd" "php8.4-curl" "php8.4-intl" "php8.4-gmp" "php8.4-bcmath" "php8.4-imagick" "php8.4-zip" "php8.4-bz2" "php8.4-opcache" "php8.4-common" "php8.4-redis" "php8.4-igbinary" "php8.4-apcu" "memcached" "php8.4-memcached" "unzip" "libmagickcore-6.q16-7-extra")
+install_multiple_packages_with_gauge_ubuntu() {
+    total=${#packagesubuntu[@]}
+    step=0
+
+    {
+        for pkg in "${packagesubuntu[@]}"; do
+            percent=$(( (step * 100) / total ))
+            echo $percent
+            echo "Installing package: $pkg..."
+            sudo apt-get install -y "$pkg" &> /dev/null
+            if [ $? -ne 0 ]; then
+                echo 100
+                echo "Error: Installation of package $pkg failed."
+                exit 1
+            fi
+            step=$((step + 1))
+        done
+        echo 100
+        echo "All packages installed successfully."
+    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\napache, php, ...." 15 90 0
+
+    if [ $? -eq 0 ]; then
+        echo ""
+    else
+        whiptail --title "Error" --msgbox "Installation process interrupted or failed." 15 80
+		exit 1
+    fi
+}
+
+install_multiple_packages_with_gauge_ubuntu
 fi
 
+
+systemctl stop mariadb.service
 ###your vars
 clear
 randomkey1=$(date +%s | cut -c 3-)
 randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
-echo ""
-echo ""
-echo -e " ${GREEN}-- Your turn, make some decisions -- ${ENDCOLOR}"
-echo ""
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Your apache https port (dont use 443): " -e -i 23443 httpsport
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "Your mariaDB port: " -e -i 3306 dbport
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "sql databasename: " -e -i db$randomkey1 databasename
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "sql databaseuser: " -e -i dbuser$randomkey1 databaseuser
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "sql databaseuserpasswd: " -e -i $randomkey2 databaseuserpasswd
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud logtimezone (TZ identifier): " -e -i Europe/Berlin ltz 
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud default phone region (Country code): " -e -i DE dpr
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud admin user name: " -e -i nextroot nextroot
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud admin password : " -e -i $randomkey3 nextpass
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-read -p "nextcloud data folder : " -e -i  /opt/nextcloud_data ncdatafolder
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
+
+while true; do
+    httpsport=$(whiptail --title "Apache HTTPS Port" --inputbox "Your apache https port (don't use 8443):" 10 80 "4443" 3>&1 1>&2 2>&3)
+    if ss -tuln | grep -q ":$httpsport"; then
+        whiptail --title "Port Check" --msgbox "Port $httpsport is already in use. Please choose another port." 10 80
+    else
+        break
+    fi
+done
+while true; do
+    dbport=$(whiptail --title "MariaDB port:" --inputbox "Your MariaDB port:" 10 60 "3306" 3>&1 1>&2 2>&3)
+    if ss -tuln | grep -q ":$dbport"; then
+        whiptail --title "Port Check" --msgbox "Port $dbport is already in use. Please choose another port." 10 80
+    else
+        break
+    fi
+done
+while true; do
+    ltz=$(whiptail --title "Nextcloud Log Timezone" --inputbox "Nextcloud log timezone (TZ identifier):" 10 80 "Europe/Berlin" 3>&1 1>&2 2>&3)
+    if timedatectl list-timezones | grep -q "^$ltz$"; then
+        break
+    else
+        whiptail --title "Timezone Check" --msgbox "Invalid timezone: $ltz. Please enter a valid TZ identifier." 10 80
+    fi
+done
+
+dpr=$(whiptail --title "Nextcloud Default Phone Region" --inputbox "Nextcloud default phone region (Country code):" 10 80 "DE" 3>&1 1>&2 2>&3)
+databasename=$(whiptail --title "SQL Database Name" --inputbox "SQL database name:" 10 80 "db$randomkey1" 3>&1 1>&2 2>&3)
+databaseuser=$(whiptail --title "SQL Database User" --inputbox "SQL database user:" 10 80 "dbuser$randomkey1" 3>&1 1>&2 2>&3)
+databaseuserpasswd=$(whiptail --title "SQL Database User Password" --inputbox "SQL database user password:" 10 80 "$randomkey2" 3>&1 1>&2 2>&3)
+nextroot=$(whiptail --title "Nextcloud Admin Username" --inputbox "Nextcloud admin user name:" 10 80 "nextroot" 3>&1 1>&2 2>&3)
+nextpass=$(whiptail --title "Nextcloud Admin Password" --inputbox "Nextcloud admin password:" 10 80 "$randomkey3" 3>&1 1>&2 2>&3)
+ncdatafolder=$(whiptail --title "Nextcloud Data Folder" --inputbox "Nextcloud data folder:" 10 80 "/opt/nextcloud_data" 3>&1 1>&2 2>&3)
+
 
 
 ### self-signed  certificate
-openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=10.$ipv4network.1"
-
+key_path="/etc/ssl/private/nc-selfsigned.key"
+crt_path="/etc/ssl/certs/nc-selfsigned.crt"
+subj="/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
+(
+    for i in {1..100}; do
+        sleep 0.1  # Adjust progress speed
+        echo $i   # This simulates progress
+    done
+    openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes \
+    -keyout "$key_path" -out "$crt_path" -subj "$subj"
+) | whiptail --gauge "Generating SSL Certificate..." 10 80 0
+#openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
 
 
 ### apache part
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 a2enmod ssl
 a2enmod rewrite
 a2enmod headers
-fi
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl stop apache2.service
-fi
-
-
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
-echo "
-Listen 2380
+
+cat << 'EOF' > /etc/apache2/ports.conf
+Listen 89
 
 <IfModule ssl_module>
         Listen $httpsport
@@ -174,12 +240,11 @@ Listen 2380
 <IfModule mod_gnutls.c>
         Listen $httpsport
 </IfModule>
-" >> /etc/apache2/ports.conf
+EOF
 
-
-cat <<EOF >> /etc/apache2/sites-available/nc.conf
+cat << 'EOF' > etc/apache2/sites-available/nc.conf
 <VirtualHost *:$httpsport>
-   ServerName 10.$ipv4network.1
+   ServerName $ipv4network
    DocumentRoot /var/www/nextcloud
    SSLEngine on
    SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
@@ -188,7 +253,7 @@ cat <<EOF >> /etc/apache2/sites-available/nc.conf
 <Directory /var/www/nextcloud/>
   AllowOverride All
   Require host localhost
-  Require ip 10.$ipv4network
+  Require ip $ipv4network2
 </Directory>
 
 <IfModule mod_headers.c>
@@ -250,12 +315,11 @@ sed -i '$amysql.trace_mode=Off' /etc/php/8.4/mods-available/mysqli.ini
 
 
 a2ensite nc.conf
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl start apache2.service
-fi
+
 
 ### DB part
+systemctl start mariadb.service
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
 [mysqld]
@@ -269,14 +333,7 @@ log_slow_verbosity     = query_plan
 log-queries-not-using-indexes
 " > /etc/mysql/my.cnf
 
-
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your database server will now be hardened - just follow the instructions."
-echo " Keep in mind: your MariaDB root password is still NOT set !"
-echo -e "${YELLOW} You should set a root password, when asked${ENDCOLOR}"
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
+whiptail --title "mariadb-secure-installation" --msgbox "Your database server will now be hardened - just follow the instructions.\nKeep in mind: your MariaDB root password is still NOT set !\nYou should set a root password, when asked\n" 15 90
 mariadb-secure-installation
 mariadb -uroot <<EOF
 CREATE DATABASE $databasename CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
@@ -284,15 +341,12 @@ CREATE USER '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
 GRANT ALL PRIVILEGES on $databasename.* to '$databaseuser'@'localhost' identified by '$databaseuserpasswd';
 FLUSH privileges;
 EOF
-
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl restart mariadb.service
-fi
+
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
-cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
+cat << 'EOF' >> /var/www/nextcloud/config/myextra.config.php
 <?php
 \$CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
@@ -301,19 +355,15 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
    'skeletondirectory' => '',
 );
 EOF
+
+whiptail --title "nextcloud occ setup" --msgbox "Wait please, nextcloud occ setup is in progress after OK\n" 15 90
 echo ""
-echo ""
-echo ""
-echo ""
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
-echo -e "${GREEN}Wait please, nextcloud occ setup is in progress....${ENDCOLOR}"
-echo "--------------------------------------------------------------------------------------------------------"
-echo "--------------------------------------------------------------------------------------------------------"
+echo "nextcloud occ setup running in background..... please wait....."
+
 cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
-sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
+sudo -u www-data php occ config:system:set trusted_domains 1 --value=$ipv4network
 sudo -u www-data php occ app:enable encryption
 sudo -u www-data php occ encryption:enable
 sudo -u www-data php occ encryption:encrypt-all
@@ -324,40 +374,29 @@ sudo -u www-data php occ maintenance:repair --include-expensive
 sudo -u www-data php occ db:add-missing-indices
 sudo -u www-data php occ background:cron
 
-
-if [[ "$systemos" = 'debian' ]] || [[ "$systemos" = 'ubuntu' ]]; then
 systemctl start apache2.service
-fi
 
-echo "--------------------------------------------------------------------------------------------------------"
-echo " E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08 "
-echo " Used serverside encryption for now, less secure but better than nothing ..... "
-echo " A cloud VPS server is not really your host, its just someone else system,storage,and so on ......"
-echo "--------------------------------------------------------------------------------------------------------"
-echo ""
-echo ""
-echo -e "${GREEN} Your settings, and passwords, maybe take a copy ..... ${ENDCOLOR}"
-echo ""
-echo ""
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your apache https port         :  $httpsport"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your mariaDB port              :  $dbport"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " sql databasename               :  $databasename"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " sql databaseuser               :  $databaseuser"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " sql databaseuserpasswd         :  $databaseuserpasswd"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your nextcloud data folder     :  $ncdatafolder"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your nextcloud admin user      :  $nextroot"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Your nextcloud login password  :  $nextpass"
-echo "--------------------------------------------------------------------------------------------------------"
-echo " Now setup Nextcloud to your needs  :  https://10.$ipv4network.1:$httpsport"
-echo "--------------------------------------------------------------------------------------------------------"
-echo ""
-echo ""
 
+#whiptail --title "Info" --msgbox "E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08\nUsed serverside encryption for now, less secure but better than nothing .....\nA cloud VPS server is not really your host, its just someone else system,storage,and so on ......" 15 90
+
+msgdata="Your settings, and passwords, maybe take a copy ....\n
+Yes = Save this into /root/nextcloud.txt\n
+No  = Just exit do not save in file\n
+Your apache https port         :  $httpsport\n\
+Your mariaDB port              :  $dbport\n\
+SQL database name              :  $databasename\n\
+SQL database user              :  $databaseuser\n\
+SQL database user password     :  $databaseuserpasswd\n\
+Your nextcloud data folder     :  $ncdatafolder\n\
+Your nextcloud admin user      :  $nextroot\n\
+Your nextcloud login password  :  $nextpass\n\
+Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport"
+
+
+if whiptail --title "Settings Overview" --yesno "$msgdata" 80 80; then
+cat << 'EOF' >> /root/nextcloud.txt
+$msgdata
+EOF
+else
+echo ""
+fi  
