@@ -1,6 +1,6 @@
 # Wireguard with dnscrypt and Pi-hole. 
 ## Block ad´s, maleware & more. 
-### And if needed, a nextcloud server behind wireguard, so no public access for everyone.
+### If needed, a nextcloud behind wireguard, no public access.
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Logo_of_WireGuard.svg/320px-Logo_of_WireGuard.svg.png" height="75">   <img src="https://raw.github.com/dnscrypt/dnscrypt-proxy/master/logo.png" height="100">
 
 ![Debian](https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white) ![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
