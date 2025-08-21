@@ -459,32 +459,21 @@ urls=(
     "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/tools/pihole.toml"
 )
 
-# Function to download files in the background
 download_files() {
-    total_files=${#urls[@]}  # Total number of files
-    current_file=0  # Starting file counter
-
-    # Loop through each URL and download the file
+    total_files=${#urls[@]}  
+    current_file=0  
     for url in "${urls[@]}"; do
         filename=$(basename "$url")
-
-        # Check if file already exists, and prompt for overwrite if needed
         if [ -f "$filename" ]; then
             echo "File $filename already exists. Overwriting..."
         fi
-
-        # Start download in background
         curl -s -o "$filename" "$url" &  # -s silences curl's output
     done
 
-    # Wait for all background downloads to complete
     wait
 }
 
-# Show info box before starting
-whiptail --title "File Download" --msgbox "Downloading required files from:\n - My github repo /tools an so on\n - " 15 80
-
-# Start the download process
+whiptail --title "File Download" --msgbox "Downloading required files from my github repo /tools" 15 80
 download_files
 
 chmod +x add_client.sh
@@ -537,7 +526,7 @@ while true; do
        echo ""
     fi
     if [ ${#pihole_password} -ge 8 ]; then
-	whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
+	    whiptail --title "Password Set" --msgbox "Password has been set successfully!" 15 60
         pihole setpassword $pihole_password
         break 
     else
