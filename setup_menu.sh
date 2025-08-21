@@ -118,13 +118,14 @@ main_menu() {
 }
 
 wireguard_menu() {
-    CHOICE=$(whiptail --title "Wireguard options" --menu "Choose" 20 60 6 \
+    CHOICE=$(whiptail --title "Wireguard options" --menu "Choose" 20 60 7 \
     "1" "Add wireguard client" \
     "2" "Remove wireguard client" \
     "3" "Backup wireguard config" \
     "4" "Restore wireguard config" \
     "5" "Show QR Code for clients" \
-    "6" "Back to Main Menu" 3>&1 1>&2 2>&3)
+	"6" "Show raw Code for clients" \
+    "7" "Back to Main Menu" 3>&1 1>&2 2>&3)
 
     case $CHOICE in
         1) ./add_client.sh ;;
@@ -132,8 +133,27 @@ wireguard_menu() {
         3) ./wg_config_backup.sh ;;
         4) ./wg_config_restore.sh ;;
         5)  wgqrcodes_menu;;
-        6) return ;;
+		6)  wgclientconf_menu;;
+        7) return ;;
     esac
+}
+
+wgclientconf_menu() {
+wgclientconf="/etc/wireguard/wg0.conf"
+clientconf=$(grep "# Name = " "$wgclientconf" | awk '{print substr($0, 9)}')
+menu_items=()
+while read -r name; do
+    menu_items+=("$name" "")
+done <<< "$clientconf"
+confname=$(whiptail --title "Show Code for WireGuard Client" \
+    --menu "Select a client:" 20 60 10 \
+    "${menu_items[@]}" \
+    3>&1 1>&2 2>&3)
+if [ $? -ne 0 ]; then
+    whiptail --msgbox "Cancelled by user." 8 40
+    exit 0
+fi
+whiptail --title "$confname config" --msgbox "$(cat /etc/wireguard/$confname.conf)" 20 80
 }
 
 wgqrcodes_menu() {
@@ -143,7 +163,7 @@ menu_items=()
 while read -r name; do
     menu_items+=("$name" "")
 done <<< "$clients"
-clientname=$(whiptail --title "Shwo QRCode for WireGuard Client" \
+clientname=$(whiptail --title "Show QRCode for WireGuard Client" \
     --menu "Select a client:" 20 60 10 \
     "${menu_items[@]}" \
     3>&1 1>&2 2>&3)
