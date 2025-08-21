@@ -173,22 +173,26 @@ randomkey1=$(date +%s | cut -c 3-)
 randomkey2=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 32  ; echo)
 randomkey3=$(</dev/urandom tr -dc 'A-Za-z0-9.:_' | head -c 24  ; echo)
 
-while true; do
-    httpsport=$(whiptail --title "Apache HTTPS Port" --inputbox "Your apache https port (don't use 8443):" 10 80 "4443" 3>&1 1>&2 2>&3)
-    if ss -tuln | grep -q ":$httpsport"; then
-        whiptail --title "Port Check" --msgbox "Port $httpsport is already in use. Please choose another port." 10 80
-    else
-        break
-    fi
-done
-while true; do
-    dbport=$(whiptail --title "MariaDB port:" --inputbox "Your MariaDB port:" 10 60 "3306" 3>&1 1>&2 2>&3)
-    if ss -tuln | grep -q ":$dbport"; then
-        whiptail --title "Port Check" --msgbox "Port $dbport is already in use. Please choose another port." 10 80
-    else
-        break
-    fi
-done
+httpsport=4443
+#while true; do
+#    httpsport=$(whiptail --title "Apache HTTPS Port" --inputbox "Your apache https port (don't use 8443):" 10 80 "4443" 3>&1 1>&2 2>&3)
+#    if ss -tuln | grep -q ":$httpsport"; then
+#        whiptail --title "Port Check" --msgbox "Port $httpsport is already in use. Please choose another port." 10 80
+#    else
+#        break
+#    fi
+#done
+
+dbport=3306
+#while true; do
+#    dbport=$(whiptail --title "MariaDB port:" --inputbox "Your MariaDB port:" 10 60 "3306" 3>&1 1>&2 2>&3)
+#    if ss -tuln | grep -q ":$dbport"; then
+#        whiptail --title "Port Check" --msgbox "Port $dbport is already in use. Please choose another port." 10 80
+#    else
+#        break
+#    fi
+#done
+
 while true; do
     ltz=$(whiptail --title "Nextcloud Log Timezone" --inputbox "Nextcloud log timezone (TZ identifier):" 10 80 "Europe/Berlin" 3>&1 1>&2 2>&3)
     if timedatectl list-timezones | grep -q "^$ltz$"; then
@@ -376,7 +380,6 @@ sudo -u www-data php occ background:cron
 
 systemctl start apache2.service
 
-
 #whiptail --title "Info" --msgbox "E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08\nUsed serverside encryption for now, less secure but better than nothing .....\nA cloud VPS server is not really your host, its just someone else system,storage,and so on ......" 15 90
 
 msgdata="Your settings, and passwords, maybe take a copy ....\n
@@ -391,7 +394,6 @@ Your nextcloud data folder     :  $ncdatafolder\n\
 Your nextcloud admin user      :  $nextroot\n\
 Your nextcloud login password  :  $nextpass\n\
 Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport"
-
 
 if whiptail --title "Settings Overview" --yesno "$msgdata" 80 80; then
 cat << 'EOF' >> /root/nextcloud.txt
