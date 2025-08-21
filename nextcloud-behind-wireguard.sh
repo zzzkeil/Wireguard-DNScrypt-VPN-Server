@@ -352,7 +352,7 @@ systemctl restart mariadb.service
 
 echo '
 <?php
-\$CONFIG = array (
+ $CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
    'memcache.locking' => '\OC\Memcache\Memcached',
    'default_phone_region' => '$dpr',
