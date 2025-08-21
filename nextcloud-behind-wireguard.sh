@@ -234,21 +234,21 @@ a2enmod headers
 systemctl stop apache2.service
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
 
-cat << 'EOF' > /etc/apache2/ports.conf
+echo " 
 Listen 89
 
 <IfModule ssl_module>
-        Listen ${httpsport}
+        Listen $httpsport
 </IfModule>
 
 <IfModule mod_gnutls.c>
-        Listen ${httpsport}
+        Listen $httpsport
 </IfModule>
-EOF
+" >> /etc/apache2/ports.conf
 
-cat << 'EOF' > /etc/apache2/sites-available/nc.conf
-<VirtualHost *:${httpsport}>
-   ServerName ${ipv4network}
+echo " 
+<VirtualHost *:$httpsport>
+   ServerName $ipv4network
    DocumentRoot /var/www/nextcloud
    SSLEngine on
    SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
@@ -257,15 +257,15 @@ cat << 'EOF' > /etc/apache2/sites-available/nc.conf
 <Directory /var/www/nextcloud/>
   AllowOverride All
   Require host localhost
-  Require ip {$ipv4network2}
+  Require ip $ipv4network2
 </Directory>
 
 <IfModule mod_headers.c>
-   Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains"
+   Header always set Strict-Transport-Security \"max-age=15552000; includeSubDomains\"
 </IfModule>
 
 </VirtualHost>
-EOF
+" >> /etc/apache2/sites-available/nc.conf
 
 
 mkdir -p $ncdatafolder
