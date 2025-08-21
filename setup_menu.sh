@@ -1,6 +1,6 @@
 #!/bin/bash
 
-msghi="This script installs and configure wireguard, dnscrypt and pihole. \n
+msghi="This script installs or configure wireguard, dnscrypt and pihole. \n
 With wireguard, you get a secure connection (VPN) and access to www :) \\n
 With DNScrypt your requests are anonymized / encrypted on your server \n
 With Pi-hole AD´s and ThreatIntelligenceFeeds and ... get BLOCKED \n
