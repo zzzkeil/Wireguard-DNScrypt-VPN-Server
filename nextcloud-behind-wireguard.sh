@@ -350,15 +350,15 @@ systemctl restart mariadb.service
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
-echo '
+cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
 <?php
- $CONFIG = array (
+\$CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
    'memcache.locking' => '\OC\Memcache\Memcached',
    'default_phone_region' => '$dpr',
    'skeletondirectory' => '',
 );
-' >> /var/www/nextcloud/config/myextra.config.php
+EOF
 
 whiptail --title "nextcloud occ setup" --msgbox "Wait please, nextcloud occ setup is in progress after OK\n" 15 90
 echo ""
