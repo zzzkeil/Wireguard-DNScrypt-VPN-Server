@@ -123,8 +123,8 @@ wireguard_menu() {
     "2" "Remove wireguard client" \
     "3" "Backup wireguard config" \
     "4" "Restore wireguard config" \
-    "5" "Show QR Code for clients" \
-	"6" "Show raw Code for clients" \
+    "5" "Show QR Code for client" \
+	"6" "Show RAW Code for client" \
     "7" "Back to Main Menu" 3>&1 1>&2 2>&3)
 
     case $CHOICE in
