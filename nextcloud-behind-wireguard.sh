@@ -242,7 +242,7 @@ Listen 89
 </IfModule>
 EOF
 
-cat << 'EOF' > etc/apache2/sites-available/nc.conf
+cat << 'EOF' > /etc/apache2/sites-available/nc.conf
 <VirtualHost *:$httpsport>
    ServerName $ipv4network
    DocumentRoot /var/www/nextcloud
