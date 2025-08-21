@@ -450,15 +450,15 @@ install_multiple_packages_with_gauge2
 
 # List of URLs to download
 urls=(
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/add_client.sh"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/remove_client.sh"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_backup.sh"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/wg_config_restore.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/add_client.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/remove_client.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/wg_config_backup.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/wg_config_restore.sh"
     "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/uninstaller_back_to_base.sh"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/nextcloud-behind-wireguard.sh"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-pihole.toml"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/master/tools/dnscrypt-proxy-update.sh"
-    "https://raw.githubusercontent.com/zzzkeil/Wireguard-DNScrypt-VPN-Server/refs/heads/master/tools/pihole.toml"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/nextcloud_addon.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/dnscrypt-proxy-pihole.toml"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/dnscrypt-proxy-update.sh"
+    "https://raw.githubusercontent.com/zzzkeil/Wireguard_Pi-hole_DNScrypt_Nextcloud/refs/heads/master/tools/pihole.toml"
 )
 
 download_files() {
@@ -492,7 +492,6 @@ chmod +x /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh
 
 mkdir /etc/pihole
 mv pihole.toml /etc/pihole/pihole.toml
-
 
 whiptail --title "Downloading DNSCrypt Proxy" --msgbox "Downloading DNSCrypt Proxy for architecture: $dnsscrpt_arch" 15 80
 curl -L -o /etc/dnscrypt-proxy/dnscrypt-proxy.tar.gz "https://github.com/DNSCrypt/dnscrypt-proxy/releases/download/2.1.12/dnscrypt-proxy-linux_${dnsscrpt_arch}-2.1.12.tar.gz"
@@ -536,7 +535,6 @@ while true; do
     fi
 done
 
-
 echo " Add more list to block "
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt', 1, 'MultiPRO-Extended')"
 sqlite3 /etc/pihole/gravity.db "INSERT INTO adlist (address, enabled, comment) VALUES ('https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/tif.txt', 1, 'ThreatIntelligenceFeeds')"
@@ -551,8 +549,6 @@ clear
 ### create crontabs to update dnscrypt and pihole
 (crontab -l ; echo "59 23 * * 6 /etc/dnscrypt-proxy/dnscrypt-proxy-update.sh") | sort - | uniq - | crontab -
 (crontab -l ; echo "0 23 * * 3 pihole -up") | sort - | uniq - | crontab -
-
-
 
 #### create files for configs  
 echo "
@@ -574,7 +570,6 @@ $wg0keepalive
 For - News / Updates / Issues - check my gitlab site
 https://github.com/zzzkeil/Wireguard-DNScrypt-VPN-Server
 " > /root/Wireguard-DNScrypt-VPN-Server.README
-
 
 firewalldstatus="$(systemctl is-active firewalld)"
 if [ "${firewalldstatus}" = "active" ]; then
@@ -601,7 +596,6 @@ fi
 firewall-cmd --zone=trusted --add-forward-port=port=53:proto=tcp:toport=53:toaddr=127.0.0.1
 firewall-cmd --zone=trusted --add-forward-port=port=53:proto=udp:toport=53:toaddr=127.0.0.1
                              
-
 firewall-cmd --runtime-to-permanent
 
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.d/99-wireguard_ip_forward.conf
@@ -624,7 +618,6 @@ chmod 600 /etc/wireguard/keys/client1
 wg genkey > /etc/wireguard/keys/client1
 wg pubkey < /etc/wireguard/keys/client1 > /etc/wireguard/keys/client1.pub
 
-
 echo "[Interface]
 Address = $wg0networkv4/24
 Address = $wg0networkv6/112
@@ -632,12 +625,11 @@ ListenPort = $wg0port
 #MTU = $wg0servermtu
 PrivateKey = SK01
 
-
-# client1
+# Name = default_client
 [Peer]
 PublicKey = PK01
 AllowedIPs = ${wg0networkv4}0/32, ${wg0networkv6}0/128
-# -end of default clients
+# -end of default client
 
 " > /etc/wireguard/wg0.conf
 
@@ -656,13 +648,11 @@ Endpoint = IP01:$wg0port
 PublicKey = SK01
 AllowedIPs = $allownet
 PersistentKeepalive = $wg0keepalive
-" > /etc/wireguard/client1.conf
-sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/client1.conf
-sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/client1.conf
-sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/client1.conf
-chmod 600 /etc/wireguard/client1.conf
-qrencode -o /etc/wireguard/client1.png < /etc/wireguard/client1.conf
-
+" > /etc/wireguard/default_client.conf
+sed -i "s@CK01@$(cat /etc/wireguard/keys/client1)@" /etc/wireguard/default_client.conf
+sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/default_client.conf
+sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/default_client.conf
+chmod 600 /etc/wireguard/default_client.conf
 
 systemctl enable wg-quick@wg0.service
 systemctl start wg-quick@wg0.service
@@ -672,9 +662,6 @@ ln -s /var/log /root/system-log_folder
 systemctl restart firewalld
 rm /root/reminderfile.tmp
 
-
 main_menu
-
 echo "To see the options again, the script again"
-
 exit
