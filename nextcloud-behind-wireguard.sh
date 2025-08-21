@@ -382,23 +382,24 @@ systemctl start apache2.service
 
 #whiptail --title "Info" --msgbox "E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08\nUsed serverside encryption for now, less secure but better than nothing .....\nA cloud VPS server is not really your host, its just someone else system,storage,and so on ......" 15 90
 
-msgdata="Your settings, and passwords, maybe take a copy ....\n
-Yes = Save this into /root/nextcloud.txt\n
-No  = Just exit do not save in file\n
-Your apache https port         :  $httpsport\n\
-Your mariaDB port              :  $dbport\n\
-SQL database name              :  $databasename\n\
-SQL database user              :  $databaseuser\n\
-SQL database user password     :  $databaseuserpasswd\n\
-Your nextcloud data folder     :  $ncdatafolder\n\
-Your nextcloud admin user      :  $nextroot\n\
-Your nextcloud login password  :  $nextpass\n\
+msgdata="Your settings, and passwords, maybe take a copy ....   \n
+Yes = Save this into /root/nextcloud.txt   \n
+No  = Just exit do not save in file   \n
+Your apache https port         :  $httpsport   \n
+Your mariaDB port              :  $dbport   \n
+SQL database name              :  $databasename   \n
+SQL database user              :  $databaseuser   \n
+SQL database user password     :  $databaseuserpasswd   \n
+Your nextcloud data folder     :  $ncdatafolder   \n
+Your nextcloud admin user      :  $nextroot   \n
+Your nextcloud login password  :  $nextpass   \n
 Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport"
 
 if whiptail --title "Settings Overview" --yesno "$msgdata" 50 80; then
 echo "
 $msgdata
 " >> /root/nextcloud.txt
+sed 's/\\n//g' /root/nextcloud.txt
 else
 echo ""
 fi  
