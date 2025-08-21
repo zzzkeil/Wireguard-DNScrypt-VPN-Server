@@ -393,7 +393,7 @@ SQL database user password     :  $databaseuserpasswd   \n
 Your nextcloud data folder     :  $ncdatafolder   \n
 Your nextcloud admin user      :  $nextroot   \n
 Your nextcloud login password  :  $nextpass   \n
-Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport"
+Setup Nextcloud to your needs  :  https://$ipv4network:$httpsport"
 
 if whiptail --title "Settings Overview" --yesno "$msgdata" 50 80; then
 echo "
