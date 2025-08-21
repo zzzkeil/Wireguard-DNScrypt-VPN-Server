@@ -350,7 +350,7 @@ systemctl restart mariadb.service
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
-cat << 'EOF' >> /var/www/nextcloud/config/myextra.config.php
+echo '
 <?php
 \$CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
@@ -358,7 +358,7 @@ cat << 'EOF' >> /var/www/nextcloud/config/myextra.config.php
    'default_phone_region' => '$dpr',
    'skeletondirectory' => '',
 );
-EOF
+' >> /var/www/nextcloud/config/myextra.config.php
 
 whiptail --title "nextcloud occ setup" --msgbox "Wait please, nextcloud occ setup is in progress after OK\n" 15 90
 echo ""
@@ -395,10 +395,10 @@ Your nextcloud admin user      :  $nextroot\n\
 Your nextcloud login password  :  $nextpass\n\
 Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport"
 
-if whiptail --title "Settings Overview" --yesno "$msgdata" 80 80; then
-cat << 'EOF' >> /root/nextcloud.txt
+if whiptail --title "Settings Overview" --yesno "$msgdata" 50 80; then
+echo "
 $msgdata
-EOF
+" >> /root/nextcloud.txt
 else
 echo ""
 fi  
