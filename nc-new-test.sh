@@ -165,6 +165,8 @@ install_multiple_packages_with_gauge_ubuntu() {
 install_multiple_packages_with_gauge_ubuntu
 fi
 
+
+systemctl stop mariadb.service
 ###your vars
 clear
 randomkey1=$(date +%s | cut -c 3-)
@@ -218,9 +220,7 @@ subj="/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
     openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes \
     -keyout "$key_path" -out "$crt_path" -subj "$subj"
 ) | whiptail --gauge "Generating SSL Certificate..." 10 80 0
-whiptail --title "Certificate Generated" --msgbox "The self-signed SSL certificate has been successfully generated!" 10 80
 #openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
-
 
 
 ### apache part
@@ -229,7 +229,8 @@ a2enmod rewrite
 a2enmod headers
 systemctl stop apache2.service
 mv /etc/apache2/ports.conf /etc/apache2/ports.conf.bak
-echo "
+
+cat << 'EOF' > /etc/apache2/ports.conf
 Listen 89
 
 <IfModule ssl_module>
@@ -239,10 +240,9 @@ Listen 89
 <IfModule mod_gnutls.c>
         Listen $httpsport
 </IfModule>
-" >> /etc/apache2/ports.conf
+EOF
 
-
-cat <<EOF >> /etc/apache2/sites-available/nc.conf
+cat << 'EOF' > etc/apache2/sites-available/nc.conf
 <VirtualHost *:$httpsport>
    ServerName $ipv4network
    DocumentRoot /var/www/nextcloud
@@ -319,6 +319,7 @@ systemctl start apache2.service
 
 
 ### DB part
+systemctl start mariadb.service
 mv /etc/mysql/my.cnf /etc/mysql/my.cnf.bak
 echo "
 [mysqld]
@@ -345,7 +346,7 @@ systemctl restart mariadb.service
 
 (crontab -l ; echo "*/5  *  *  *  * sudo -u www-data php -f /var/www/nextcloud/cron.php") | sort - | uniq - | crontab -
 
-cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
+cat << 'EOF' >> /var/www/nextcloud/config/myextra.config.php
 <?php
 \$CONFIG = array (
    'memcache.local' => '\OC\Memcache\APCu',
@@ -355,19 +356,14 @@ cat <<EOF >> /var/www/nextcloud/config/myextra.config.php
 );
 EOF
 
-##############################
-##############################
-#############################
-#############################
-
-
-
 whiptail --title "nextcloud occ setup" --msgbox "Wait please, nextcloud occ setup is in progress after OK\n" 15 90
+echo ""
+echo "nextcloud occ setup running in background..... please wait....."
 
 cd /var/www/nextcloud
 sudo -u www-data php occ maintenance:install --database "mysql" --database-name "$databasename"  --database-user "$databaseuser" --database-pass "$databaseuserpasswd" --database-host "localhost:$dbport" --admin-user "$nextroot" --admin-pass "$nextpass" --data-dir "$ncdatafolder"
 sudo -u www-data php occ config:system:set logtimezone --value="$ltz"
-sudo -u www-data php occ config:system:set trusted_domains 1 --value=10.$ipv4network.1
+sudo -u www-data php occ config:system:set trusted_domains 1 --value=$ipv4network
 sudo -u www-data php occ app:enable encryption
 sudo -u www-data php occ encryption:enable
 sudo -u www-data php occ encryption:encrypt-all
@@ -383,9 +379,7 @@ systemctl start apache2.service
 
 #whiptail --title "Info" --msgbox "E2EE end 2 end encryption is not working like usual without, functions too limited .......2023.08\nUsed serverside encryption for now, less secure but better than nothing .....\nA cloud VPS server is not really your host, its just someone else system,storage,and so on ......" 15 90
 
-
-whiptail --title "Settings Overview" --msgbox "\
-Your settings, and passwords, maybe take a copy ....\n\n\
+msgdata="Your settings, and passwords, maybe take a copy ....\n
 Your apache https port         :  $httpsport\n\
 Your mariaDB port              :  $dbport\n\
 SQL database name              :  $databasename\n\
@@ -394,4 +388,15 @@ SQL database user password     :  $databaseuserpasswd\n\
 Your nextcloud data folder     :  $ncdatafolder\n\
 Your nextcloud admin user      :  $nextroot\n\
 Your nextcloud login password  :  $nextpass\n\
-Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport" 10 80
+Now setup Nextcloud to your needs:  https://$ipv4network:$httpsport\n\n
+Yes = Save this into /root/nextcloud.txt\n
+No  = Just exit do not save in file" 
+
+if whiptail --title "Settings Overview" --yesno "$msgdata" 80 80; then
+cat << 'EOF' >> /root/nextcloud.txt
+$msgdata
+EOF
+else
+whiptail --title "cu" --msgbox "Ok, no install right now. Have a nice day." 15 80
+fi  
+
