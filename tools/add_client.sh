@@ -117,10 +117,5 @@ sed -i "s@SK01@$(cat /etc/wireguard/keys/server0.pub)@" /etc/wireguard/$clientna
 sed -i "s@IP01@$(hostname -I | awk '{print $1}')@" /etc/wireguard/$clientname.conf
 chmod 600 /etc/wireguard/$clientname.conf
 
-echo "QR Code for $clientname.conf "
-qrencode -t ansiutf8 < /etc/wireguard/$clientname.conf
-echo "Scan the QR Code with your Wiregard App"
-qrencode -o /etc/wireguard/$clientname.png < /etc/wireguard/$clientname.conf
 echo "saved $clientname.conf and QR Code file in folder : /etc/wireguard/"
-echo ""
 systemctl restart wg-quick@wg0.service
