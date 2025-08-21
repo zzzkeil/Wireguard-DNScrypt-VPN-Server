@@ -399,7 +399,7 @@ if whiptail --title "Settings Overview" --yesno "$msgdata" 50 80; then
 echo "
 $msgdata
 " >> /root/nextcloud.txt
-sed 's/\\n//g' /root/nextcloud.txt
+sed -i 's/\\n//g' /root/nextcloud.txt
 else
 echo ""
 fi  
