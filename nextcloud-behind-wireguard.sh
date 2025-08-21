@@ -110,7 +110,7 @@ install_multiple_packages_with_gauge_debian() {
         done
         echo 100
         echo "All packages installed successfully."
-    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\napache, php, ...." 15 90 0
+    } | whiptail --title "Installing needed OS Packages" --gauge "Please wait while installing packages...\napache, many php packages, and ...." 15 90 0
 
     if [ $? -eq 0 ]; then
         echo ""
