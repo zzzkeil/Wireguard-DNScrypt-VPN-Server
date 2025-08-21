@@ -223,7 +223,7 @@ subj="/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
     done
     openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes \
     -keyout "$key_path" -out "$crt_path" -subj "$subj"
-) | whiptail --gauge "Generating SSL Certificate..." 10 80 0
+) | whiptail --gauge "Generating self signed SSL Certificate..." 10 80 0
 #openssl req -x509 -newkey ec:<(openssl ecparam -name secp384r1) -days 1800 -nodes -keyout /etc/ssl/private/nc-selfsigned.key -out /etc/ssl/certs/nc-selfsigned.crt -subj "/C=DE/ST=Your/L=Nextcloud/O=Behind/OU=Wireguard/CN=$ipv4network"
 
 
@@ -238,17 +238,17 @@ cat << 'EOF' > /etc/apache2/ports.conf
 Listen 89
 
 <IfModule ssl_module>
-        Listen $httpsport
+        Listen ${httpsport}
 </IfModule>
 
 <IfModule mod_gnutls.c>
-        Listen $httpsport
+        Listen ${httpsport}
 </IfModule>
 EOF
 
 cat << 'EOF' > /etc/apache2/sites-available/nc.conf
-<VirtualHost *:$httpsport>
-   ServerName $ipv4network
+<VirtualHost *:${httpsport}>
+   ServerName ${ipv4network}
    DocumentRoot /var/www/nextcloud
    SSLEngine on
    SSLCertificateFile /etc/ssl/certs/nc-selfsigned.crt
@@ -257,7 +257,7 @@ cat << 'EOF' > /etc/apache2/sites-available/nc.conf
 <Directory /var/www/nextcloud/>
   AllowOverride All
   Require host localhost
-  Require ip $ipv4network2
+  Require ip {$ipv4network2}
 </Directory>
 
 <IfModule mod_headers.c>
